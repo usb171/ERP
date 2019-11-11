@@ -1,6 +1,6 @@
 from django.urls import path
-
+from .views import *
 
 urlpatterns = [
-    # path('', CoreView.index, name='index'),
+    path('cadastro/', Cadastro.pacienteView, name='cadastro_paciente'),
 ]
