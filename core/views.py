@@ -8,3 +8,5 @@ class CoreView():
 
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
+        if request.method == 'POST':
+            return render(request=request, template_name=template_name, context=context)
