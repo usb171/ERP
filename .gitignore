@@ -11,7 +11,7 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
+#dist/
 downloads/
 eggs/
 .eggs/
@@ -96,3 +96,5 @@ ENV/
 # Editors and IDEs
 .vscode/
 _config.yml
+
+.idea/
