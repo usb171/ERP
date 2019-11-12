@@ -21,7 +21,8 @@
     {% block extracss %}{% endblock %}
 
 </head>
-<body class="hold-transition sidebar-mini">
+
+<body class="{% block classbody %}{% endblock %}">
 
     {% block body %}{% endblock %}
 

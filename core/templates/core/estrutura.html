@@ -1,8 +1,8 @@
 {% extends 'core/bases/core.html' %}
 {% load static %}
+{% block classbody %} hold-transition sidebar-mini {% endblock %}
 {% block body %}
 <div class="be-wrapper be-color-header be-fixed-sidebar">
-    <!-- Site wrapper -->
     <div class="wrapper">
         {% include 'core/elementos/navbar.html' %}
         {% include 'core/elementos/control_sidebar.html' %}
@@ -10,6 +10,5 @@
         {% block content %} {% endblock %}
         {% include 'core/elementos/footer.html' %}
     </div>
-    <!-- ./wrapper -->
 </div>
 {% endblock %}

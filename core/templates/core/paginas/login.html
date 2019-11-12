@@ -1,0 +1,57 @@
+{% extends 'core/bases/core.html' %}
+{% load static %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min.css' %}">
+{% endblock %}
+
+{% block classbody %}hold-transition login-page{% endblock %}
+
+{% block body %}
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#"><b>Clínica</b></a>
+    </div>
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">Entre com seus dados</p>
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="input-group mb-3">
+                    <input type="email" name="email" class="form-control" placeholder="Email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="senha" class="form-control" placeholder="Senha">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">
+                                Lembrar-me
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                    </div>
+                </div>
+            </form>
+            <p class="mb-1">
+                <a href="#">Resgatar meu acesso</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
