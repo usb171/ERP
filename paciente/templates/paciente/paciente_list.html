@@ -1,0 +1,61 @@
+{% extends 'core/estrutura.html' %}
+{% load static %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <br/>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lista de Pacientes</h3>
+
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="table_search" class="form-control float-right"
+                                       placeholder="Search">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0" style="height: 300px;">
+                        <table class="table table-head-fixed">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Fone</th>
+                                <th>Cidade</th>
+                                <th>Rede Social</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for paciente in object_list %}
+                            <tr>
+                                <td><a href="/paciente/editar/?id={{ paciente.id }}">{{ paciente.id }}</a></td>
+                                <td>{{ paciente.nome }}</td>
+                                <td>{{ paciente.telefone }}</td>
+                                <td><span class="tag tag-success">{{ paciente.cidade }}</span></td>
+                                <td>{{ paciente.rede_social }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}
