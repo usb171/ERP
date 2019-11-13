@@ -12,31 +12,14 @@
 {% block content %}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-
+<br>
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header p-2">
-                        <h3 class="card-title">Lista de Pacientes</h3>
-                        <div class="card-tools">
-<!--                            <div class="input-group input-group-sm">-->
-<!--                                <input type="text" name="table_search" class="form-control float-right"-->
-<!--                                       placeholder="Search">-->
-<!--                                <div class="input-group-append">-->
-<!--                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-                        </div>
-                        <div class="card-tools">
-                            <div class="input-group input-group-sm">
-                                <button type="submit" data-toggle="modal" data-target="#modal-default" class="btn btn-block btn-primary btn-sm">Criar</button>
-                            </div>
-                        </div>
-                    </div>
                     <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0" style="height: 300px;">
-                        <table id="table_paciente" class="table table-head-fixed">
+                    <div class="card-body">
+                        <table id="table_paciente" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>ID</th>

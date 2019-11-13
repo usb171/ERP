@@ -47,8 +47,6 @@ class Cadastro():
         return render(request, template_name, contexto)
 
 class Paciente_Ajax():
-
-
     def retornarDados(request):
         id = request.GET.get("id")
         paciente = Paciente.objects.get(id=id)
