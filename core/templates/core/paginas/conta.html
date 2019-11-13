@@ -1,0 +1,147 @@
+{% extends 'core/estrutura.html' %}
+{% load static %}
+
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+{% endblock %}
+
+{% block extrabottomjs %}
+    <script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+{% endblock %}
+
+{% block classbody %}hold-transition sidebar-mini{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Minha Conta</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Agenda</a></li>
+                        <li class="breadcrumb-item active">Minha Conta</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Acesso</h3>
+                        </div>
+                        <form id="id_form_acesso" method="post">
+                            {% csrf_token %}
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="id_email">Email</label>
+                                    <input type="email" class="form-control" id="id_email" value="{{ conta.email }}"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_old_password">Senha Antiga</label>
+                                    <input type="password" class="form-control" name="old_password" id="id_old_password"
+                                           placeholder="Sua senha anterior">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_new_password1">Nova Senha</label>
+                                    <input type="password" class="form-control" name="new_password1" id="id_new_password1"
+                                           placeholder="Uma nova senha">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_new_password2">Confirmar Senha</label>
+                                    <input type="password" class="form-control" name="new_password2" id="id_new_password2"
+                                           placeholder="Confirme a senha acima">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button id="id_button_alterar_senha" class="btn btn-primary">Alterar Senha</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-warning">
+                        <div class="card-header">
+                            <h3 class="card-title">Dados Gerais</h3>
+                        </div>
+                        <form id="id_form_nova_dados_gerais" role="form">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Nome Completo</label>
+                                    <input type="text" class="form-control" placeholder="Meu nome completo"
+                                    value="{{ conta.nomeCompleto }}">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Alterar Dados</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<div class="modal fade colored-header colored-header-primary " id="id_modal" role="dialog">
+	<div class="modal-dialog" >
+		<div class="modal-content">
+			<div class="modal-body" style="background-color: #37b358;color: #FFFFFF;">
+				<div class="text-center"><span class="modal-main-icon mdi mdi-check"></span>
+					<h2>Senha Alterada Com Sucesso!</h2>
+					<p>Está sessão será encerrada e redirecionada para a tela de login</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    $("#id_nav_treeview_configuracoes").addClass("menu-open");
+    $("#id_nav_link_conta").addClass("active");
+
+    $('#id_form_acesso').submit(function(e){
+        $("#id_button_alterar_senha").prop("disabled",true);
+        e.preventDefault();
+        $.post("/conta", $(this).serialize(), function(data){
+            if(data.alterado){
+                $('#id_modal').modal('show')
+                setTimeout(function(){location.href="/logout"}, 3000);
+            }else{
+                $("#id_old_password").removeClass("is-invalid").addClass("is-valid");
+                $("#id_new_password1").removeClass("is-invalid").addClass("is-valid");
+                $("#id_new_password2").removeClass("is-invalid").addClass("is-valid");
+
+                if(data.erros["old_password"] != undefined){
+                    $.each(data.erros.old_password, (index, erro) => {
+                        toastr.error(erro)
+                    })
+                    $("#id_old_password").removeClass("is-valid").addClass("is-invalid");
+                }
+                if(data.erros["new_password1"] != undefined){
+                    $.each(data.erros.new_password1, (index, erro) => {
+                        toastr.error(erro)
+                    })
+                    $("#id_new_password1").removeClass("is-valid").addClass("is-invalid");
+                }
+                if(data.erros["new_password2"] != undefined){
+                    $.each(data.erros.new_password2, (index, erro) => {
+                        toastr.error(erro)
+                    })
+                    $("#id_new_password2").removeClass("is-valid").addClass("is-invalid");
+                }
+            }
+        $("#id_button_alterar_senha").prop("disabled",false);
+        }, 'json');
+    });
+{% endblock %}
