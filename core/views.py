@@ -1,8 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
+from django.http import HttpResponse
+import json
 
 from django.shortcuts import render, redirect
 from .forms import *
+
+from .funcoes.buscas import *
+from .funcoes.sessao import *
 
 class CoreView():
 
@@ -30,3 +35,13 @@ class CoreView():
     def logout(request):
         auth_logout(request)
         return redirect('login')
+
+    @login_required(login_url='login')
+    def conta(request):
+        template_name = "core/paginas/conta.html"
+        context = {'conta': Buscas.core_get_conta(request.user), 'sessao': {}}
+        if request.method == 'GET':
+            return render(request=request, template_name=template_name, context=context)
+        if request.method == 'POST':
+            sessao = Sessao.alterar_senha(request)
+            return HttpResponse(json.dumps(sessao), content_type="application/json")

@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" id="id_nav_link_pacientes">
                         <i class="nav-icon fas fa-user-injured"></i>
                         <p>
                             Pacientes
@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="nav-header">CONFIGURAÇÔES</li>
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview" id="id_nav_treeview_configuracoes">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-clinic-medical"></i>
                         <p>
@@ -46,9 +46,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{% url 'conta' %}" class="nav-link" id="id_nav_link_conta">
                                 <i class="far fa-user"></i>
-                                <p>Usuários</p>
+                                <p>Minha Conta</p>
                             </a>
                         </li>
                         <li class="nav-item">

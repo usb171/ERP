@@ -1,5 +1,6 @@
 from django import forms
 from .funcoes.sessao import Sessao
+
 class FormConta(forms.Form):
 
     """
@@ -14,4 +15,3 @@ class FormConta(forms.Form):
         email = self.cleaned_data['email']
         senha = self.cleaned_data['senha']
         return Sessao.login(email, senha, request)
-

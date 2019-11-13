@@ -1,5 +1,6 @@
 from ..models import Conta
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, update_session_auth_hash, login as auth_login
+from django.contrib.auth.forms import PasswordChangeForm
 
 class Sessao():
 
@@ -38,3 +39,23 @@ class Sessao():
             context['logado'] = False
 
         return context
+
+    def alterar_senha(request):
+        context = {
+            'alterado': True,
+            'msg': '',
+            'erros': None,
+        }
+
+        form = PasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            context['msg'] = "Atualizado com sucesso"
+            return context
+        else:
+            context['alterado'] = False
+            context['erros'] = form.errors
+            context['msg'] = "Erro nos seguintes campos"
+            return context
