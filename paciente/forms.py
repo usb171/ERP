@@ -14,7 +14,7 @@ class CadastroPacienteForm(forms.Form):
     estado = forms.CharField(required=True)
     rede_social = forms.CharField(required=True)
 
-    def save(self, request):
+    def save(self):
         if self.is_valid():
             status = {'form': self.cleaned_data}
             paciente = Paciente.objects.create(**self.cleaned_data)

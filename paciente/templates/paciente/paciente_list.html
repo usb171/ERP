@@ -1,31 +1,42 @@
 {% extends 'core/estrutura.html' %}
 {% load static %}
+{% block extracss %}
+<!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
+{% endblock %}
+{% block extrabottomjs %}
+<!-- DataTables -->
+<script src="{% static 'assets/plugins/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
+{% endblock %}
 {% block content %}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <br/>
 
     <section class="content">
         <div class="row">
-            <div class="col-12">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header p-2">
                         <h3 class="card-title">Lista de Pacientes</h3>
-
                         <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control float-right"
-                                       placeholder="Search">
-
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                </div>
+<!--                            <div class="input-group input-group-sm">-->
+<!--                                <input type="text" name="table_search" class="form-control float-right"-->
+<!--                                       placeholder="Search">-->
+<!--                                <div class="input-group-append">-->
+<!--                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm">
+                                <button type="submit" data-toggle="modal" data-target="#modal-default" class="btn btn-block btn-primary btn-sm">Criar</button>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0" style="height: 300px;">
-                        <table class="table table-head-fixed">
+                        <table id="table_paciente" class="table table-head-fixed">
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -36,10 +47,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for paciente in object_list %}
+                            {% for paciente in pacientes %}
                             <tr>
-                                <td><a href="/paciente/editar/?id={{ paciente.id }}">{{ paciente.id }}</a></td>
-                                <td>{{ paciente.nome }}</td>
+                                <td>{{ paciente.id }}</td>
+                                <td>
+                                    <a data-toggle="modal" data-target="#modal-default"
+                                       onclick="editarPaciente('{{ paciente.id }}')">
+                                        {{ paciente.nome }}
+                                    </a>
+                                </td>
                                 <td>{{ paciente.telefone }}</td>
                                 <td><span class="tag tag-success">{{ paciente.cidade }}</span></td>
                                 <td>{{ paciente.rede_social }}</td>
@@ -53,9 +69,94 @@
                 <!-- /.card -->
             </div>
         </div>
+        <!-- form start -->
+        <form role="form" method="post" enctype="multipart/form-data">
+            <div class="modal fade" id="modal-default">
+                {% csrf_token %}
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Editar Paciente</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label>Nome: </label>
+                                    <input type="text" class="form-control" name="nome" id="nome"
+                                           placeholder="Digite seu nome"
+                                           value="{{ form.nome }}"/>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="telefone">Fone: </label>
+                                    <input type="text" name="telefone" class="form-control" id="telefone"
+                                           placeholder="(000) 00000-0000" value="{{ form.telefone }}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <label for="cidade">Cidade: </label>
+                                    <input type="text" class="form-control" name="cidade" id="cidade"
+                                           placeholder="Digite sua Cidade"
+                                           value="{{ form.cidade }}"/>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="estado">Estado: </label>
+                                    <input type="text" class="form-control" name="estado" id="estado"
+                                           placeholder="Digite seu Estado" value="{{ form.estado }}"/>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="rede_social">Rede Social: </label>
+                                    <input type="text" name="rede_social" class="form-control" id="rede_social"
+                                           placeholder="" value="{{ form.rede_social }}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </form>
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+{% endblock %}
+{% block script %}
+const editarPaciente = (id) => {
+$.ajax({
+type: "GET",
+url: `/paciente/paciente_retornar_dados?id=${id}`,
+contentType: "application/json; charset=utf-8",
+dataType: "json",
+success: function(data) {
+
+let nome = $('#nome')
+nome.val(data.paciente.nome)
+
+let telefone = $('#telefone')
+telefone.val(data.paciente.telefone)
+
+let cidade = $('#cidade')
+cidade.val(data.paciente.cidade)
+
+let estado = $('#estado')
+estado.val(data.paciente.estado)
+
+let rede_social = $('#rede_social')
+rede_social.val(data.paciente.rede_social)
+}
+});
+}
+
+ $('#table_paciente').DataTable();
 
 {% endblock %}
