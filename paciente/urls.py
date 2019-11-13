@@ -1,6 +1,9 @@
 from django.urls import path
-
+from .views import *
 
 urlpatterns = [
-    # path('', CoreView.index, name='index'),
+    path('lista/', Lista.listarPaciente, name='lista_paciente'),
+    path('cadastro/', Cadastro.pacienteView, name='cadastro_paciente'),
+    path('editar/', Cadastro.editarPaciente, name='editar_paciente'),
+    path('paciente_retornar_dados/', Paciente_Ajax.retornarDados, name='retornar_dados'),
 ]
