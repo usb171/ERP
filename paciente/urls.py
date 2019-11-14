@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from .views import Lista, Cadastro, Paciente_Ajax
 
 urlpatterns = [
     path('lista/', Lista.listarPaciente, name='lista_paciente'),
