@@ -17,6 +17,7 @@ class Lista():
             return render(request, template_name, {'pacientes': pacientes})
 
 class Cadastro():
+
     def pacienteView(request):
         template_name = 'paciente/cadastro_paciente.html'
         paciente = Paciente.objects.all()
@@ -48,7 +49,6 @@ class Cadastro():
 
 class Paciente_Ajax():
 
-
     def retornarDados(request):
         id = request.GET.get("id")
         paciente = Paciente.objects.get(id=id)
@@ -60,3 +60,32 @@ class Paciente_Ajax():
 
 
         return JsonResponse({'paciente': contexto})
+
+class PacienteView():
+
+    def paciente(request):
+        template_name = "paciente/paginas/paciente.html"
+        context = {'pacientes': []}
+
+        if request.method == 'GET':
+            return render(request=request, template_name=template_name, context=context)
+        if request.method == 'POST':
+            return render(request=request, template_name=template_name, context=context)
+
+    def buscarPacientes(request):
+
+        print(request.GET.get('search[value]'))
+
+        context = {"recordsTotal": 20,
+                   "recordsFiltered": 1,
+                   "data": [
+                        ['9999',
+                          "NILTON NONATO GARCIA JÚNIOR",
+                          "86 999870071",
+                          "86 999870000",
+                          "usb171@gmail.com",
+                          "Instagram: nilton__jr",
+                        ]
+                   ]
+                   }
+        return JsonResponse(context)
