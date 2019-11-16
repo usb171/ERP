@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
 from django.http import JsonResponse
-import json
-
-from .forms import *
+from .models import Paciente
+from .forms import CadastroPacienteForm
 
 class Lista():
     def listarPaciente(request):
