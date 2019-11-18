@@ -4,6 +4,7 @@ from django.http import JsonResponse
 import json
 
 from .forms import CadastroPacienteForm
+from .models import *
 
 class Lista():
     def listarPaciente(request):
@@ -31,7 +32,7 @@ class Cadastro():
         id = request.GET.get('id')
         paciente = Paciente.objects.get(pk=id)
         template_name = 'paciente/paciente_list.html'
-        contexto = {'nome': Paciente.nome,
+        contexto = {'nomeCompleto': Paciente.nomeCompleto,
                     'telefone': Paciente.telefone,
                     'cidade': Paciente.cidade,
                     'estado': Paciente.estado,
@@ -50,7 +51,7 @@ class Paciente_Ajax():
     def retornarDados(request):
         id = request.GET.get("id")
         paciente = Paciente.objects.get(id=id)
-        contexto = {'nome': paciente.nome,
+        contexto = {'nomeCompleto': paciente.nomeCompleto,
                     'telefone': paciente.telefone,
                     'cidade': paciente.cidade,
                     'estado': paciente.estado,
