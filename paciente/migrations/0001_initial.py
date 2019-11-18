@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('telefone', models.IntegerField()),
                 ('cidade', models.CharField(max_length=50)),
                 ('estado', models.CharField(max_length=50)),
-                ('rede_social', models.CharField(max_length=50)),
+                ('redeSocial', models.CharField(max_length=50)),
             ],
         ),
     ]

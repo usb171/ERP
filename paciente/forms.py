@@ -5,7 +5,7 @@ from .models import *
 class PacienteForm(ModelForm):
     class Meta:
         model = Paciente
-        fields = ['nomeCompleto', 'telefone', 'cidade', 'estado', 'rede_social']
+        fields = ['nomeCompleto', 'telefone', 'cidade', 'estado', 'redeSocial']
 
 class CadastroPacienteForm(forms.Form):
     nomeCompleto = forms.CharField(required=True)

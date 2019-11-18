@@ -21,4 +21,9 @@ O ERP é um website desenvolvido em aplicações, sua base é pensada em futuras
  ```
  pip install https://github.com/darklow/django-suit/tarball/v2
  ```
- lll
+ 
+* MysqlCliente
+
+```
+pip3 install mysqlclient
+```
