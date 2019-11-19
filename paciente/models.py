@@ -4,7 +4,6 @@ from core.funcoes.enumerate import ESTADOS
 class Paciente(models.Model):
     """
     *   Classe Paciente
-    *   Base de uma paciente
     """
     ativo = models.BooleanField(verbose_name='Ativar Paciente ?', default=True, null=True)
     nomeCompleto = models.CharField(verbose_name='Nome Completo', max_length=120, null=True, blank=True)
@@ -14,7 +13,8 @@ class Paciente(models.Model):
     cep = models.CharField(verbose_name='CEP', max_length=120, null=True, blank=True)
     cidade = models.CharField(verbose_name='Cidade', max_length=120, null=True, blank=True)
     estado = models.CharField(verbose_name='Estado', max_length=2, choices=ESTADOS, null=True, blank=True)
-    redeSocial = models.CharField(verbose_name='Rede Social', max_length=120, null=True, blank=True)
+    facebook = models.CharField(verbose_name='Facebook', max_length=120, null=True, blank=True)
+    instagram = models.CharField(verbose_name='Instagram', max_length=120, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Paciente'

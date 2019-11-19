@@ -2,10 +2,19 @@ from django.forms import ModelForm
 from django import forms
 from .models import *
 
-class PacienteForm(ModelForm):
-    class Meta:
-        model = Paciente
-        fields = ['nomeCompleto', 'telefone', 'cidade', 'estado', 'redeSocial']
+class FormPaciente(forms.Form):
+    """
+    * Class FormPaciente
+    """
+
+    nomeCompleto = forms.CharField(required=True)
+    whatsapp = forms.CharField(required=True)
+
+    def login(self, request):
+        super(FormPaciente, self).is_valid()
+        email = self.cleaned_data['nomeCompleto']
+        senha = self.cleaned_data['whatsapp']
+        return Sessao.login(email, senha, request)
 
 class CadastroPacienteForm(forms.Form):
     nome = forms.CharField(required=True)

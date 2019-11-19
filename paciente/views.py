@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Paciente
-from .forms import CadastroPacienteForm
+from .forms import CadastroPacienteForm, PacienteForm
 
 class Lista():
     def listarPaciente(request):
@@ -68,6 +68,7 @@ class PacienteView():
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
         if request.method == 'POST':
+            PacienteForm(request.POST).criarOuEditar()
             return render(request=request, template_name=template_name, context=context)
 
     def buscarPacientes(request):
