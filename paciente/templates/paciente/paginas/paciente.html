@@ -76,10 +76,112 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <form id="id_form_novo_editar" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nome Completo:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user-injured"></i></span>
+                                    </div>
+                                    <input type="text" name="nomeCompleto" id="id_nomeCompleto" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Whatsapp:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fab fa-whatsapp"></i></span>
+                                    </div>
+                                    <input type="text" name="whatsapp" id="id_whatsapp" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Telefone:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"'
+                                           data-mask name="telefone" id="id_telefone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Cidade:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="cidade" id="id_cidade">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Cidade</label>
+                                <select class="form-control select2" style="width: 100%;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>CEP:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="cep" id="id_cep">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Facebook</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fab fa-facebook-square"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="facebook" id="id_facebook">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Instagram</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="instagram" id="id_instragram">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>E-mail</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-at"></i></span>
+                                    </div>
+                                    <input type="email" class="form-control" name="email" id="id_email">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Salvar</button>
                 </div>
             </div>
         </div>
@@ -207,6 +309,12 @@
         let selectedRows = table.rows( { selected: true } ).count();
         table.button(1).enable( selectedRows > 0 );
     });
+
+    let form_novo_editar = () =>{
+
+
+
+    }
 
 
 {% endblock %}
