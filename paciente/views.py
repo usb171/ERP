@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from .models import Paciente
 from .forms import CadastroPacienteForm, PacienteForm
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 
 class Lista():
@@ -65,6 +66,7 @@ class Paciente_Ajax():
 
 class PacienteView():
 
+    @login_required(login_url='login')
     def paciente(request):
         template_name = "paciente/paginas/paciente.html"
         context = {'pacientes': []}
@@ -73,6 +75,7 @@ class PacienteView():
         if request.method == 'POST':
             return JsonResponse(PacienteForm().criarOuEditar(request))
 
+    @login_required(login_url='login')
     def buscarPacientes(request):
 
         busca = request.GET.get('search[value]')
