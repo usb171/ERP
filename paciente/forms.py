@@ -1,20 +1,12 @@
-from django.forms import ModelForm
 from django import forms
 from .models import *
+from .funcoes.paciente import Paciente
 
-class FormPaciente(forms.Form):
-    """
-    * Class FormPaciente
-    """
+class PacienteForm(forms.Form):
 
-    nomeCompleto = forms.CharField(required=True)
-    whatsapp = forms.CharField(required=True)
-
-    def login(self, request):
-        super(FormPaciente, self).is_valid()
-        email = self.cleaned_data['nomeCompleto']
-        senha = self.cleaned_data['whatsapp']
-        return Sessao.login(email, senha, request)
+    def criarOuEditar(self, request):
+        super(PacienteForm, self).is_valid()
+        return Paciente.criarOuEditar(request)
 
 class CadastroPacienteForm(forms.Form):
     nome = forms.CharField(required=True)
