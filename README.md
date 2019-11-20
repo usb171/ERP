@@ -38,6 +38,7 @@ ALTER ROLE nome_maquina SET client_encoding TO 'utf8';
 ALTER ROLE nome_maquina SET default_transaction_isolation TO 'read committed';
 ALTER ROLE nome_maquina SET timezone TO 'America/Fortaleza';
 GRANT ALL PRIVILEGES ON DATABASE erp_dev TO nome_maquina;
+ALTER USER nome_maquina WITH SUPERUSER;
 ```
 
 **Criar Ambiente Virtual**
@@ -78,4 +79,23 @@ PORT=''
 
 ##Ambiente de Produção
 
+**Gunicorn**
+
+* Criar arquivo de configuração e copiar os seguintes parametros
+
+``nano /etc/supervisor/conf.d/erp.conf``
+
+```
+[program:erp]
+command=/home/SERVER_CRM/env/bin/gunicorn --access-logfile - --workers 3 --bind localhost:8001 ERP.wsgi:application
+directory=/home/SERVER_CRM/ERP
+user=crm
+group=www-data
+autostart=true
+autorestart=true
+killasgroup=true
+stdout_logfile=/home/SERVER_CRM/ERP/supervisor.log
+redirect_stderr=True
+environment=DJANGO_SETTINGS_MODULE="ERP.settings", LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8"
+```
 

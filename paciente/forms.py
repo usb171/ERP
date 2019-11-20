@@ -1,11 +1,12 @@
-from django.forms import ModelForm
 from django import forms
 from .models import *
+from .funcoes.paciente import Paciente
 
-class PacienteForm(ModelForm):
-    class Meta:
-        model = Paciente
-        fields = ['nomeCompleto', 'telefone', 'cidade', 'estado', 'redeSocial']
+class PacienteForm(forms.Form):
+
+    def criarOuEditar(self, request):
+        super(PacienteForm, self).is_valid()
+        return Paciente.criarOuEditar(request)
 
 class CadastroPacienteForm(forms.Form):
     nome = forms.CharField(required=True)
