@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'paciente',
+    'produto',
 ]
 
 MIDDLEWARE = [
@@ -77,11 +78,18 @@ WSGI_APPLICATION = 'ERP.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'OPTIONS': {
+    #         'read_default_file': '/etc/mysql/erp_dev.cnf',
+    #     },
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/erp_dev.cnf',
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': '192.168.254.176',
+        'NAME': 'erp_dev',
+        'USER': 'crm',
+        'PASSWORD': 'c3d3w9b9'
     }
 }
 
