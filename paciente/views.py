@@ -17,7 +17,6 @@ class Lista():
             form = CadastroPacienteForm(request.POST).save()
             return render(request, template_name, {'pacientes': pacientes})
 
-
 class Cadastro():
 
     def pacienteView(request):
@@ -49,19 +48,26 @@ class Cadastro():
 
         return render(request, template_name, contexto)
 
-
 class Paciente_Ajax():
 
-    def retornarDados(request):
-        id = request.GET.get("id")
-        paciente = Paciente.objects.get(id=id)
-        contexto = {'nome': paciente.nome,
-                    'telefone': paciente.telefone,
-                    'cidade': paciente.cidade,
-                    'estado': paciente.estado,
-                    'rede_social': paciente.rede_social}
+    @login_required(login_url='login')
+    def getDados(request):
+        try:
+            id = request.GET.get("id")
+            paciente = Paciente.objects.get(id=id)
+            contexto = {'nomeCompleto': paciente.nomeCompleto,
+                        'whatsapp': paciente.whatsapp,
+                        'telefone': paciente.telefone,
+                        'cidade': paciente.cidade,
+                        'cep': paciente.cep,
+                        'facebook': paciente.facebook,
+                        'instagram': paciente.instagram,
+                        'email': paciente.email,
+                        }
 
-        return JsonResponse({'paciente': contexto})
+            return JsonResponse({'paciente': contexto})
+        except:
+            return JsonResponse({'paciente': 'Não foi possível encontrar dados do paciente de id: ' + id})
 
 
 class PacienteView():

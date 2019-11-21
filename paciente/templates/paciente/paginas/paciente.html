@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
 {% endblock %}
 
 {% block extrabottomjs %}
@@ -23,6 +24,7 @@
 <script src="{% static 'assets/plugins/buttons-html5/buttons.html5.min.js' %}"></script>
 <script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'assets/plugins/easy-loading/js/easy-loading.min.js' %}"></script>
 {% endblock %}
 
 {% block classbody %}hold-transition sidebar-mini{% endblock %}
@@ -139,7 +141,7 @@
                                     <label>CEP:</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" data-inputmask='"mask": "99999-999"'
-                                               data-mask name="cep" id="id_cep">
+                                               data-mask name="cep" id="cep">
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +149,7 @@
                                 <div class="form-group">
                                     <label>Facebook</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="facebook" id="id_facebook">
+                                        <input type="text" class="form-control" name="facebook" id="facebook">
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +157,7 @@
                                 <div class="form-group">
                                     <label>Instagram</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="instagram" id="instragram">
+                                        <input type="text" class="form-control" name="instagram" id="instagram">
                                     </div>
                                 </div>
                             </div>
@@ -209,8 +211,7 @@
 
 {% block script %}
 
-        $('[data-mask]').inputmask();
-
+    $('[data-mask]').inputmask();
 
     $("#id_nav_link_pacientes").addClass("active");
 
@@ -227,7 +228,6 @@
                     $('#id_modal_paciente_novo_editar h4').text('Novo Paciente');
                     $('#id_modal_paciente_novo_editar').modal('show');
                     $('#id_modal_paciente_novo_editar form').trigger("reset"); // reseta todos os campos do formulário
-
                 },
                 className: 'btn btn-success '
             },
@@ -236,9 +236,6 @@
                 action: function ( e, dt, node, config ) {
                     $('#id_modal_paciente_novo_editar h4').text('Editar Paciente');
                     $('#id_modal_paciente_novo_editar').modal('show');
-                    $('#id_modal_paciente_novo_editar form').trigger("reset"); // reseta todos os campos do formulário
-                    //$('#id_modal_paciente_novo_editar div.modal-body').html('<p>' + JSON.stringify( dt.row( { selected: true } ).data()) + '</p>');
-
                 },
                 className: 'btn btn-warning',
                 enabled: false
@@ -274,7 +271,7 @@
         "ajax": "/paciente/buscarPacientes",
 
         "bLengthChange": false,
-        "pageLength": 10,
+        "pageLength": 5,
         "ordering": true,
         "info":     true,
 
@@ -305,17 +302,49 @@
 
     table.on( 'select deselect', function () {
         let selectedRows = table.rows( { selected: true } ).count();
+        linha = table.rows({selected:true}).data()[0];
+        if(linha){
+            let id = linha[0];
+            carregarDadosLinhaSelecionada(id);
+        }
         table.button(1).enable( selectedRows > 0 );
     });
 
+
+
+    /******************** Formulários *************************/
+    let carregarDadosLinhaSelecionada = (id) =>{
+        $.get( "/paciente/getDados/", { id: id } )
+        .done(function(data) {
+            $('#id_modal_paciente_novo_editar form').trigger('reset'); // reseta todos os campos do formulário
+            data = data.paciente;
+            $('#id').val(id);
+            $('#nomeCompleto').val(data.nomeCompleto);
+            $('#whatsapp').val(data.whatsapp);
+            $('#telefone').val(data.telefone);
+            $('#cidade').val(data.cidade);
+            $('#cep').val(data.cep);
+            $('#facebook').val(data.facebook);
+            $('#instagram').val(data.instagram);
+            $('#email').val(data.email);
+            $('#email').removeClass("is-invalid");
+        })
+    }
+
     $('#id_form_novo_editar').submit(function(e){
+        EasyLoading.show({
+            type: EasyLoading.TYPE["BALL_PULSE"],
+            text: 'Salvando Paciente',
+            timeout: null,
+        });
+        $("#button_salvar").prop("disabled",true);
         e.preventDefault();
         $.post("/paciente/", $(this).serialize(), function(data){
-            console.log(data)
             if (data.status){
-                $("#button_salvar").prop("disabled",false);
                 window.location.reload()
             }else{
+                EasyLoading.hide();
+                $("#button_salvar").prop("disabled",false);
                 $("#email").addClass("is-invalid");
                 $.each(data.msg, (index, erro) => {
                     toastr.error(erro)
