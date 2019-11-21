@@ -80,27 +80,14 @@ WSGI_APPLICATION = 'ERP.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'OPTIONS': {
-    #         'read_default_file': '/etc/mysql/erp_dev.cnf',
-    #     },
-    # }
+
     'default': {
-<<<<<<< HEAD
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '192.168.254.176',
-        'NAME': 'erp_dev',
-        'USER': 'crm',
-        'PASSWORD': 'c3d3w9b9'
-=======
         'ENGINE': config('ENGINE'),
         'NAME': config('NAME'),
         'USER': config('USER'),
         'PASSWORD': config('PASSWORD'),
         'HOST': config('HOST'),
         'PORT': config('PORT'),
->>>>>>> 507fefd6954e260989048ee18db9bafd8beb49ff
     }
 }
 

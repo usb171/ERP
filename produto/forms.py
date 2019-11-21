@@ -4,14 +4,15 @@ from django import forms
 from produto.models import Produto
 
 
-class ProdutoForm(ModelForm):
-    class Meta:
-        model = Produto
-        fields = ['nome_produto', 'valor_produto']
+class ProdutoForm(forms.Form):
 
-class CadastroProdutoForm(forms.Forms):
+    def criarOuEditar(self, request):
+        super(ProdutoForm, self).is_valid()
+        return Produto.criarOuEditar(request)
+
+class CadastroProdutoForm(forms.Form):
     nome_produto = forms.CharField(required=True)
-    valor_produto = forms.CharField(required=True)
+    valor_produto = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, required=True)
 
     def save(self):
         if self.is_valid():
