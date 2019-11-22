@@ -10,13 +10,22 @@ class Produto():
 
         """ Caso seja um número, faça a edição do produto. Caso seja uma string vazia crie um produto"""
         if formulario['id'].isdigit():
-            pass
+            try:
+                produto = ProdutoModel.objects.filter(id=formulario['id'])
+
+                produto.update(
+                    nome_produto=request.POST.get("nome_produto"),
+                    valor_produto=request.POST.get("valor_produto")
+                )
+                return {'status': True, 'msg': 'Produto editado com sucesso'}
+            except:
+                return {'status': True, 'msg': 'Erro ao tentar editar paciente'}
         else:
             try:
                 ProdutoModel.objects.create(
                     nome_produto=request.POST.get("nome_produto").upper(),
                     valor_produto=request.POST.get("valor_produto")
                 )
-                return {'status': True, 'msg': 'Paciente cadastrado com sucesso'}
+                return {'status': True, 'msg': 'Produto cadastrado com sucesso'}
             except Exception as e:
-                return {'status': False, 'mesg': ['Email já cadastrado']}
+                return {'status': False, 'mesg': ['Produto já cadastrado']}
