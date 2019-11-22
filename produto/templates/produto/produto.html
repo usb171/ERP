@@ -1,0 +1,274 @@
+{% extends 'core/estrutura.html' %}
+{% load static %}
+
+{% block title %}Lista de Produtos{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+{% endblock %}
+
+{% block extrabottomjs %}
+<script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-select/js/dataTables.select.min.js' %}"></script>
+
+<script src="{% static 'assets/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'assets/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'assets/plugins/buttons-html5/buttons.html5.min.js' %}"></script>
+<script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+{% endblock %}
+
+{% block classbody %}hold-transition sidebar-mini{% endblock %}
+
+{% block content %}
+
+
+<style>
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .lowercase {
+      text-transform: lowercase;
+    }
+
+    .capitalize {
+      text-transform: capitalize;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Produtos</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Agenda</a></li>
+                        <li class="breadcrumb-item active">Produtos</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body table-responsive">
+                        <table id="id_table_produtos" class="table table-bordered table-hover" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th style="width:5%">Cód.</th>
+                                <th style="width:30%">Descrição do Serviço</th>
+                                <th style="width:15%">Valor</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="id_modal_produto_novo_editar">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> Ola</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="id_form_novo_editar" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <input type="number" name="id" id="id" hidden>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Descrição do Serviço:</label>
+                                    <div class="input-group">
+                                        <input name="nome_produto" id="nome_produto"
+                                               class="form-control uppercase" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Valor:</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                               data-inputmask='"mask": ""'
+                                               data-mask name="valor_produto" id="valor_produto">
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" id="button_salvar" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="id_modal_produto_excluir">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> Excluir Produto</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <spam>Digite o Código do produto e clique no botão <spam style="color:red">Excluir Produto</spam>.
+                        <spam style="font-weight: bold;">Atenção, após a exclusão do produto não será mais possível resgatá-lo</spam>
+                    </spam>
+                    <div class="form-group p-2">
+                        <label for="id_produto">Cód. do Serviço</label>
+                        <input type="text" class="form-control" id="id_produto">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger">Excluir Produto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+
+        $('[data-mask]').inputmask();
+
+
+    $("#id_nav_link_produtos").addClass("active");
+
+    let table = $("#id_table_produtos").DataTable({
+
+        dom:"<'row be-datatable-header'<'col-sm-6'B><'col-sm-6'f>>" +
+            "<'row be-datatable-body'<'col-sm-12'tr>>" +
+            "<'row be-datatable-footer'<'col-sm-5'i><'col-sm-7'p>>",
+
+        buttons: [
+            {
+                text: 'Novo Produto',
+                action: function ( e, dt, node, config ) {
+                    $('#id_modal_produto_novo_editar h4').text('Novo Produto');
+                    $('#id_modal_produto_novo_editar').modal('show');
+                    $('#id_modal_produto_novo_editar form').trigger("reset"); // reseta todos os campos do formulário
+
+                },
+                className: 'btn btn-success '
+            },
+            {
+                text: 'Editar Produto',
+                action: function ( e, dt, node, config ) {
+                    $('#id_modal_produto_novo_editar h4').text('Editar Produto');
+                    $('#id_modal_produto_novo_editar').modal('show');
+                    $('#id_modal_produto_novo_editar form').trigger("reset"); // reseta todos os campos do formulário
+                    //$('#id_modal_produto_novo_editar div.modal-body').html('<p>' + JSON.stringify( dt.row( { selected: true } ).data()) + '</p>');
+
+                },
+                className: 'btn btn-warning',
+                enabled: false
+            },
+            {
+                text: 'Excluir Paciente',
+                action: function ( e, dt, node, config ) {
+                    $('#id_modal_produto_excluir').modal('show');
+                },
+                className: 'btn btn-danger',
+                enabled: true
+            },
+            {
+                text: 'Exportar PDF',
+                className: 'btn btn-primary',
+                extend: 'pdfHtml5',
+                messageTop: 'Nilton Nonato Garcia Júnior',
+                download: 'open',
+                /*customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                    margin: [ 0, 0, 0, 8],
+                    alignment: 'center',
+                    width: 100,
+                    height: 100,
+                    } );
+                }*/
+            }
+        ],
+
+        select: 'single',
+        "processing": true,
+        "serverSide": true,
+        "ajax": "/produto/buscarProdutos",
+
+        "bLengthChange": false,
+        "pageLength": 10,
+        "ordering": true,
+        "info":     true,
+
+        "language": {
+            "sEmptyTable": "Nenhum registro encontrado",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "_MENU_ resultados por página",
+            "sLoadingRecords": "Carregando...",
+            "sProcessing": "Buscando Pacientes ...",
+            "sZeroRecords": "Nenhum paciente encontrado",
+            "sSearch": "Pesquisar",
+            "oPaginate": {
+            "sNext": "Próximo",
+            "sPrevious": "Anterior",
+            "sFirst": "Primeiro",
+            "sLast": "Último"
+        },
+        "oAria": {
+            "sSortAscending": ": Ordenar colunas de forma ascendente",
+            "sSortDescending": ": Ordenar colunas de forma descendente"
+            }
+        },
+    });
+
+    table.on( 'select deselect', function () {
+        let selectedRows = table.rows( { selected: true } ).count();
+        table.button(1).enable( selectedRows > 0 );
+    });
+
+    $('#id_form_novo_editar').submit(function(e){
+        e.preventDefault();
+        $.post("/produto/", $(this).serialize(), function(data){
+            console.log(data)
+            if (data.status){
+                $("#button_salvar").prop("disabled",false);
+                window.location.reload()
+            }else{
+                $("#email").addClass("is-invalid");
+                $.each(data.msg, (index, erro) => {
+                    toastr.error(erro)
+                })
+            }
+        }, 'json');
+    });
+
+
+{% endblock %}
