@@ -1,12 +1,12 @@
 from django import forms
 from .models import *
-from .funcoes.paciente import Paciente
+from .funcoes.paciente import criarEditarExcluir
 
 class PacienteForm(forms.Form):
 
-    def criarOuEditar(self, request):
+    def criarEditarExcluir(self, request):
         super(PacienteForm, self).is_valid()
-        return Paciente.criarOuEditar(request)
+        return criarEditarExcluir(request)
 
 class CadastroPacienteForm(forms.Form):
     nome = forms.CharField(required=True)

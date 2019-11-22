@@ -79,11 +79,11 @@ class PacienteView():
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
         if request.method == 'POST':
-            return JsonResponse(PacienteForm().criarOuEditar(request))
+            return JsonResponse(PacienteForm().criarEditarExcluir(request))
+
 
     @login_required(login_url='login')
     def buscarPacientes(request):
-
         busca = request.GET.get('search[value]')
         pacientes_total = Paciente.objects.all()
         pacientes_filtro = Paciente.objects.filter(
