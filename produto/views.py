@@ -29,7 +29,7 @@ class ProdutoView():
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
         if request.method == 'POST':
-            return JsonResponse(ProdutoForm().criarOuEditar(request))
+            return JsonResponse(ProdutoForm().criarEditarExcluir(request))
 
     @login_required(login_url='login')
     def buscarProdutos(request):
