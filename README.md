@@ -32,6 +32,7 @@ O ERP é um website desenvolvido em aplicações, sua base é pensada em futuras
 **Banco**
 
 ```
+sudo -u postgres psql
 CREATE DATABASE erp_dev;
 CREATE USER nome_maquina WITH PASSWORD 'senha';
 ALTER ROLE nome_maquina SET client_encoding TO 'utf8';
