@@ -32,5 +32,6 @@ class ProdutoView():
         context = {"recordsTotal": len(produtos_total),
                    "recordsFiltered": len(produtos_filtro),
                    "data": produtos_filtro}
+        print(context)
 
         return JsonResponse(context)
