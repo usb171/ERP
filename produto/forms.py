@@ -1,9 +1,9 @@
 from django import forms
-from .funcoes.produto import Produto
+from .funcoes.produto import criarEditarExcluir
 
 
 class ProdutoForm(forms.Form):
 
-    def criarOuEditar(self, request):
+    def criarEditarExcluir(self, request):
         super(ProdutoForm, self).is_valid()
-        return Produto.criarOuEditar(request)
+        return criarEditarExcluir(request)
