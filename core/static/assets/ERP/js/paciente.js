@@ -14,10 +14,10 @@ let table = $("#id_table_pacientes").DataTable({
         {
             text: 'Novo Paciente',
             action: function ( e, dt, node, config ) {
+                limparform();
                 let comando = '#criar#'
                 $('#id_modal_paciente_novo_editar h4').text('Novo Paciente');
                 $('#id_modal_paciente_novo_editar').modal('show');
-                limparform();
                 $("#comando_novo_editar").val(comando);
             },
             className: 'btn btn-success'
@@ -25,12 +25,14 @@ let table = $("#id_table_pacientes").DataTable({
         {
             text: 'Editar Paciente',
             action: function ( e, dt, node, config ) {
+                limparform();
                 let comando = '#editar#'
                 let id = table.rows({selected:true}).data()[0][0]
                 $('#id_modal_paciente_novo_editar h4').text('Editar Paciente');
                 $('#id_modal_paciente_novo_editar').modal('show');
                 $("#comando_novo_editar").val(comando);
-                $("#id_criar_editar").val(id);
+                carregarDadosLinhaSelecionada(id);
+
             },
             className: 'btn btn-warning',
             enabled: false
@@ -97,10 +99,6 @@ let table = $("#id_table_pacientes").DataTable({
 table.on( 'select deselect', function () {
     let selectedRows = table.rows( { selected: true } ).count();
     linha = table.rows({selected:true}).data()[0];
-    if(linha){
-        let id = linha[0];
-        carregarDadosLinhaSelecionada(id);
-    }
     table.button(1).enable( selectedRows > 0 );
     table.button(2).enable( selectedRows > 0 );
 });
@@ -109,9 +107,15 @@ table.on( 'select deselect', function () {
 
 /*************************************************** Formulários ******************************************************/
 let carregarDadosLinhaSelecionada = (id) => {
+
+    EasyLoading.show({
+        type: EasyLoading.TYPE["BALL_PULSE"],
+        text: 'Carregando dados...',
+        timeout: null,
+    });
+
     $.get( "/paciente/getDados/", { id: id } )
     .done(function(data) {
-        $('#id_modal_paciente_novo_editar form').trigger('reset'); // reseta todos os campos do formulário
         data = data.paciente;
         $('#id').val(id);
         $('#nomeCompleto').val(data.nomeCompleto);
@@ -123,6 +127,8 @@ let carregarDadosLinhaSelecionada = (id) => {
         $('#instagram').val(data.instagram);
         $('#email').val(data.email);
         $('#email').removeClass("is-invalid");
+        $("#id_criar_editar").val(id);
+        EasyLoading.hide();
     })
 }
 
