@@ -8,13 +8,21 @@
 {% block classbody %}hold-transition login-page{% endblock %}
 
 {% block body %}
-<div class="login-box">
-    <div class="login-logo">
-        <img src="/media/logoPDF.png" width="360" height="380" alt="Login Clinica">
-    </div>
+
+<style>
+    .login-logo img {
+        max-width: -webkit-fill-available;
+    }
+
+</style>
+
+<div class="login-box" style="width: 450px">
+
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Entre com seus dados</p>
+            <div class="login-logo">
+                <img src="{{logo}}">
+            </div>
             <form method="post">
                 {% csrf_token %}
 
