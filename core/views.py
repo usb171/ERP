@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.http import HttpResponse
+from django.conf import settings
 import json
 
 from django.shortcuts import render, redirect
@@ -24,7 +25,7 @@ class CoreView():
     def login(request):
         template_name = "core/paginas/login.html"
         if request.method == 'GET':
-            return render(request=request, template_name=template_name, context={})
+            return render(request=request, template_name=template_name, context={'logo': settings.URL_LOGO_LOGIN})
         if request.method == 'POST':
             conta = FormConta(request.POST).login(request)
             if conta['logado']:
