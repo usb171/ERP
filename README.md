@@ -76,6 +76,7 @@ USER='nome_maquina'
 PASSWORD='senha'
 HOST='localhost'
 PORT=''
+URL_LOGO_LOGIN='media/logoClinica.png'
 ```
 
 ##Ambiente de Produção
