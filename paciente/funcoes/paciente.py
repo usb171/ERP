@@ -1,5 +1,7 @@
 from ..models import Paciente as PacienteModel
+import logging
 
+logger = logging.getLogger(__name__)
 
 def criar(formulario):
     try:
@@ -40,7 +42,6 @@ def excluir(formulario):
 
 
 def criarEditarExcluir(request):
-
     formulario = request.POST.copy()
     comando = formulario['comando']
     del formulario['comando']
@@ -58,3 +59,15 @@ def criarEditarExcluir(request):
         return {'status': False, 'msg': ['Não foi possível executar o comando: ' + str(comando)]}
 
 
+def getPacientesString():
+    """Monta as linhas da tabela em html e retorna em uma única string"""
+    try:
+        pacientes = PacienteModel.objects.all().values('id', 'nomeCompleto', 'whatsapp', 'telefone', 'email')
+        html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>'
+        linhas = map(lambda p: html.format(p['id'], p['nomeCompleto'], p['whatsapp'], p['telefone'], p['email']),
+                     pacientes)
+        return "".join(list(linhas))
+    except:
+        print("Erro ao montar lista de pacientes")
+        logger.error('Erro ao montar lista de pacientes')
+        return ""
