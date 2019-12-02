@@ -63,9 +63,7 @@ let table = $("#id_table_pacientes").DataTable({
 
     select: 'single',
     "processing": true,
-    "serverSide": true,
-    "ajax": "/paciente/buscarPacientes",
-
+    "serverSide": false,
     "bLengthChange": false,
     "pageLength": 10,
     "ordering": true,

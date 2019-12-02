@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from .models import Paciente
 from .forms import PacienteForm
 from django.contrib.auth.decorators import login_required
-from .funcoes.paciente import listarTabela, getColunasTabelaHtml
+from .funcoes.paciente import getPacientesString
 
 
 class Paciente_Ajax():
@@ -33,12 +33,8 @@ class PacienteView():
     @login_required(login_url='login')
     def paciente(request):
         template_name = "paciente/paginas/paciente.html"
-        context = {'pacientes': [], 'colunas': getColunasTabelaHtml()}
+        context = {'pacientes': getPacientesString()}
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
         if request.method == 'POST':
             return JsonResponse(PacienteForm().criarEditarExcluir(request))
-
-    @login_required(login_url='login')
-    def buscarPacientes(request):
-        return JsonResponse(listarTabela(request))
