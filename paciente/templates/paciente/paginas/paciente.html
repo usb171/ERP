@@ -45,6 +45,7 @@
     .capitalize {
       text-transform: capitalize;
     }
+
 </style>
 
 <div class="content-wrapper">
@@ -69,17 +70,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body table-responsive">
-                        <table id="id_table_pacientes" class="table table-bordered table-hover" style="width:100%">
-                            <thead>
-                            <tr>
-                                <th style="width:5%">Cód.</th>
-                                <th style="width:30%">Nome</th>
-                                <th style="width:20%">Whatsapp</th>
-                                <th style="width:20%">Telefône</th>
-                                <th style="width:25%">E-mail</th>
-                            </tr>
-                            </thead>
-                        </table>
+                        {% include 'paciente/elementos/tabela.html' %}
                     </div>
                 </div>
             </div>
@@ -134,7 +125,8 @@
                                 <div class="form-group">
                                     <label>Cidade:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control uppercase" name="cidade" id="cidade" value="TERESINA">
+                                        <input type="text" class="form-control uppercase" name="cidade" id="cidade"
+                                               value="TERESINA">
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +187,8 @@
                     <spam>Digite o Código
                         <spam style="color:red" id="codigo_excluir_paciente"></spam>
                         e clique no botão
-                        <spam style="color:red">Excluir Paciente</spam>.
+                        <spam style="color:red">Excluir Paciente</spam>
+                        .
                         <spam style="font-weight: bold;">Atenção, após a exclusão não será mais possível
                             resgatar o paciente
                         </spam>
@@ -211,7 +204,8 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" id="button_excluir_paciente" class="btn btn-danger">Excluir Paciente</button>
+                            <button type="submit" id="button_excluir_paciente" class="btn btn-danger">Excluir Paciente
+                            </button>
                         </div>
                     </form>
                 </div>
