@@ -62,7 +62,7 @@ def criarEditarExcluir(request):
 def getPacientesString():
     """Monta as linhas da tabela em html e retorna em uma única string"""
     try:
-        pacientes = PacienteModel.objects.all().values('ids', 'nomeCompleto', 'whatsapp', 'telefone', 'email')
+        pacientes = PacienteModel.objects.all().values('id', 'nomeCompleto', 'whatsapp', 'telefone', 'email')
         html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>'
         linhas = map(lambda p: html.format(p['id'], p['nomeCompleto'], p['whatsapp'], p['telefone'], p['email']),
                      pacientes)
