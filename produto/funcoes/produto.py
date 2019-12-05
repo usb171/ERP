@@ -1,4 +1,7 @@
 from ..models import Produto as ProdutoModel
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def criar(formulario):
@@ -37,7 +40,6 @@ def excluir(formulario):
 
 
 def criarEditarExcluir(request):
-
     formulario = request.POST.copy()
     comando = formulario['comando']
     del formulario['comando']
@@ -53,3 +55,15 @@ def criarEditarExcluir(request):
         return excluir(formulario)
     else:
         return {'status': False, 'msg': ['Não foi possivel executar o comando: ' + str(comando)]}
+
+def getProdutoString():
+    """Monta as linhas da tabela em html e retorna em uma única string"""
+    try:
+        produtos = ProdutoModel.objects.all().values('id', 'nome_produto', 'valor_produto')
+        html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td>'
+        linhas = map(lambda p: html.format(p['id'], p['nome_produto'], p['valor_produto']), produtos)
+        return "".join(list(linhas))
+    except:
+        print("Erro ao montar a lista de produtos")
+        logger.error("Erro ao montar a lista de produtos")
+        return ""

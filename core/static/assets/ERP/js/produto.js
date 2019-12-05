@@ -14,9 +14,10 @@ $("#id_nav_link_produtos").addClass("active");
             {
                 text: 'Novo Produto',
                 action: function ( e, dt, node, config ) {
+                    limparform();
+                    let comando = '#criar#'
                     $('#id_modal_produto_novo_editar h4').text('Novo Produto');
                     $('#id_modal_produto_novo_editar').modal('show');
-                    limparform();
                     $("#comando_novo_editar").val(comando);
 
                 },
@@ -25,12 +26,13 @@ $("#id_nav_link_produtos").addClass("active");
             {
                 text: 'Editar Produto',
                 action: function ( e, dt, node, config ) {
+                    limparform();
                     let comando = '#editar#'
                     let id = table.rows({selected:true}).data()[0][0]
                     $('#id_modal_produto_novo_editar h4').text('Editar Produto');
                     $('#id_modal_produto_novo_editar').modal('show');
                     $("#comando_novo_editar").val(comando);
-                    $("#id_criar_editar").val(id);
+                    carregarDadosLinhaSelecionada(id);
                 },
                 className: 'btn btn-warning',
                 enabled: false
@@ -61,11 +63,9 @@ $("#id_nav_link_produtos").addClass("active");
 
         select: 'single',
         "processing": true,
-        "serverSide": true,
-        "ajax": "/produto/buscarProdutos",
-
+        "serverSide": false,
         "bLengthChange": false,
-        "pageLength": 5,
+        "pageLength": 10,
         "ordering": true,
         "info":     true,
 
@@ -107,21 +107,29 @@ $("#id_nav_link_produtos").addClass("active");
 /****************************************************** Tabela ********************************************************/
     /***************************************** Formulários **********************************************/
     let carregarDadosLinhaSelecionada = (id) =>{
+
+        EasyLoading.show({
+            type: EasyLoading.TYPE["BALL_PULSE"],
+            text: 'Carregando dados...',
+            timeout: null,
+        });
+
         $.get( "/produto/getDados/", { id: id } )
         .done(function(data) {
-            $('#id_modal_produto_novo_editar form').trigger('reset'); // reseta todos os campos do formulário
             data = data.produto;
             $('#id').val(id);
             $('#nome_produto').val(data.nome_produto);
             $('#valor_produto').val(data.valor_produto);
+            $("#id_criar_editar").val(id);
+            EasyLoading.hide();
         })
     }
-    let limparform = () => {
+let limparform = () => {
     $("#nome_produto").val('');
     $("#valor_produto").val('');
 }
 
-    $('#id_form_novo_editar').submit(function(e){
+    $('#id_form_criar_ou_editar_produto').submit(function(e){
         EasyLoading.show({
             type: EasyLoading.TYPE["BALL_PULSE"],
             text: 'Salvando Produto',
@@ -130,11 +138,11 @@ $("#id_nav_link_produtos").addClass("active");
         $("#button_salvar_produto").prop("disabled",true);
         e.preventDefault();
         $.post("/produto/", $(this).serialize(), function(data){
-            console.log(data)
             if (data.status){
                 window.location.reload()
             }else{
-                $("#button_salvar_paciente").prop("disabled",false);
+                EasyLoading.hide();
+                $("#button_salvar_produto").prop("disabled",false);
                 $.each(data.msg, (index, erro) => {
                     toastr.error(erro)
                 })

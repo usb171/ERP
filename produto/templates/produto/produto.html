@@ -4,11 +4,12 @@
 {% block title %}Lista de Produtos{% endblock %}
 
 {% block extracss %}
-<link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}" xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
 {% endblock %}
 
 {% block extrabottomjs %}
@@ -23,6 +24,7 @@
 <script src="{% static 'assets/plugins/buttons-html5/buttons.html5.min.js' %}"></script>
 <script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+<script src="/static/assets/plugins/easy-loading/js/easy-loading.min.js"></script>
 <script src="{% static 'assets/ERP/js/produto.js' %}"></script>
 {% endblock %}
 
@@ -69,15 +71,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body table-responsive">
-                        <table id="id_table_produtos" class="table table-bordered table-hover" style="width:100%">
-                            <thead>
-                            <tr>
-                                <th style="width:5%">Cód.</th>
-                                <th style="width:20%">Descrição do Serviço</th>
-                                <th style="width:15%">Valor</th>
-                            </tr>
-                            </thead>
-                        </table>
+                       {% include 'produto/elementos/tabela.html' %}
                     </div>
                 </div>
             </div>
@@ -114,7 +108,6 @@
                                     <label>Valor:</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control"
-                                               data-inputmask='"mask": ""'
                                                data-mask name="valor_produto" id="valor_produto">
                                     </div>
                                 </div>
