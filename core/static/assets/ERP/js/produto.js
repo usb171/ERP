@@ -97,15 +97,13 @@ $("#id_nav_link_produtos").addClass("active");
     table.on( 'select deselect', function () {
         let selectedRows = table.rows( { selected: true } ).count();
         linha = table.rows({selected:true}).data()[0];
-        if(linha){
-            let id = linha[0];
-            carregarDadosLinhaSelecionada(id);
-        }
         table.button(1).enable( selectedRows > 0 );
         table.button(2).enable( selectedRows > 0 );
     });
 /****************************************************** Tabela ********************************************************/
-    /***************************************** Formulários **********************************************/
+
+
+/**************************************************** Formulários *****************************************************/
     let carregarDadosLinhaSelecionada = (id) =>{
 
         EasyLoading.show({
@@ -124,10 +122,11 @@ $("#id_nav_link_produtos").addClass("active");
             EasyLoading.hide();
         })
     }
-let limparform = () => {
-    $("#nome_produto").val('');
-    $("#valor_produto").val('');
-}
+
+    let limparform = () => {
+        $("#nome_produto").val('');
+        $("#valor_produto").val('');
+    }
 
     $('#id_form_criar_ou_editar_produto').submit(function(e){
         EasyLoading.show({
@@ -151,26 +150,26 @@ let limparform = () => {
     });
 
     $('#id_form_excluir_produto').submit(function(e){
-    EasyLoading.show({
-        type: EasyLoading.TYPE["BALL_PULSE"],
-        text: 'Excluindo Produto...',
-        timeout: null,
-    });
+        EasyLoading.show({
+            type: EasyLoading.TYPE["BALL_PULSE"],
+            text: 'Excluindo Produto...',
+            timeout: null,
+        });
 
-    $("#button_excluir_produto").prop("disabled",true);
-    e.preventDefault();
-    $.post("/produto/", $(this).serialize(), function(data){
-        if (data.status){
-            window.location.reload()
-        }else{
-            EasyLoading.hide();
-            $("#button_excluir_produto").prop("disabled",false);
-            $.each(data.msg, (index, erro) => {
-                toastr.error(erro)
-            })
-        }
-    }, 'json');
-});
+        $("#button_excluir_produto").prop("disabled",true);
+        e.preventDefault();
+        $.post("/produto/", $(this).serialize(), function(data){
+            if (data.status){
+                window.location.reload()
+            }else{
+                EasyLoading.hide();
+                $("#button_excluir_produto").prop("disabled",false);
+                $.each(data.msg, (index, erro) => {
+                    toastr.error(erro)
+                })
+            }
+        }, 'json');
+    });
 
 /*************************************************** Formulários ***********************************************/
 
