@@ -1006,7 +1006,7 @@
             day: "Dia",
             list: "Compromissos"
         },
-        weekLabel: "Sm",
+        weekLabel: "Sem",
         allDayText: "dia inteiro",
         eventLimitText: function (n) {
             return "mais +" + n;

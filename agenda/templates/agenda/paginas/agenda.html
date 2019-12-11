@@ -1,0 +1,111 @@
+{% extends 'core/estrutura.html' %}
+{% load static %}
+
+{% block title %}Agenda{% endblock %}
+
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-daygrid/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-list/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-timegrid/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-bootstrap/main.min.css' %}">
+{% endblock %}
+
+
+{% block extrabottomjs %}
+<script src="{% static 'assets/plugins/fullcalendar/locales-all.js'  %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-daygrid/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-list/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-timegrid/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-interaction/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
+<script src="{% static 'assets/ERP/js/agenda.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Agenda</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-body p-0">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+
+{% block script %}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    let calendarEl = document.getElementById('calendar');
+    calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+        themeSystem: 'bootstrap',
+        header: {
+            left: 'prev,next,today agendar',
+            center: 'title',
+            right: 'listDay,dayGridMonth'
+            //right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
+        },
+        defaultDate: new Date(),
+        locale: 'pt',
+        buttonIcons: false, // show the prev/next text
+        weekNumbers: false,
+        navLinks: true, // can click day/week names to navigate views
+        businessHours: true, // display business hours
+        editable: false,
+        selectable: true,
+        slotDuration: '00:05:00',
+        minTime: '08:00:00',
+        maxTime: '18:00:00',
+        defaultView: 'list',
+
+        select: function(date, jsEvent, view) {
+            console.log('Clicou');
+
+        },
+        click: function(info) {
+            console.log('Clicou2');
+        },
+        events: [],
+        customButtons: {
+            agendar: {
+                text: 'Agendar',
+                click: function() {
+                    console.log('Agendar')
+                }
+            }
+        },
+
+        eventPositioned: function(event){
+
+        },
+    });
+
+    calendar.render();
+
+});
+
+{% endblock %}
