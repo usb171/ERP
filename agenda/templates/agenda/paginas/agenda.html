@@ -10,10 +10,12 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-list/main.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-timegrid/main.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-bootstrap/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/daterangepicker/daterangepicker.css' %}">
 {% endblock %}
 
 
 {% block extrabottomjs %}
+<script src="{% static 'assets/plugins/moment/moment.min.js'  %}"></script>
 <script src="{% static 'assets/plugins/fullcalendar/locales-all.js'  %}"></script>
 <script src="{% static 'assets/plugins/fullcalendar/main.min.js' %}"></script>
 <script src="{% static 'assets/plugins/fullcalendar-daygrid/main.min.js' %}"></script>
@@ -21,6 +23,7 @@
 <script src="{% static 'assets/plugins/fullcalendar-timegrid/main.min.js' %}"></script>
 <script src="{% static 'assets/plugins/fullcalendar-interaction/main.min.js' %}"></script>
 <script src="{% static 'assets/plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/daterangepicker/daterangepicker.js' %}"></script>
 <script src="{% static 'assets/ERP/js/agenda.js' %}"></script>
 {% endblock %}
 
@@ -51,6 +54,11 @@
             </div>
         </div>
     </section>
+
+
+    {% include 'agenda/elementos/formulario.html' %}
+
+
 </div>
 {% endblock %}
 
@@ -94,7 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
             agendar: {
                 text: 'Agendar',
                 click: function() {
-                    console.log('Agendar')
+                $('#id_modal_agendar h4').text('Agendamento');
+                    $("#id_modal_agendar").modal('show');
                 }
             }
         },
@@ -105,6 +114,51 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     calendar.render();
+
+
+    moment.locale('pt-BR');
+
+
+    $('#reservationtime').daterangepicker({
+        "timePicker24Hour": true,
+        timePicker: true,
+        timePickerIncrement: 5,
+        "locale": {
+            "format": "DD/MM/YYYY hh:mm A",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "De",
+            "toLabel": "Até",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sáb"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour').add(32, 'hour'),
+        }
+
+    })
 
 });
 
