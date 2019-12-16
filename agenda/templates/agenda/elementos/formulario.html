@@ -1,5 +1,5 @@
 <div class="modal fade" id="id_modal_agendar">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
@@ -10,23 +10,192 @@
             <div class="modal-body">
                 <form id="id_form_agendar" method="POST">
                     {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label>Datas e Horários</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Período</label>
+                                    <select class="form-control" style="width: 100%;">
+                                        <option selected="selected">Manhã</option>
+                                        <option>Tarde</option>
+                                        <option>Noite</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Data</label>
+                                    <div class="input-group date" id="timepicker" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                               data-target="#timepicker"/>
+                                        <div class="input-group-append" data-target="#timepicker"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-calendar"></i></div>
                                         </div>
-                                        <input type="text" class="form-control float-right" id="reservationtime">
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Paciente</label>
+                                    <select class="form-control select2bs4" style="width: 100%;">
+                                        <option selected="selected">Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Serviços</label>
+                                    <select class="form-control select2bs4 " multiple="multiple"
+                                            style="width: 100%;">
+                                        <option selected="selected">Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Profissional</label>
+                                    <select class="form-control select2bs4"
+                                            style="width: 100%;">
+                                        <option selected="selected">Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="card-body p-0 table-responsive" style="height: 300px;">
+                                    <table class="table table-bordered table-head-fixed">
+                                        <thead>
+                                        <tr>
+                                            <th style="width:10%">Horário</th>
+                                            <th style="width:30%">Profissional</th>
+                                            <th style="width:50%">Serviços</th>
+                                            <th style="width:10%">Agendar ?</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:35</td>
+                                            <td>Nilton Nonato Garcia Júnior</td>
+                                            <td>Serviço 1, Serviço 2, Serviço 3, Serviço 4</td>
+                                            <td>
+                                                <a class="btn btn-app">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" id="button_salvar_paciente" class="btn btn-primary ">Agendar</button>
                     </div>
                 </form>
             </div>
