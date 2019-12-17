@@ -1,0 +1,168 @@
+{% extends 'core/estrutura.html' %}
+{% load static %}
+
+{% block title %}Lista de Serviço{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
+{% endblock %}
+
+{% block extrabottomjs %}
+<script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-select/js/dataTables.select.min.js' %}"></script>
+
+<script src="{% static 'assets/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'assets/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'assets/plugins/buttons-html5/buttons.html5.min.js' %}"></script>
+<script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+<script src="/static/assets/plugins/easy-loading/js/easy-loading.min.js"></script>
+<script src="{% static 'assets/ERP/js/servico.js' %}"></script>
+{% endblock %}
+
+{% block classbody %}hold-transition sidebar-mini{% endblock %}
+
+{% block content %}
+
+
+<style>
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .lowercase {
+      text-transform: lowercase;
+    }
+
+    .capitalize {
+      text-transform: capitalize;
+    }
+
+
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Serviços</h1>
+                </div>
+<!--                <div class="col-sm-6">-->
+<!--                    <ol class="breadcrumb float-sm-right">-->
+<!--                        <li class="breadcrumb-item"><a href="#">Agenda</a></li>-->
+<!--                        <li class="breadcrumb-item active">Produtos</li>-->
+<!--                    </ol>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body table-responsive">
+                       {% include 'servico/elementos/tabela.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="id_modal_servico_novo_editar">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> Ola</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="id_form_criar_ou_editar_servico" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="comando" id="comando_novo_editar" hidden>
+                        <input type="text" id="id_criar_editar" name="id" hidden>
+                        <div class="row">
+                            <input type="number" name="id" id="id" hidden>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Descrição do Serviço:</label>
+                                    <div class="input-group">
+                                        <input name="nome_servico" id="nome_servico"
+                                               class="form-control uppercase" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Valor:</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                               data-mask name="valor_servico" id="valor_servico">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" id="button_salvar_servico" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="id_modal_servico_excluir">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> Excluir Serviço</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <spam>Digite o Código
+                        <spam style="color:red" id="codigo_excluir_produto"></spam>
+                        e clique no botão
+                        <spam style="color:red">Excluir Serviço</spam>
+                        .
+                        <spam style="font-weight: bold;">Atenção, após a exclusão não será mais possível
+                            resgatar o serviço
+                        </spam>
+                        <spam style="color:red; word-wrap: break-word;" id="nome_excluir_servico"></spam>
+                    </spam>
+                    <form id="id_form_excluir_servico" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="comando" id="comando_excluir" value="#excluir#" hidden>
+                        <input type="text" id="id_servico_selecionado" name="id" hidden>
+                        <div class="form-group p-2">
+                            <label for="id_excluir">Cód. do Produto</label>
+                            <input type="number" class="form-control" name="id_excluir" id="id_excluir" required>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" id="button_excluir_produto" class="btn btn-danger">Excluir Serviço
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
