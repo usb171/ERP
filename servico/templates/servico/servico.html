@@ -47,6 +47,7 @@
     }
 
 
+
 </style>
 
 <div class="content-wrapper">
@@ -56,12 +57,12 @@
                 <div class="col-sm-6">
                     <h1>Serviços</h1>
                 </div>
-<!--                <div class="col-sm-6">-->
-<!--                    <ol class="breadcrumb float-sm-right">-->
-<!--                        <li class="breadcrumb-item"><a href="#">Agenda</a></li>-->
-<!--                        <li class="breadcrumb-item active">Produtos</li>-->
-<!--                    </ol>-->
-<!--                </div>-->
+                <!--                <div class="col-sm-6">-->
+                <!--                    <ol class="breadcrumb float-sm-right">-->
+                <!--                        <li class="breadcrumb-item"><a href="#">Agenda</a></li>-->
+                <!--                        <li class="breadcrumb-item active">Produtos</li>-->
+                <!--                    </ol>-->
+                <!--                </div>-->
             </div>
         </div>
     </section>
@@ -71,7 +72,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body table-responsive">
-                       {% include 'servico/elementos/tabela.html' %}
+                        {% include 'servico/elementos/tabela.html' %}
                     </div>
                 </div>
             </div>
@@ -103,12 +104,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Valor:</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control"
-                                               data-mask name="valor_servico" id="valor_servico">
+                                               name="valor_servico" id="valor_servico">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tempo Estimado:</label>
+                                    <div class="input-group">
+                                        <input name="tempo_servico" id="tempo_servico"
+                                               class="form-control uppercase" required>
                                     </div>
                                 </div>
                             </div>

@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 def criar(formulario):
     try:
-        formulario['nome_produto'] = formulario['nome_produto'].upper
+        formulario['nome_produto'] = formulario['nome_produto'].upper()
         formulario['valor_produto'] = formulario['valor_produto']
         del formulario['id']
         ProdutoModel.objects.create(**formulario)

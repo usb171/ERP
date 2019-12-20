@@ -6,11 +6,11 @@ logger = logging.getLogger(__name__)
 
 def criar(formulario):
     try:
-        formulario['nome_servico'] = formulario['nome_servico'].upper
+        formulario['nome_servico'] = formulario['nome_servico'].upper()
         formulario['valor_servico'] = formulario['valor_servico']
         formulario['tempo_servico'] = formulario['tempo_servico']
         del formulario['id']
-        ProdutoModel.objects.create(**formulario)
+        ServicoModel.objects.create(**formulario)
         return {'status': True, 'msg': 'Servico cadastrado com sucesso'}
     except Exception as e:
         return {'status': False, 'msg': ['Erro ao tentar cadastrar o servico']}
@@ -62,7 +62,7 @@ def getServicosString():
     """Monta as linhas da tabela em html e retorna em uma única string"""
     try:
         servicos = ServicoModel.objects.all().values('id', 'nome_servico', 'valor_servico', 'tempo_servico')
-        html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td>'
+        html = '<tr><td>{0}</td><td>{1}</td><td>R$ {2}</td><td>{3}</td>'
         linhas = map(lambda p: html.format(p['id'], p['nome_servico'], p['valor_servico'], p['tempo_servico'],), servicos)
         return "".join(list(linhas))
     except:
