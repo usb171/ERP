@@ -47,6 +47,8 @@
     }
 
 
+
+
 </style>
 
 <div class="content-wrapper">
@@ -71,7 +73,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body table-responsive">
-                       {% include 'produto/elementos/tabela.html' %}
+                        {% include 'produto/elementos/tabela.html' %}
                     </div>
                 </div>
             </div>
@@ -105,18 +107,40 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Valor:</label>
+                                    <label>Quantidade:</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control"
-                                               data-mask name="valor_produto" id="valor_produto">
+                                               data-mask name="quantidade_produto" id="quantidade_produto">
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer justify-content-between">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" id="button_salvar_produto" class="btn btn-primary">Salvar</button>
-                            </div>
                         </div>
+                        <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tipo:</label>
+                                        <select class="form-control select2" style="width: 100%;" name="tipo_produto" id="tipo_produto">
+                                            {% for tipo in tipo_produto %}
+                                            <option value="{{ tipo }}">{{tipo}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Valor:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control"
+                                                   data-mask name="valor_produto" id="valor_produto">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" id="button_salvar_produto" class="btn btn-primary">Salvar
+                                    </button>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>

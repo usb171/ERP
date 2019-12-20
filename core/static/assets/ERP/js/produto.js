@@ -119,6 +119,8 @@ $("#id_nav_link_produtos").addClass("active");
             data = data.produto;
             $('#id').val(id);
             $('#nome_produto').val(data.nome_produto);
+            $('#tipo_produto').val(data.tipo_produto);
+            $('#quantidade_produto').val(data.quantidade_produto);
             $('#valor_produto').val(data.valor_produto);
             $("#id_criar_editar").val(id);
             EasyLoading.hide();
@@ -126,6 +128,8 @@ $("#id_nav_link_produtos").addClass("active");
     }
 let limparform = () => {
     $("#nome_produto").val('');
+    $("#tipo_produto").val('');
+    $("#quantidade_produto").val('');
     $("#valor_produto").val('');
 }
 
