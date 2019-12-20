@@ -1,7 +1,6 @@
 from ..models import Paciente as PacienteModel
-import logging
+from django.db.models import Q
 
-logger = logging.getLogger(__name__)
 
 def criar(formulario):
     try:
@@ -69,5 +68,49 @@ def getPacientesString():
         return "".join(list(linhas))
     except:
         print("Erro ao montar lista de pacientes")
-        logger.error('Erro ao montar lista de pacientes')
         return ""
+
+
+'''
+    Métodos AJAX 
+'''
+
+
+def getPaciente(request):
+    """Retorna um paciente buscando pelo ID"""
+    try:
+        id = request.GET.get("id")
+        paciente = PacienteModel.objects.get(id=id)
+        return {'paciente': {
+            'nomeCompleto': paciente.nomeCompleto,
+            'whatsapp': paciente.whatsapp,
+            'telefone': paciente.telefone,
+            'cidade': paciente.cidade,
+            'cep': paciente.cep,
+            'facebook': paciente.facebook,
+            'instagram': paciente.instagram,
+            'email': paciente.email,
+        }
+        }
+    except:
+        return {'paciente': {}}
+
+
+def getPacientes(request):
+    """Retorna uma lista de pacientes buscando por nome ou whatsapp ou email"""
+    q = request.GET.get('q', None)
+    try:
+        if q:
+            return {
+                'pacientes': list(
+                    PacienteModel.objects.filter((Q(nomeCompleto__contains=q.upper()) | Q(whatsapp__contains=q) |
+                                                  Q(email__contains=q)) & Q(ativo=True))
+                    .values('id', 'nomeCompleto', 'whatsapp', 'email'))
+            }
+        else:
+            return {
+                'pacientes': list(
+                    PacienteModel.objects.filter(ativo=True).values('id', 'nomeCompleto', 'whatsapp', 'email'))
+            }
+    except:
+        return {'pacientes': []}

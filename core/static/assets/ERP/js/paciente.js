@@ -112,7 +112,7 @@ let carregarDadosLinhaSelecionada = (id) => {
         timeout: null,
     });
 
-    $.get( "/paciente/getDados/", { id: id } )
+    $.get( "/paciente/getPaciente/", { id: id } )
     .done(function(data) {
         data = data.paciente;
         $('#id').val(id);

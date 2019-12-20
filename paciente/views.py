@@ -3,29 +3,18 @@ from django.http import JsonResponse
 from .models import Paciente
 from .forms import PacienteForm
 from django.contrib.auth.decorators import login_required
-from .funcoes.paciente import getPacientesString
+from .funcoes.paciente import getPacientesString, getPaciente as getPacienteF, getPacientes as getPacientesF
 
 
-class Paciente_Ajax():
+class PacienteAjax():
 
     @login_required(login_url='login')
-    def getDados(request):
-        try:
-            id = request.GET.get("id")
-            paciente = Paciente.objects.get(id=id)
-            contexto = {'nomeCompleto': paciente.nomeCompleto,
-                        'whatsapp': paciente.whatsapp,
-                        'telefone': paciente.telefone,
-                        'cidade': paciente.cidade,
-                        'cep': paciente.cep,
-                        'facebook': paciente.facebook,
-                        'instagram': paciente.instagram,
-                        'email': paciente.email,
-                        }
+    def getPaciente(request):
+        return JsonResponse(getPacienteF(request))
 
-            return JsonResponse({'paciente': contexto})
-        except:
-            return JsonResponse({'paciente': 'Não foi possível encontrar dados do paciente de id: ' + id})
+    @login_required(login_url='login')
+    def getPacientes(request):
+        return JsonResponse(getPacientesF(request))
 
 
 class PacienteView():
