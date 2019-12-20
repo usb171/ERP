@@ -9,7 +9,7 @@ TIPO = [
 class Produto(models.Model):
     """
         *   Classe Produto
-        *   Base de uma produto ou serviço
+        *   Base de uma produto
         """
     ativo = models.BooleanField(verbose_name='Ativar Produto ?', default=True, null=True)
     nome_produto = models.CharField(verbose_name='Nome do produto', max_length=120, default=True, null=True)

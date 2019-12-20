@@ -7,9 +7,9 @@ logger = logging.getLogger(__name__)
 def criar(formulario):
     try:
         formulario['nome_produto'] = formulario['nome_produto'].upper()
-        formulario['valor_produto'] = formulario['valor_produto']
         formulario['tipo_produto'] = formulario['tipo_produto']
         formulario['quantidade_produto'] = formulario['quantidade_produto']
+        formulario['valor_produto'] = formulario['valor_produto']
         del formulario['id']
         ProdutoModel.objects.create(**formulario)
         return {'status': True, 'msg': 'Produto cadastrado com sucesso'}
@@ -21,9 +21,9 @@ def editar(formulario):
     try:
         produto = ProdutoModel.objects.filter(id=formulario['id'])
         formulario['nome_produto'] = formulario['nome_produto'].upper()
-        formulario['valor_produto'] = formulario['valor_produto']
         formulario['tipo_produto'] = formulario['tipo_produto']
         formulario['quantidade_produto'] = formulario['quantidade_produto']
+        formulario['valor_produto'] = formulario['valor_produto']
         del formulario['id']
 
         produto.update(**formulario)
