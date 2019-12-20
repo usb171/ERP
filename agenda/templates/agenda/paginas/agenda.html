@@ -62,91 +62,9 @@
         </div>
     </section>
 
-
     {% include 'agenda/elementos/formulario.html' %}
-
 
 </div>
 {% endblock %}
 
-
-{% block script %}
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    let calendarEl = document.getElementById('calendar');
-    calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-        themeSystem: 'bootstrap',
-        header: {
-            left: 'prev,next,today agendar',
-            center: 'title',
-            right: 'listDay,dayGridMonth'
-            //right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
-        },
-        defaultDate: new Date(),
-        locale: 'pt',
-        buttonIcons: false, // show the prev/next text
-        weekNumbers: false,
-        navLinks: true, // can click day/week names to navigate views
-        businessHours: true, // display business hours
-        editable: false,
-        selectable: true,
-        slotDuration: '00:05:00',
-        minTime: '08:00:00',
-        maxTime: '18:00:00',
-        defaultView: 'list',
-
-        select: function(date, jsEvent, view) {
-            console.log('Clicou');
-
-        },
-        click: function(info) {
-            console.log('Clicou2');
-        },
-        events: [],
-        customButtons: {
-            agendar: {
-                text: 'Agendar',
-                click: function() {
-                $('#id_modal_agendar h4').text('Agendamento');
-                    $("#id_modal_agendar").modal('show');
-                }
-            }
-        },
-
-        eventPositioned: function(event){
-
-        },
-    });
-
-    calendar.render();
-
-    $('[data-mask]').inputmask()
-
-    $('.select2').select2()
-
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
-    })
-
-    /*$('#datetimepicker').datetimepicker({
-        minView: 2,
-        language: 'pt-BR',
-    })*/
-
-    $('#timepicker').datetimepicker({
-        format: 'DD/MM/YYYY',
-        daysOfWeekDisabled: [0]
-    })
-
-
-     $("#timepicker").on("change.datetimepicker", function (e) {
-        console.log("Oi");
-     });
-
-
-
-});
-
-{% endblock %}
+{% block script %}{% endblock %}
