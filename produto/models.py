@@ -3,6 +3,7 @@ TIPO = [
     ('UN', 'UN'),
     ('LT', 'LT'),
     ('CX', 'CX'),
+    ('M', 'M'),
 ]
 
 class Produto(models.Model):
