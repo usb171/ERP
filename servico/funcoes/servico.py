@@ -63,7 +63,7 @@ def getServicosString():
     try:
         servicos = ServicoModel.objects.all().values('id', 'nome_servico', 'valor_servico', 'tempo_servico')
         html = '<tr><td>{0}</td><td>{1}</td><td>R$ {2}</td><td>{3}</td>'
-        linhas = map(lambda p: html.format(p['id'], p['nome_servico'], p['valor_servico'], p['tempo_servico'],), servicos)
+        linhas = map(lambda p: html.format(p['id'], p['nome_servico'], p['valor_servico'], p['tempo_servico']), servicos)
         return "".join(list(linhas))
     except:
         print("Erro ao montar a lista de servicos")

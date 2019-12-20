@@ -15,7 +15,8 @@ class Servico_Ajax():
             servico = Servico.objects.get(id=id)
             contexto = {'nome_servico': servico.nome_servico,
                         'valor_servico': servico.valor_servico,
-                        'tempo_servico': servico.tempo_servico}
+                        'tempo_servico': servico.tempo_servico,
+                        }
 
             return JsonResponse({'servico': contexto})
         except:

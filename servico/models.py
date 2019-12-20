@@ -1,5 +1,8 @@
 from django.db import models
 
+from produto.models import Produto
+
+
 class Servico(models.Model):
     """
             *   Classe Servico
@@ -9,6 +12,7 @@ class Servico(models.Model):
     nome_servico = models.CharField(verbose_name='Nome do serviço', max_length=120, default=True, null=True)
     valor_servico = models.DecimalField(verbose_name='Valor do serviço', max_digits=10, decimal_places=2, blank=True, null=True)
     tempo_servico = models.CharField(verbose_name='Tempo de Serviço', max_length=50, default=True)
+    produto_servico = models.ManyToManyField(Produto, verbose_name='Produtos', null=True)
 
     class Meta:
         verbose_name = 'Servico'

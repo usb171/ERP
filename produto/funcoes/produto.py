@@ -7,6 +7,8 @@ logger = logging.getLogger(__name__)
 def criar(formulario):
     try:
         formulario['nome_produto'] = formulario['nome_produto'].upper()
+        formulario['tipo_produto'] = formulario['tipo_produto']
+        formulario['quantidade_produto'] = formulario['quantidade_produto']
         formulario['valor_produto'] = formulario['valor_produto']
         del formulario['id']
         ProdutoModel.objects.create(**formulario)
@@ -19,6 +21,8 @@ def editar(formulario):
     try:
         produto = ProdutoModel.objects.filter(id=formulario['id'])
         formulario['nome_produto'] = formulario['nome_produto'].upper()
+        formulario['tipo_produto'] = formulario['tipo_produto']
+        formulario['quantidade_produto'] = formulario['quantidade_produto']
         formulario['valor_produto'] = formulario['valor_produto']
         del formulario['id']
 
@@ -59,9 +63,9 @@ def criarEditarExcluir(request):
 def getProdutoString():
     """Monta as linhas da tabela em html e retorna em uma única string"""
     try:
-        produtos = ProdutoModel.objects.all().values('id', 'nome_produto', 'valor_produto')
-        html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td>'
-        linhas = map(lambda p: html.format(p['id'], p['nome_produto'], p['valor_produto']), produtos)
+        produtos = ProdutoModel.objects.all().values('id', 'nome_produto', 'tipo_produto', 'quantidade_produto', 'valor_produto')
+        html = '<tr><td>{0}</td><td>{1}</td><td>{3} {2}</td><td>R$ {4}</td>'
+        linhas = map(lambda p: html.format(p['id'], p['nome_produto'], p['tipo_produto'], p['quantidade_produto'],  p['valor_produto']), produtos)
         return "".join(list(linhas))
     except:
         print("Erro ao montar a lista de produtos")
