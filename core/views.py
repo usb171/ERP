@@ -25,7 +25,7 @@ class CoreView():
     def login(request):
         template_name = "core/paginas/login.html"
         if request.method == 'GET':
-            return render(request=request, template_name=template_name, context={'logo': settings.URL_LOGO_LOGIN})
+            return render(request=request, template_name=template_name, context={})
         if request.method == 'POST':
             conta = FormConta(request.POST).login(request)
             if conta['logado']:
