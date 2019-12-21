@@ -1,7 +1,7 @@
 $('[data-mask]').inputmask();
 
+$("#id_nav_treeview_configuracoes").addClass("menu-open");
 $("#id_nav_link_servicos").addClass("active");
-
 
 /****************************************************** Tabela ********************************************************/
 let table = $("#id_table_servico").DataTable({
