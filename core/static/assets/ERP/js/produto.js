@@ -1,6 +1,7 @@
 $('[data-mask]').inputmask();
 
 
+$("#id_nav_treeview_configuracoes").addClass("menu-open");
 $("#id_nav_link_produtos").addClass("active");
 
 /****************************************************** Tabela ********************************************************/
@@ -131,6 +132,7 @@ let limparform = () => {
     $("#quantidade_produto").val('');
     $("#valor_produto").val('');
 }
+
 
     $('#id_form_criar_ou_editar_produto').submit(function(e){
         EasyLoading.show({

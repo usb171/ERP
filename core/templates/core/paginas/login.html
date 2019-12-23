@@ -1,5 +1,6 @@
 {% extends 'core/bases/core.html' %}
 {% load static %}
+{% load core_tags %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min.css' %}">
@@ -13,7 +14,6 @@
     .login-logo img {
         max-width: -webkit-fill-available;
     }
-
 </style>
 
 <div class="login-box" style="width: 450px">
@@ -21,7 +21,7 @@
     <div class="card">
         <div class="card-body login-card-body">
             <div class="login-logo">
-                <img src="{{logo}}">
+                <img src="{% get_setting 'URL_LOGO_LOGIN' %}">
             </div>
             <form method="post">
                 {% csrf_token %}
