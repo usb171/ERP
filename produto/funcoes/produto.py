@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from ..models import Produto as ProdutoModel
 import logging
 
@@ -71,3 +73,37 @@ def getProdutoString():
         print("Erro ao montar a lista de produtos")
         logger.error("Erro ao montar a lista de produtos")
         return ""
+
+def getProduto(request):
+    """Retorna um produto pelo ID"""
+    try:
+        id = request.GET.get("id")
+        produto = ProdutoModel.objects.get(id=id)
+        return {'produto':{
+            'nome_produto': produto.nome_produto,
+            'tipo_produto': produto.tipo_produto,
+            'quantidade_produto': produto.quantidade_produto,
+            'valor_produto': produto.valor_produto,
+        }
+        }
+    except:
+        return {'produto': {}}
+
+def getProdutos(request):
+    """Retorna uma lista de produtos buscando por nome ou valor"""
+    q = request.GET.get('q', None)
+    try:
+        if q:
+            return {'produtos': list(
+                ProdutoModel.objects.filter((Q(nome_produto__contains=q.upper()) |
+                                             Q(valor_produto__contains=q)) & Q(ativo=True))
+                                            .values('id', 'nome_produto', 'valor_produto'))
+            }
+        else:
+            return {
+                'produtos': list(
+                    ProdutoModel.objects.filter(ativo=True).values('id', 'nome_produto', 'valor_produto')
+                )
+            }
+    except:
+        return {'produtos': {}}

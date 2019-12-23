@@ -175,3 +175,58 @@ $('#id_form_excluir_servico').submit(function(e){
 });
 
 /*************************************************** Formulários ******************************************************/
+
+// Select2 *************************************************************************************************************
+
+$("#produto").select2({
+    theme: 'bootstrap4',
+    ajax: {
+        url: "/produto/getProdutos",
+        dataType: 'json',
+        delay: 100,
+        data: function (params) {
+                return {
+                    q: params.term,
+                };
+        },
+        processResults:function(data){
+            return {
+                results: $.map(data.produtos, function (produto) {
+                            return {
+                                id: produto.id,
+                                text: produto.nome_produto,
+                                valor: produto.valor_produto,
+                            }
+                         })
+            };
+        },
+        cache: true
+    },
+    templateResult: formatProduto,
+    templateSelection: formatProdutoSelection
+});
+
+function formatProduto (produto) {
+  if (produto.loading) {
+    return produto.text;
+  }
+
+  var $container = $(
+    "<div class='select2-result-repository clearfix'>" +
+      "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'></div>" +
+        "<div class='select2-result-repository__statistics'>" +
+          "<div class='select2-result-repository__valor'>R$</div>" +
+        "</div>" +
+      "</div>" +
+    "</div>"
+  );
+
+  $container.find(".select2-result-repository__title").text(produto.text);
+  $container.find(".select2-result-repository__valor").append("     " +  produto.valor);
+
+
+  return $container;
+}
+
+function formatProdutoSelection (produto) { return produto.nome_produto || produto.text; }

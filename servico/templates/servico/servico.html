@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 {% endblock %}
 
 {% block extrabottomjs %}
@@ -25,6 +27,8 @@
 <script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
 <script src="/static/assets/plugins/easy-loading/js/easy-loading.min.js"></script>
+<script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
+
 <script src="{% static 'assets/ERP/js/servico.js' %}"></script>
 {% endblock %}
 
@@ -50,6 +54,10 @@
 
 
 
+
+
+
+
 </style>
 
 <div class="content-wrapper">
@@ -59,12 +67,6 @@
                 <div class="col-sm-6">
                     <h1>Serviços</h1>
                 </div>
-                <!--                <div class="col-sm-6">-->
-                <!--                    <ol class="breadcrumb float-sm-right">-->
-                <!--                        <li class="breadcrumb-item"><a href="#">Agenda</a></li>-->
-                <!--                        <li class="breadcrumb-item active">Produtos</li>-->
-                <!--                    </ol>-->
-                <!--                </div>-->
             </div>
         </div>
     </section>
@@ -106,21 +108,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Multiple</label>
-                                    <select class="select2" multiple="multiple" data-placeholder="Select a State"
-                                            style="width: 100%;">
-                                        <option>Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Valor:</label>
@@ -139,6 +126,16 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label>Produto: </label>
+                                <select class="form-control select2bs4" id="produto" style="width: 100%;"
+                                        multiple="multiple">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                 <button type="submit" id="button_salvar_servico" class="btn btn-primary">Salvar

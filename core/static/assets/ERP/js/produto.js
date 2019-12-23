@@ -113,7 +113,7 @@ $("#id_nav_link_produtos").addClass("active");
             timeout: null,
         });
 
-        $.get( "/produto/getDados/", { id: id } )
+        $.get( "/produto/getProduto/", { id: id } )
         .done(function(data) {
             data = data.produto;
             $('#id').val(id);
