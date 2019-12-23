@@ -1,4 +1,5 @@
 $("#id_nav_treeview_configuracoes").addClass("menu-open");
+$("#id_nav_treeview_contas").addClass("menu-open");
 $("#id_nav_link_conta").addClass("active");
 
 $('#id_form_acesso').submit(function(e){
@@ -33,5 +34,22 @@ $('#id_form_acesso').submit(function(e){
             }
         }
     $("#id_button_alterar_senha").prop("disabled",false);
+    }, 'json');
+});
+
+$('#id_form_alterar_dados').submit(function(e){
+
+    $("#id_button_alterar_dados").prop("disabled",true);
+    e.preventDefault();
+    $.post("/conta", $(this).serialize(), function(data){
+        if(data.status){
+            toastr.success(data.msg);
+        }else{
+            $.each(data.erros, (index, erro) => {
+                toastr.error(erro)
+            })
+        }
+
+        $("#id_button_alterar_dados").prop("disabled",false);
     }, 'json');
 });
