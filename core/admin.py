@@ -6,5 +6,4 @@ class contaAdmin(admin.ModelAdmin):
     search_fields = ['user', 'nomeCompleto', 'email']
     list_filter = ['ativo']
 
-
 admin.site.register(Conta, contaAdmin)

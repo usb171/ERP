@@ -8,7 +8,8 @@ from django.shortcuts import render, redirect
 from .forms import *
 
 from .funcoes.buscas import *
-from .funcoes.sessao import *
+from .funcoes.conta import *
+
 
 class CoreView():
 
@@ -44,5 +45,5 @@ class CoreView():
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
         if request.method == 'POST':
-            sessao = Sessao.alterar_senha(request)
-            return HttpResponse(json.dumps(sessao), content_type="application/json")
+            return HttpResponse(json.dumps(criarEditarExcluirAlterarDadosAlterarSenha(request)),
+                                content_type="application/json")

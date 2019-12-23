@@ -43,19 +43,36 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{% url 'conta' %}" class="nav-link" id="id_nav_link_conta">
-                                <i class="nav-icon far fa-user"></i>
-                                <p>Minha Conta</p>
+                        <li class="nav-item has-treeview" id="id_nav_treeview_contas">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Contas
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'logout' %}" class="nav-link">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>Sair</p>
-                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'conta' %}" class="nav-link" id="id_nav_link_outras_contas">
+                                        <i class="nav-icon fas fa-users-cog"></i>
+                                        <p>Outras Contas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'conta' %}" class="nav-link" id="id_nav_link_conta">
+                                        <i class="nav-icon far fa-user"></i>
+                                        <p>Minha Conta</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <i class="nav-icon fas fa-door-open"></i>
+                        <p>Sair</p>
+                    </a>
                 </li>
             </ul>
         </nav>

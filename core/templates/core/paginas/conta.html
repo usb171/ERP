@@ -1,5 +1,6 @@
 {% extends 'core/estrutura.html' %}
 {% load static %}
+{% load core_tags %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
@@ -39,6 +40,7 @@
                         </div>
                         <form id="id_form_acesso" method="post">
                             {% csrf_token %}
+                            <input name="comando" value="#alterarSenha#" hidden>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="id_email">Email</label>
@@ -74,16 +76,23 @@
                         <div class="card-header">
                             <h3 class="card-title">Dados Gerais</h3>
                         </div>
-                        <form id="id_form_nova_dados_gerais" role="form">
+                        <form id="id_form_alterar_dados" role="form">
+                            {% csrf_token %}
+                            <input name="id" value="{{user.id}}" hidden>
+                            <input name="comando" value="#alterarDados#" hidden>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Nome Completo</label>
-                                    <input type="text" class="form-control" placeholder="Meu nome completo"
-                                           value="{{ conta.nomeCompleto }}">
+                                    <input type="text" name="nomeCompleto" class="form-control uppercase" placeholder="Meu nome completo"
+                                           value="{{ conta.nomeCompleto }}" required>
+                                </div>
+                                 <div class="form-group">
+                                    <label>Cargo</label>
+                                    <input type="text" class="form-control uppercase" value="{% get_nome_cargo conta.cargo %}" disabled>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Alterar Dados</button>
+                                <button id="id_button_alterar_dados" class="btn btn-primary">Alterar Dados</button>
                             </div>
                         </form>
                     </div>
