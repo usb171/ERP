@@ -115,12 +115,10 @@ let carregarDadosLinhaSelecionada = (id) => {
     $.get( "/servico/getDados/", { id: id } )
     .done(function(data) {
         data = data.servico;
-        console.log(data);
         $('#id').val(id);
         $('#nome_servico').val(data.nome_servico);
         $('#valor_servico').val(data.valor_servico);
         $('#tempo_servico').val(data.tempo_servico);
-        $('#produto_servico').val(data.produto_servico);
         $("#id_criar_editar").val(id);
         EasyLoading.hide();
     })
