@@ -1,13 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.http import HttpResponse
+from django.conf import settings
 import json
 
 from django.shortcuts import render, redirect
 from .forms import *
 
 from .funcoes.buscas import *
-from .funcoes.sessao import *
+from .funcoes.conta import *
+
 
 class CoreView():
 
@@ -43,5 +45,5 @@ class CoreView():
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
         if request.method == 'POST':
-            sessao = Sessao.alterar_senha(request)
-            return HttpResponse(json.dumps(sessao), content_type="application/json")
+            return HttpResponse(json.dumps(criarEditarExcluirAlterarDadosAlterarSenha(request)),
+                                content_type="application/json")

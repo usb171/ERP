@@ -1,5 +1,6 @@
 {% extends 'core/bases/core.html' %}
 {% load static %}
+{% load core_tags %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min.css' %}">
@@ -8,19 +9,33 @@
 {% block classbody %}hold-transition login-page{% endblock %}
 
 {% block body %}
+<<<<<<< HEAD
 <div class="login-box">
     <div class="login-logo">
         <a href="#"><b>Clínica</b></a>
         <img src="">
     </div>
+=======
+
+<style>
+    .login-logo img {
+        max-width: -webkit-fill-available;
+    }
+</style>
+
+<div class="login-box" style="width: 450px">
+
+>>>>>>> 2412fae7664048e4fa5fd0aa386b4ffa8969d675
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Entre com seus dados</p>
+            <div class="login-logo">
+                <img src="{% get_setting 'URL_LOGO_LOGIN' %}">
+            </div>
             <form method="post">
                 {% csrf_token %}
 
                 <div class="input-group mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Email">
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -28,7 +43,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="senha" class="form-control" placeholder="Senha">
+                    <input type="password" name="senha" class="form-control" placeholder="Senha" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>

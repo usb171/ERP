@@ -1,0 +1,70 @@
+<div class="modal fade" id="id_modal_agendar">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="id_form_agendar" method="POST">
+                    {% csrf_token %}
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Período</label>
+                                    <select class="form-control" style="width: 100%;">
+                                        <option selected="selected">Manhã</option>
+                                        <option>Tarde</option>
+                                        <option>Noite</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Data</label>
+                                    <div class="input-group date" id="timepicker" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                               data-target="#timepicker"/>
+                                        <div class="input-group-append" data-target="#timepicker"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Paciente</label>
+                                    <select class="form-control select2bs4" id="paciente" style="width: 100%;">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Serviços</label>
+                                    <select class="form-control select2bs4 " id="servicos" multiple="multiple"
+                                            style="width: 100%;">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Profissional</label>
+                                    <select class="form-control select2bs4" id="profissional"
+                                            style="width: 100%;">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="card-body p-0 table-responsive" style="height: 300px;">
+                                    {% include 'agenda/elementos/tabelaFormulario.html' %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

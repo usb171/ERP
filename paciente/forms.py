@@ -1,11 +1,12 @@
-from django.forms import ModelForm
 from django import forms
 from .models import *
+from .funcoes.paciente import criarEditarExcluir
 
-class PacienteForm(ModelForm):
-    class Meta:
-        model = Paciente
-        fields = ['nomeCompleto', 'telefone', 'cidade', 'estado', 'redeSocial']
+class PacienteForm(forms.Form):
+
+    def criarEditarExcluir(self, request):
+        super(PacienteForm, self).is_valid()
+        return criarEditarExcluir(request)
 
 class CadastroPacienteForm(forms.Form):
     nomeCompleto = forms.CharField(required=True)

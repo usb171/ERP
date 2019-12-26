@@ -2,10 +2,24 @@
 {% load static %}
 {% block classbody %} hold-transition sidebar-mini {% endblock %}
 {% block body %}
+
+<style>
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .lowercase {
+      text-transform: lowercase;
+    }
+
+    .capitalize {
+      text-transform: capitalize;
+    }
+</style>
+
 <div class="be-wrapper be-color-header be-fixed-sidebar">
     <div class="wrapper">
         {% include 'core/elementos/navbar.html' %}
-        {% include 'core/elementos/control_sidebar.html' %}
         {% include 'core/elementos/main_sidebar.html' %}
         {% block content %} {% endblock %}
         {% include 'core/elementos/footer.html' %}

@@ -11,22 +11,30 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from decouple import config
+
+_DADOS_PROJETO_ = {
+    'VERSAO': '1.0.0',
+    'ANO': '2020',
+    'EMPRESA': 'OneSoftwares',
+    'SITE': 'onesoftwares.com',
+    'LINK': 'http://onesoftwares.com'
+}
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'arlrr0-zrrqlmu@$(=q&x7^9kf#j25enfsht*30j*y-&3p-8u&'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -40,6 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'paciente',
+    'produto',
+    'agenda',
+    'servico',
 ]
 
 MIDDLEWARE = [
@@ -72,19 +83,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ERP.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/erp_dev.cnf',
-        },
+        'ENGINE': config('ENGINE'),
+        'NAME': config('NAME'),
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
+        'HOST': config('HOST'),
+        'PORT': config('PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -104,7 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -118,7 +129,6 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -127,3 +137,5 @@ MEDIA_URL = os.path.join(BASE_DIR, '/media/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+URL_LOGO_LOGIN = config('URL_LOGO_LOGIN')

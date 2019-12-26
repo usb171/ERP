@@ -1,6 +1,8 @@
+{% load core_tags %}
+
 <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
         <b>Versão</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2020 <a href="http://erp.com">erp.com</a>.</strong> Todos os direitos reservados.
+    <strong>Copyright &copy; {% get_dados_empresa 'ANO' %} <a href="{% get_dados_empresa 'LINK' %}">{% get_dados_empresa 'SITE' %}</a>.</strong> Todos os direitos reservados {% get_dados_empresa 'EMPRESA' %}.
 </footer>

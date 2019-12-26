@@ -1,0 +1,70 @@
+{% extends 'core/estrutura.html' %}
+{% load static %}
+
+{% block title %}Agenda{% endblock %}
+
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-daygrid/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-list/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-timegrid/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fullcalendar-bootstrap/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+{% endblock %}
+
+
+{% block extrabottomjs %}
+<script src="{% static 'assets/plugins/moment/moment.min.js'  %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar/locales-all.js'  %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-daygrid/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-list/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-timegrid/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-interaction/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
+<script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
+<script src="{% static 'assets/plugins/moment/locale/pt-br.js' %}"></script>
+<script src="{% static 'assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js' %}"></script>
+
+<script src="{% static 'assets/ERP/js/agenda.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Agenda</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-body p-0">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'agenda/elementos/formulario.html' %}
+
+</div>
+{% endblock %}
+
+{% block script %}{% endblock %}

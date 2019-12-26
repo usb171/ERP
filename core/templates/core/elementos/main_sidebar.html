@@ -1,44 +1,26 @@
 {% load static %}
 
-<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-        <img src="{% static 'assets/dist/img/AdminLTELogo.png' %}"
-             alt="AdminLTE Logo"
-             class="brand-image img-circle elevation-3"
-             style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
-    </a>
-
-    <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <li class="nav-header">SERVIÇOS</li>
+                <li class="nav-header">Módulos</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-calendar-alt"></i>
-                        <p>
-                            Agenda
-                            <span class="badge badge-info right">2</span>
-                        </p>
+                    <a href="{% url 'agenda' %}" class="nav-link" id="id_nav_link_agenda">
+                        <i class="far fa-calendar-alt"></i>
+                        <p>Agenda</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'paciente' %}" class="nav-link" id="id_nav_link_pacientes">
-                        <i class="nav-icon fas fa-user-injured"></i>
-                        <p>
-                            Pacientes
-                        </p>
+                        <i class="fas fa-user-injured"></i>
+                        <p>Pacientes</p>
                     </a>
                 </li>
-                <li class="nav-header">CONFIGURAÇÔES</li>
                 <li class="nav-item has-treeview" id="id_nav_treeview_configuracoes">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-clinic-medical"></i>
+                        <i class="fas fa-clinic-medical"></i>
                         <p>
                             Clínica
                             <i class="fas fa-angle-left right"></i>
@@ -46,22 +28,53 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'conta' %}" class="nav-link" id="id_nav_link_conta">
-                                <i class="far fa-user"></i>
-                                <p>Minha Conta</p>
+                            <a href="{% url 'produto' %}" class="nav-link" id="id_nav_link_produtos">
+                                <i class="nav-icon fas fa-capsules"></i>
+                                <p>
+                                    Produtos
+                                </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'logout' %}" class="nav-link">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <p>Sair</p>
+                            <a href="{% url 'servico' %}" class="nav-link" id="id_nav_link_servicos">
+                                <i class="nav-icon fas fa-tooth"></i>
+                                <p>
+                                    Serviços
+                                </p>
                             </a>
+                        </li>
+                        <li class="nav-item has-treeview" id="id_nav_treeview_contas">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Contas
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'conta' %}" class="nav-link" id="id_nav_link_outras_contas">
+                                        <i class="nav-icon fas fa-users-cog"></i>
+                                        <p>Outras Contas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'conta' %}" class="nav-link" id="id_nav_link_conta">
+                                        <i class="nav-icon far fa-user"></i>
+                                        <p>Minha Conta</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <i class="nav-icon fas fa-door-open"></i>
+                        <p>Sair</p>
+                    </a>
+                </li>
             </ul>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>
