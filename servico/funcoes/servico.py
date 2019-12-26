@@ -9,6 +9,7 @@ def criar(formulario):
         formulario['nome_servico'] = formulario['nome_servico'].upper()
         formulario['valor_servico'] = formulario['valor_servico']
         formulario['tempo_servico'] = formulario['tempo_servico']
+
         del formulario['id']
         ServicoModel.objects.create(**formulario)
         return {'status': True, 'msg': 'Servico cadastrado com sucesso'}

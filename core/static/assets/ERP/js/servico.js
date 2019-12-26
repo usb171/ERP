@@ -115,10 +115,12 @@ let carregarDadosLinhaSelecionada = (id) => {
     $.get( "/servico/getDados/", { id: id } )
     .done(function(data) {
         data = data.servico;
+        console.log(data);
         $('#id').val(id);
         $('#nome_servico').val(data.nome_servico);
         $('#valor_servico').val(data.valor_servico);
         $('#tempo_servico').val(data.tempo_servico);
+        $('#produto_servico').val(data.produto_servico);
         $("#id_criar_editar").val(id);
         EasyLoading.hide();
     })
@@ -144,7 +146,6 @@ $('#id_form_criar_ou_editar_servico').submit(function(e){
         }else{
             EasyLoading.hide();
             $("#button_salvar_servico").prop("disabled",false);
-            $("#email").addClass("is-invalid");
             $.each(data.msg, (index, erro) => {
                 toastr.error(erro)
             })
@@ -178,7 +179,7 @@ $('#id_form_excluir_servico').submit(function(e){
 
 // Select2 *************************************************************************************************************
 
-$("#produto").select2({
+$("#produto_servico").select2({
     theme: 'bootstrap4',
     ajax: {
         url: "/produto/getProdutos",
