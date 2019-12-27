@@ -35,8 +35,6 @@
 {% block classbody %}hold-transition sidebar-mini{% endblock %}
 
 {% block content %}
-
-
 <style>
     .uppercase {
       text-transform: uppercase;
@@ -49,15 +47,6 @@
     .capitalize {
       text-transform: capitalize;
     }
-
-
-
-
-
-
-
-
-
 </style>
 
 <div class="content-wrapper">
@@ -87,62 +76,13 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"> Ola</h4>
+                    <h4 class="modal-title">Serviço</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="id_form_criar_ou_editar_servico" method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="comando" id="comando_novo_editar" hidden>
-                        <input type="text" id="id_criar_editar" name="id" hidden>
-                        <div class="row">
-                            <input type="number" name="id" id="id" hidden>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Descrição do Serviço:</label>
-                                    <div class="input-group">
-                                        <input name="nome_servico" id="nome_servico"
-                                               class="form-control uppercase" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Valor:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control"
-                                               name="valor_servico" id="valor_servico">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Tempo Estimado:</label>
-                                    <div class="input-group">
-                                        <input name="tempo_servico" id="tempo_servico"
-                                               class="form-control uppercase" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label>Produto: </label>
-                                <select class="form-control select2bs4" id="produto_servico" style="width: 100%;"
-                                        multiple="multiple">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="modal-footer justify-content-between">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" id="button_salvar_servico" class="btn btn-primary">Salvar
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    {% include 'servico/elementos/formulario.html' %}
                 </div>
             </div>
         </div>
@@ -168,20 +108,7 @@
                         </spam>
                         <spam style="color:red; word-wrap: break-word;" id="nome_excluir_servico"></spam>
                     </spam>
-                    <form id="id_form_excluir_servico" method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="comando" id="comando_excluir" value="#excluir#" hidden>
-                        <input type="text" id="id_servico_selecionado" name="id" hidden>
-                        <div class="form-group p-2">
-                            <label for="id_excluir">Cód. do Produto</label>
-                            <input type="number" class="form-control" name="id_excluir" id="id_excluir" required>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" id="button_excluir_produto" class="btn btn-danger">Excluir Serviço
-                            </button>
-                        </div>
-                    </form>
+                    {% include 'servico/elementos/formularioExcluir.html' %}
                 </div>
             </div>
         </div>

@@ -104,6 +104,44 @@ table.on( 'select deselect', function () {
 
 
 /*************************************************** Formulários ******************************************************/
+
+
+$("#tempo").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+
+$("#valor_produtos").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+
+$("#valor_mao_obra").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+
+$("#valor_clinica").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+
+$("#valor_total").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+
+
 let carregarDadosLinhaSelecionada = (id) => {
 
     EasyLoading.show({
@@ -177,8 +215,23 @@ $('#id_form_excluir_servico').submit(function(e){
 
 // Select2 *************************************************************************************************************
 
-$("#produto_servico").select2({
+$("#produto").on("select2:select", function (e) {
+  let ids = $(e.currentTarget).val();
+  $.ajax({
+        url: "/servico/getValor",
+        data: {'ids': ids.toString()},
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+        }
+  });
+});
+
+
+$("#produto").select2({
     theme: 'bootstrap4',
+    allowClear: true,
+            placeholder: "Selecione os produtos",
     ajax: {
         url: "/produto/getProdutos",
         dataType: 'json',
