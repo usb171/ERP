@@ -2,11 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import JsonResponse
 from .forms import *
-from .models import Produto as ProdutoModel, TIPO
+from .models import TIPO
 from .funcoes.produto import getProdutoString, getProduto as getProdutoF, getProdutos as getProdutosF
 
 
-class Produto_Ajax():
+class ProdutoAjax():
 
     @login_required(login_url='login')
     def getProduto(request):

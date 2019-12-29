@@ -1,5 +1,43 @@
 $('[data-mask]').inputmask();
 
+$('#valor_produtos').inputmask('decimal', {
+                'integerDigits': 5,
+                'alias': 'numeric',
+                'autoGroup': true,
+                'digits': 2,
+                'digitsOptional': false,
+                'allowMinus': false,
+                'placeholder': ''
+});
+$('#valor_mao_obra').inputmask('decimal', {
+                'integerDigits': 5,
+                'alias': 'numeric',
+                'autoGroup': true,
+                'digits': 2,
+                'digitsOptional': false,
+                'allowMinus': false,
+                'placeholder': ''
+});
+$('#valor_clinica').inputmask('decimal', {
+                'integerDigits': 5,
+                'alias': 'numeric',
+                'autoGroup': true,
+                'digits': 2,
+                'digitsOptional': false,
+                'allowMinus': false,
+                'placeholder': ''
+});
+$('#valor_total').inputmask('decimal', {
+                'integerDigits': 5,
+                'alias': 'numeric',
+                'autoGroup': true,
+                'digits': 2,
+                'digitsOptional': false,
+                'allowMinus': false,
+                'placeholder': ''
+});
+
+
 $("#id_nav_treeview_configuracoes").addClass("menu-open");
 $("#id_nav_link_servicos").addClass("active");
 
@@ -25,14 +63,15 @@ let table = $("#id_table_servico").DataTable({
         {
             text: 'Editar Serviço',
             action: function ( e, dt, node, config ) {
+                EasyLoading.show({type: EasyLoading.TYPE["BALL_PULSE"], text: 'Carregando dados...', timeout: null,});
+                let id = table.rows({selected:true}).data()[0][0]
+                carregarDadosLinhaSelecionada(id);
                 limparform();
                 let comando = '#editar#'
-                let id = table.rows({selected:true}).data()[0][0]
                 $('#id_modal_servico_novo_editar h4').text('Editar Serviço');
                 $('#id_modal_servico_novo_editar').modal('show');
                 $("#comando_novo_editar").val(comando);
-                carregarDadosLinhaSelecionada(id);
-
+                EasyLoading.hide();
             },
             className: 'btn btn-warning',
             enabled: false
@@ -113,59 +152,41 @@ $("#tempo").keyup(function( event ) {
     if(!this.value) this.value = '0'
 });
 
-$("#valor_produtos").keyup(function( event ) {
-    if (this.value.length > 3) this.value = this.value.slice(0,3);
-    this.value = this.value.replace(/[^0-9]/g, '');
-    if(this.value[0] == '0') this.value = parseInt(this.value)
-    if(!this.value) this.value = '0'
-});
-
-$("#valor_mao_obra").keyup(function( event ) {
-    if (this.value.length > 3) this.value = this.value.slice(0,3);
-    this.value = this.value.replace(/[^0-9]/g, '');
-    if(this.value[0] == '0') this.value = parseInt(this.value)
-    if(!this.value) this.value = '0'
-});
-
-$("#valor_clinica").keyup(function( event ) {
-    if (this.value.length > 3) this.value = this.value.slice(0,3);
-    this.value = this.value.replace(/[^0-9]/g, '');
-    if(this.value[0] == '0') this.value = parseInt(this.value)
-    if(!this.value) this.value = '0'
-});
-
-$("#valor_total").keyup(function( event ) {
-    if (this.value.length > 3) this.value = this.value.slice(0,3);
-    this.value = this.value.replace(/[^0-9]/g, '');
-    if(this.value[0] == '0') this.value = parseInt(this.value)
-    if(!this.value) this.value = '0'
-});
-
 
 let carregarDadosLinhaSelecionada = (id) => {
-
-    EasyLoading.show({
-        type: EasyLoading.TYPE["BALL_PULSE"],
-        text: 'Carregando dados...',
-        timeout: null,
+    $.ajax({
+        url: "/servico/getDados/",
+        data: {'id': id},
+        dataType: 'json',
+        success: function (data) {
+            servico = data.servico;
+            status = data.status;
+            console.log(data)
+            if(data.status){
+                $('#id').val(id);
+                $('#nome').val(servico.nome);
+                $('#tempo').val(servico.tempo);
+                $('#valor_total').val(servico.valor_total);
+                $('#valor_clinica').val(servico.valor_clinica);
+                $('#valor_mao_obra').val(servico.valor_mao_obra);
+                $('#valor_produtos').val(servico.valor_produtos);
+                $("#id_criar_editar").val(id);
+            }else{
+                $.each(data.msg, (index, erro) => {
+                    toastr.error(erro)
+                })
+            }
+        }
     });
-
-    $.get( "/servico/getDados/", { id: id } )
-    .done(function(data) {
-        data = data.servico;
-        $('#id').val(id);
-        $('#nome_servico').val(data.nome_servico);
-        $('#valor_servico').val(data.valor_servico);
-        $('#tempo_servico').val(data.tempo_servico);
-        $("#id_criar_editar").val(id);
-        EasyLoading.hide();
-    })
 }
 
 let limparform = () => {
-    $("#nome_servico").val('');
-    $("#valor_servico").val('');
-    $("#tempo_servico").val('');
+    $('#nome').val('');
+    $('#tempo').val('');
+    $('#valor_total').val('');
+    $('#valor_clinica').val('');
+    $('#valor_mao_obra').val('');
+    $('#valor_produtos').val('');
 }
 
 $('#id_form_criar_ou_editar_servico').submit(function(e){
@@ -228,7 +249,7 @@ $("#produto").on("select2:select", function (e) {
 });
 
 
-$("#produto").select2({
+$("#produtos").select2({
     theme: 'bootstrap4',
     allowClear: true,
             placeholder: "Selecione os produtos",
@@ -246,8 +267,8 @@ $("#produto").select2({
                 results: $.map(data.produtos, function (produto) {
                             return {
                                 id: produto.id,
-                                text: produto.nome_produto,
-                                valor: produto.valor_produto,
+                                text: produto.nome,
+                                valor: produto.valor,
                             }
                          })
             };

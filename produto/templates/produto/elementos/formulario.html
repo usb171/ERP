@@ -1,0 +1,47 @@
+<form id="id_form_criar_ou_editar_produto" method="POST">
+    {% csrf_token %}
+    <input type="text" name="comando" id="comando_novo_editar" hidden>
+    <input type="text" id="id_criar_editar" name="id" hidden>
+    <div class="row">
+        <input type="number" name="id" id="id" hidden>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Descrição do Serviço</label>
+                <div class="input-group">
+                    <input name="nome" id="nome" class="form-control uppercase" maxlength="120" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Quantidade</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="quantidade" id="quantidade" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Tipo</label>
+                <select class="form-control" style="width: 100%;" name="tipo" id="tipo" required>
+                    {% for tipo in tipo_produto %}
+                    <option value="{{ tipo }}">{{tipo}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Valor</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="valor" id="valor" required>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" id="button_salvar_produto" class="btn btn-primary">Salvar
+            </button>
+        </div>
+    </div>
+</form>

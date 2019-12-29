@@ -14,15 +14,15 @@ class Servico(models.Model):
                              help_text='Tempo estimado em minutos para realizar o serviço', default='0', max_length=4,
                              null=True)
 
-    valor_total = models.CharField(verbose_name='Valor total', help_text='Valor total do serviço', max_length=4,
+    valor_total = models.CharField(verbose_name='Valor total', help_text='Valor total do serviço', max_length=8,
                                    default='0', null=True)
-    valor_clinica = models.CharField(verbose_name='Valor clínica', help_text='Valor de lucro da clínica', max_length=4,
+    valor_clinica = models.CharField(verbose_name='Valor clínica', help_text='Valor de lucro da clínica', max_length=8,
                                      default='0', null=True)
     valor_mao_obra = models.CharField(verbose_name='Valor da mão de obra',
                                       help_text='Valor de custo do profissional para realizar o serviço', default='0',
-                                      max_length=4, null=True)
+                                      max_length=8, null=True)
     valor_produtos = models.CharField(verbose_name='Soma dos produtos', help_text='Soma de cada produto',
-                                      max_length=4, default='0', null=True)
+                                      max_length=8, default='0', null=True)
 
     produtos = models.ManyToManyField(Produto, help_text="Produtos selecionados para realizar o serviço", blank=True)
 
