@@ -1,6 +1,7 @@
 from ..models import Servico as ServicoModel
+from produto.models import Produto
+import functools
 import logging
-
 
 def criar(formulario):
     try:
@@ -21,14 +22,24 @@ def criar(formulario):
 
 
 def editar(formulario):
+
     try:
         servico = ServicoModel.objects.filter(id=formulario['id'])
         formulario['nome'] = formulario['nome'].upper()
         formulario['valor_mao_obra'] = float(formulario['valor_mao_obra'])
         formulario['valor_clinica'] = float(formulario['valor_clinica'])
         formulario['valor_produtos'] = float(formulario['valor_produtos'])
+
+        if formulario['produtos']:
+            produtos = Produto.objects.filter(id__in=formulario['produtos'].split(','))
+            servico[0].produtos.clear()
+            servico[0].produtos.add(*produtos)
+        else:
+            servico[0].produtos.clear()
+
         del formulario['id']
-        # del formulario['produtos']
+        del formulario['produtos']
+
         servico.update(**formulario)
         return {'status': True, 'msg': 'Servico editado com sucesso'}
     except ValueError as e:
@@ -56,7 +67,7 @@ def criarEditarExcluir(request):
     del formulario['comando']
     del formulario['csrfmiddlewaretoken']
 
-    formulario = {k: str(v[0]) for k, v in dict(formulario).items() if isinstance(v, (list,))}
+    formulario = {k: v[0] for k, v in dict(formulario).items() if isinstance(v, (list,))}
 
     if comando == '#criar#':
         return criar(formulario)
@@ -90,19 +101,20 @@ def getDados(request):
     """Retorna um serviço buscando pelo ID"""
     try:
         id = request.GET.get("id")
-        paciente = ServicoModel.objects.get(id=id)
+        servico = ServicoModel.objects.get(id=id)
         return {
             'status': True,
             'servico': {
-                'nome': paciente.nome,
-                'tempo': paciente.tempo,
-                'valor_total': paciente.valor_total,
-                'valor_clinica': paciente.valor_clinica,
-                'valor_mao_obra': paciente.valor_mao_obra,
-                'valor_produtos': paciente.valor_produtos,
-                # 'produtos': paciente.produtos,
+                'nome': servico.nome,
+                'tempo': servico.tempo,
+                'valor_total': servico.valor_total,
+                'valor_clinica': servico.valor_clinica,
+                'valor_mao_obra': servico.valor_mao_obra,
+                'valor_produtos': servico.valor_produtos,
+                'produtos': list(servico.produtos.all().values('id', 'nome', 'valor'))
             }
         }
     except Exception as e:
         logging.getLogger("error_logger").error(repr(e))
         return {'servico': {}, 'status': False, 'msg': ['Erro ao carregar serviço']}
+

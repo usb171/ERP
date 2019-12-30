@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .forms import *
 from .models import TIPO
-from .funcoes.produto import getProdutoString, getProduto as getProdutoF, getProdutos as getProdutosF
+from .funcoes.produto import getProdutoString, getProduto as getProdutoF, getProdutos as getProdutosF, getValorTotal
 
 
 class ProdutoAjax():
@@ -15,6 +15,10 @@ class ProdutoAjax():
     @login_required(login_url='login')
     def getProdutos(request):
         return JsonResponse(getProdutosF(request))
+
+    @login_required(login_url='login')
+    def getValorTotal(request):
+        return JsonResponse(getValorTotal(request))
 
 
 class ProdutoView():

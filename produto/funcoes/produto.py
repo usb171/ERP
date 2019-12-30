@@ -1,5 +1,6 @@
 from django.db.models import Q
 from ..models import Produto as ProdutoModel
+import functools
 import logging
 
 
@@ -90,6 +91,23 @@ def getProduto(request):
     except Exception as e:
         logging.getLogger("error_logger").error(repr(e))
         return {'produto': {}, 'status': False, 'msg': ['Erro ao carregar produto']}
+
+
+def getValorTotal(request):
+    """Retorna a soma total dos valores dos produtos selecionados pelo ID"""
+    try:
+        ids = request.GET.get("ids")
+        soma = '0.00'
+        if ids:
+            produtos = ProdutoModel.objects.filter(id__in=ids.split(','))
+            soma = sum(list(map(lambda p: float(p['valor']), produtos.values('valor'))))
+        return {
+                'valor': soma,
+                'status': True
+                }
+    except Exception as e:
+        logging.getLogger("error_logger").error(repr(e))
+        return {'produtos': {}, 'status': False, 'msg': ['Erro ao carregar produto']}
 
 
 def getProdutos(request):

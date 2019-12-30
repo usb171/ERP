@@ -24,35 +24,37 @@
     <div class="row">
         <div class="form-group col-md-12">
             <label>Produtos </label>
-            <select class="form-control select2bs4" id="produtos" name="produtos" style="width: 100%;" multiple="multiple"></select>
+            <select class="form-control select2bs4" id="produtos" style="width: 100%;" multiple="multiple"
+            onchange="$('.produtos').val($(this).val())"></select>
+            <input type="text" class="form-control produtos" name="produtos" hidden>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="form-group">
                 <label>Val. dos Produtos R$</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="valor_produtos" id="valor_produtos">
+                    <input type="text" class="form-control" name="valor_produtos" id="valor_produtos" onkeyup="atualizarValorTotal()">
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="form-group">
                 <label>Val. do profissional R$</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="valor_mao_obra" id="valor_mao_obra" required>
+                    <input type="text" class="form-control" name="valor_mao_obra" id="valor_mao_obra" onkeyup="atualizarValorTotal()" required>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="form-group">
                 <label>Val. da Clínica R$</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="valor_clinica" id="valor_clinica" required>
+                    <input type="text" class="form-control" name="valor_clinica" id="valor_clinica" onkeyup="atualizarValorTotal()" required>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" hidden>
             <div class="form-group">
                 <label>Val. Total R$</label>
                 <div class="input-group">
@@ -62,7 +64,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="modal-footer justify-content-between">
+        <div class="modal-footer justify-content-between col-md-12">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="submit" id="button_salvar_servico" class="btn btn-primary">Salvar</button>
         </div>

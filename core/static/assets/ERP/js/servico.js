@@ -54,7 +54,8 @@ let table = $("#id_table_servico").DataTable({
             action: function ( e, dt, node, config ) {
                 limparform();
                 let comando = '#criar#'
-                $('#id_modal_servico_novo_editar h4').text('Novo Serviço');
+//                $('#id_modal_servico_novo_editar h4').text('Novo Serviço');
+//                atualizarValorTotal();
                 $('#id_modal_servico_novo_editar').modal('show');
                 $("#comando_novo_editar").val(comando);
             },
@@ -68,7 +69,8 @@ let table = $("#id_table_servico").DataTable({
                 carregarDadosLinhaSelecionada(id);
                 limparform();
                 let comando = '#editar#'
-                $('#id_modal_servico_novo_editar h4').text('Editar Serviço');
+//                $('#id_modal_servico_novo_editar h4').text('Editar Serviço');
+//                atualizarValorTotal();
                 $('#id_modal_servico_novo_editar').modal('show');
                 $("#comando_novo_editar").val(comando);
                 EasyLoading.hide();
@@ -161,7 +163,6 @@ let carregarDadosLinhaSelecionada = (id) => {
         success: function (data) {
             servico = data.servico;
             status = data.status;
-            console.log(data)
             if(data.status){
                 $('#id').val(id);
                 $('#nome').val(servico.nome);
@@ -171,6 +172,11 @@ let carregarDadosLinhaSelecionada = (id) => {
                 $('#valor_mao_obra').val(servico.valor_mao_obra);
                 $('#valor_produtos').val(servico.valor_produtos);
                 $("#id_criar_editar").val(id);
+                $produtos = $('#produtos');
+                $.each(servico.produtos, (index, produto) => {
+                    $produtos.append(new Option(produto.nome, produto.id, true, true)).trigger('change');
+                })
+
             }else{
                 $.each(data.msg, (index, erro) => {
                     toastr.error(erro)
@@ -180,6 +186,15 @@ let carregarDadosLinhaSelecionada = (id) => {
     });
 }
 
+setInterval(function(){ atualizarValorTotal(); }, 250);
+
+
+let atualizarValorTotal = () =>{
+    $('#id_modal_servico_novo_editar h4').text('R$ ' + $('#valor_total').val());
+    $('#valor_total').val( parseFloat(parseFloat($('#valor_produtos').val()) + parseFloat($('#valor_mao_obra').val()) + parseFloat($('#valor_clinica').val())).toFixed(2));
+    $('#id_modal_servico_novo_editar h4').text('R$ ' + $('#valor_total').val());
+}
+
 let limparform = () => {
     $('#nome').val('');
     $('#tempo').val('');
@@ -187,6 +202,8 @@ let limparform = () => {
     $('#valor_clinica').val('');
     $('#valor_mao_obra').val('');
     $('#valor_produtos').val('');
+    $("#produtos").empty();
+
 }
 
 $('#id_form_criar_ou_editar_servico').submit(function(e){
@@ -195,6 +212,7 @@ $('#id_form_criar_ou_editar_servico').submit(function(e){
         text: 'Salvando Serviço...',
         timeout: null,
     });
+
     $("#button_salvar_servico").prop("disabled",true);
     e.preventDefault();
     $.post("/servico/", $(this).serialize(), function(data){
@@ -232,27 +250,52 @@ $('#id_form_excluir_servico').submit(function(e){
     }, 'json');
 });
 
+
+
 /*************************************************** Formulários ******************************************************/
 
 // Select2 *************************************************************************************************************
 
-$("#produto").on("select2:select", function (e) {
+$("#produtos").on("select2:select", function (e) {
   let ids = $(e.currentTarget).val();
   $.ajax({
-        url: "/servico/getValor",
+        url: "/produto/getValorTotal",
         data: {'ids': ids.toString()},
         dataType: 'json',
         success: function (data) {
-            console.log(data)
+            if(data.status){
+                $('#valor_produtos').val(data.valor);
+                atualizarValorTotal();
+            }else{
+                $.each(data.msg, (index, erro) => {
+                    toastr.error(erro)
+                })
+            }
         }
   });
 });
 
+$("#produtos").on("select2:unselect", function (e) {
+  let ids = $(e.currentTarget).val();
+  $.ajax({
+        url: "/produto/getValorTotal",
+        data: {'ids': ids.toString()},
+        dataType: 'json',
+        success: function (data) {
+            if(data.status){
+                $('#valor_produtos').val(data.valor);
+                atualizarValorTotal();
+            }else{
+                alert('Erro ao consultar valores dos produtos');
+            }
+        }
+  });
+});
 
 $("#produtos").select2({
     theme: 'bootstrap4',
     allowClear: true,
-            placeholder: "Selecione os produtos",
+    placeholder: "Selecione os produtos",
     ajax: {
         url: "/produto/getProdutos",
         dataType: 'json',
@@ -273,8 +316,10 @@ $("#produtos").select2({
                          })
             };
         },
+
         cache: true
     },
+    function (markup) { return markup; },
     templateResult: formatProduto,
     templateSelection: formatProdutoSelection
 });
