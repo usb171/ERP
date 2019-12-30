@@ -139,3 +139,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 URL_LOGO_LOGIN = config('URL_LOGO_LOGIN')
+
+
+
+try:
+    from .logger_settings import *
+except Exception as e:
+    pass

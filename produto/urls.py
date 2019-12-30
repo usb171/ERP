@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('getDados/', Produto_Ajax.getDados, name='getDados'),
+    path('getProduto/', ProdutoAjax.getProduto, name='getProduto'),
+    path('getProdutos/', ProdutoAjax.getProdutos, name='getProdutos'),
+    path('getValorTotal/', ProdutoAjax.getValorTotal, name='getValorTotal'),
     path('', ProdutoView.produto, name='produto'),
 ]
