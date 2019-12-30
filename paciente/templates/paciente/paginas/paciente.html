@@ -96,8 +96,10 @@
                                 <div class="form-group">
                                     <label>Nome Completo:</label>
                                     <div class="input-group">
-                                        <input name="nomeCompleto" id="nomeCompleto"
-                                               class="form-control uppercase" required>
+                                        <input type="text" name="nomeCompleto" id="nomeCompleto"
+                                               class="form-control uppercase"
+                                               placeholder="digite o nome do seu paciente"
+                                               onkeypress="return ApenasLetras(event,this);" required>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +107,7 @@
                                 <div class="form-group">
                                     <label>Whatsapp:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control"
+                                        <input type="tel" class="form-control"
                                                data-inputmask='"mask": "(99) 9 9999-9999"'
                                                data-mask name="whatsapp" id="whatsapp">
                                     </div>
@@ -115,7 +117,7 @@
                                 <div class="form-group">
                                     <label>Telefone:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control"
+                                        <input type="tel" class="form-control"
                                                data-inputmask='"mask": "(99) 9 9999-9999"'
                                                data-mask name="telefone" id="telefone">
                                     </div>
@@ -126,24 +128,24 @@
                                     <label>Cidade:</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control uppercase" name="cidade" id="cidade"
-                                               value="TERESINA">
+                                               value="TERESINA" pattern="[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>CEP:</label>
+                                    <label>Endereço:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" data-inputmask='"mask": "99999-999"'
-                                               data-mask name="cep" id="cep">
+                                        <input type="text" class="form-control uppercase" name="endereco" id="endereco">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Facebook</label>
+                                    <label>RG:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="facebook" id="facebook">
+                                        <input type="number" class="form-control" data-inputmask='"mask": "0.000.000"'
+                                               data-mask name="rg" id="rg">
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +161,8 @@
                                 <div class="form-group">
                                     <label>E-mail</label>
                                     <div class="input-group">
-                                        <input type="email" class="form-control" name="email" id="email" required>
+                                        <input type="email" class="form-control" name="email" id="email"
+                                               placeholder="digite seu email" required>
                                     </div>
                                 </div>
                             </div>

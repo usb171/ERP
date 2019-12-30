@@ -120,8 +120,8 @@ let carregarDadosLinhaSelecionada = (id) => {
         $('#whatsapp').val(data.whatsapp);
         $('#telefone').val(data.telefone);
         $('#cidade').val(data.cidade);
-        $('#cep').val(data.cep);
-        $('#facebook').val(data.facebook);
+        $('#endereco').val(data.endereco);
+        $('#rg').val(data.rg);
         $('#instagram').val(data.instagram);
         $('#email').val(data.email);
         $('#email').removeClass("is-invalid");
@@ -135,8 +135,8 @@ let limparform = () => {
     $("#whatsapp").val('');
     $("#telefone").val('');
     $("#cidade").val('');
-    $("#cep").val('');
-    $("#facebook").val('');
+    $("#endereco").val('');
+    $("#rg").val('');
     $("#instagram").val('');
     $("#email").val('');
 }
@@ -186,3 +186,27 @@ $('#id_form_excluir_paciente').submit(function(e){
 });
 
 /*************************************************** Formulários ******************************************************/
+
+function ApenasLetras(e, t) {
+    try {
+        if (window.event) {
+            var charCode = window.event.keyCode;
+        } else if (e) {
+            var charCode = e.which;
+        } else {
+            return true;
+        }
+        if (
+            (charCode > 31 && charCode < 47) ||
+            (charCode > 64 && charCode < 91) ||
+            (charCode > 96 && charCode < 123) ||
+            (charCode > 191 && charCode <= 255) // letras com acentos
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    } catch (err) {
+        alert(err.Description);
+    }
+}

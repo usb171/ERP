@@ -1,13 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Paciente
 from .forms import PacienteForm
 from django.contrib.auth.decorators import login_required
 from .funcoes.paciente import getPacientesString, getPaciente as getPacienteF, getPacientes as getPacientesF
 
 
 class PacienteAjax():
-
     @login_required(login_url='login')
     def getPaciente(request):
         return JsonResponse(getPacienteF(request))

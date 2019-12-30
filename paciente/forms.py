@@ -9,7 +9,7 @@ class PacienteForm(forms.Form):
         return criarEditarExcluir(request)
 
 class CadastroPacienteForm(forms.Form):
-    nome = forms.CharField(required=True)
+    nomeCompleto = forms.CharField(required=True)
     telefone = forms.CharField(required=True)
     cidade = forms.CharField(required=True)
     estado = forms.CharField(required=True)
@@ -26,7 +26,7 @@ class CadastroPacienteForm(forms.Form):
         if self.is_valid():
             status = {'form': self.cleaned_data}
             paciente = Paciente.objects.get(pk=paciente.id)
-            paciente.nome = self.cleaned_data['nome']
+            paciente.nomeCompleto = self.cleaned_data['nomeCompleto']
             paciente.telefone = self.cleaned_data['telefone']
             paciente.cidade = self.cleaned_data['cidade']
             paciente.estado = self.cleaned_data['estado']
