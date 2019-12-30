@@ -1,5 +1,17 @@
 $('[data-mask]').inputmask();
 
+$('#valor').inputmask(
+    'decimal', {
+        'integerDigits': 5,
+        'alias': 'numeric',
+        'autoGroup': true,
+        'digits': 2,
+        'digitsOptional': false,
+        'allowMinus': false,
+        'placeholder': ''
+    }
+);
+
 
 $("#id_nav_treeview_configuracoes").addClass("menu-open");
 $("#id_nav_link_produtos").addClass("active");
@@ -27,13 +39,15 @@ $("#id_nav_link_produtos").addClass("active");
             {
                 text: 'Editar Produto',
                 action: function ( e, dt, node, config ) {
+                    EasyLoading.show({type: EasyLoading.TYPE["BALL_PULSE"],text: 'Carregando dados...', timeout: null});
+                    let id = table.rows({selected:true}).data()[0][0]
+                    carregarDadosLinhaSelecionada(id)
                     limparform();
                     let comando = '#editar#'
-                    let id = table.rows({selected:true}).data()[0][0]
-                    $('#id_modal_produto_novo_editar h4').text('Editar Produto');
                     $('#id_modal_produto_novo_editar').modal('show');
+                    $('#id_modal_produto_novo_editar h4').text('Editar Produto');
                     $("#comando_novo_editar").val(comando);
-                    carregarDadosLinhaSelecionada(id);
+                    EasyLoading.hide();
                 },
                 className: 'btn btn-warning',
                 enabled: false
@@ -51,7 +65,7 @@ $("#id_nav_link_produtos").addClass("active");
                     $("#nome_excluir_produto").text(nome);
                 },
                 className: 'btn btn-danger',
-                enabled: true
+                enabled: false
             },
             {
                 text: 'Exportar PDF',
@@ -106,32 +120,36 @@ $("#id_nav_link_produtos").addClass("active");
 
 /**************************************************** Formulários *****************************************************/
     let carregarDadosLinhaSelecionada = (id) =>{
-
-        EasyLoading.show({
-            type: EasyLoading.TYPE["BALL_PULSE"],
-            text: 'Carregando dados...',
-            timeout: null,
+        $.ajax({
+                url: "/produto/getProduto/",
+                data: {'id': id},
+                dataType: 'json',
+                success: function (data) {
+                    produto = data.produto;
+                    status = data.status;
+                    if(data.status){
+                        $('#id').val(id);
+                        $('#nome').val(produto.nome);
+                        $('#tipo').val(produto.tipo);
+                        $('#quantidade').val(produto.quantidade);
+                        $('#valor').val(produto.valor);
+                        $("#id_criar_editar").val(id);
+                    }else{
+                        $.each(data.msg, (index, erro) => {
+                            toastr.error(erro)
+                        })
+                    }
+                }
         });
 
-        $.get( "/produto/getDados/", { id: id } )
-        .done(function(data) {
-            data = data.produto;
-            $('#id').val(id);
-            $('#nome_produto').val(data.nome_produto);
-            $('#tipo_produto').val(data.tipo_produto);
-            $('#quantidade_produto').val(data.quantidade_produto);
-            $('#valor_produto').val(data.valor_produto);
-            $("#id_criar_editar").val(id);
-            EasyLoading.hide();
-        })
     }
 
-let limparform = () => {
-    $("#nome_produto").val('');
-    $("#tipo_produto").val('');
-    $("#quantidade_produto").val('');
-    $("#valor_produto").val('');
-}
+    let limparform = () => {
+        $("#nome").val('');
+        $("#tipo").val('');
+        $("#quantidade").val('');
+        $("#valor").val('').removeClass("is-invalid");
+    }
 
 
     $('#id_form_criar_ou_editar_produto').submit(function(e){
@@ -147,10 +165,16 @@ let limparform = () => {
                 window.location.reload()
             }else{
                 EasyLoading.hide();
+                if(data.erros["valor"] != undefined){
+                    $.each(data.erros.valor, (index, erro) => {
+                        toastr.error(erro)
+                    })
+                    $("#valor").removeClass("is-valid").addClass("is-invalid")
+
+                }
                 $("#button_salvar_produto").prop("disabled",false);
-                $.each(data.msg, (index, erro) => {
-                    toastr.error(erro)
-                })
+
+
             }
         }, 'json');
     });
@@ -177,5 +201,16 @@ let limparform = () => {
         }, 'json');
     });
 
+    $("#quantidade").keyup(function( event ) {
+        if (this.value.length > 4) this.value = this.value.slice(0,4);
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if(this.value[0] == '0') this.value = parseInt(this.value)
+        if(!this.value) this.value = '0'
+    });
+
 /*************************************************** Formulários ***********************************************/
 
+/************************************************** Select2 ***************************************************/
+//$("#tipo").select2({
+//    theme: 'bootstrap4',
+//});

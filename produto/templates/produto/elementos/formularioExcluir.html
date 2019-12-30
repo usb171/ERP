@@ -1,0 +1,14 @@
+<form id="id_form_excluir_produto" method="POST">
+    {% csrf_token %}
+    <input type="text" name="comando" id="comando_excluir" value="#excluir#" hidden>
+    <input type="text" id="id_produto_selecionado" name="id" hidden>
+    <div class="form-group p-2">
+        <label for="id_excluir">Cód. do Produto</label>
+        <input type="number" class="form-control" name="id_excluir" id="id_excluir" required>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="submit" id="button_excluir_produto" class="btn btn-danger">Excluir Produto
+        </button>
+    </div>
+</form>

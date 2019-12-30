@@ -7,6 +7,7 @@ def criar(formulario):
         formulario['cidade'] = formulario['cidade'].upper()
         formulario['nomeCompleto'] = formulario['nomeCompleto'].upper()
         del formulario['id']
+        print(formulario)
         PacienteModel.objects.create(**formulario)
         return {'status': True, 'msg': 'Paciente cadastrado com sucesso'}
     except Exception as e:

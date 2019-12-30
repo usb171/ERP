@@ -1,0 +1,70 @@
+<form id="id_form_criar_ou_editar_servico" method="POST">
+    {% csrf_token %}
+    <input type="text" name="comando" id="comando_novo_editar" hidden>
+    <input type="text" id="id_criar_editar" name="id" hidden>
+    <div class="row">
+        <input type="number" name="id" id="id" hidden>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label>Nome</label>
+                <div class="input-group">
+                    <input name="nome" id="nome" class="form-control uppercase" maxlength="120" required >
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Tempo Estimado Min</label>
+                <div class="input-group">
+                    <input name="tempo" id="tempo" class="form-control" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label>Produtos </label>
+            <select class="form-control select2bs4" id="produtos" name="produtos" style="width: 100%;" multiple="multiple"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Val. dos Produtos R$</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="valor_produtos" id="valor_produtos">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Val. do profissional R$</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="valor_mao_obra" id="valor_mao_obra" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Val. da Clínica R$</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="valor_clinica" id="valor_clinica" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Val. Total R$</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="valor_total" id="valor_total" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" id="button_salvar_servico" class="btn btn-primary">Salvar</button>
+        </div>
+    </div>
+</form>

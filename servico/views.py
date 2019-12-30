@@ -3,24 +3,17 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from servico.form import ServicoForm
-from servico.funcoes.servico import getServicosString
-from servico.models import Servico
+from servico.funcoes.servico import getServicosString, getDados as getDadosF
 
 
-class Servico_Ajax():
+class ServicoAjax():
     @login_required(login_url='login')
     def getDados(request):
         try:
-            id = request.GET.get("id")
-            servico = Servico.objects.get(id=id)
-            contexto = {'nome_servico': servico.nome_servico,
-                        'valor_servico': servico.valor_servico,
-                        'tempo_servico': servico.tempo_servico,
-                        }
-
-            return JsonResponse({'servico': contexto})
+            return JsonResponse(getDadosF(request))
         except:
             return JsonResponse({'servico': 'Não foi possivel encontrar dados do serviço de id: ' + id})
+
 
 class ServicoView():
     @login_required(login_url='login')

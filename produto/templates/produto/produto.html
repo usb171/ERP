@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
 {% endblock %}
 
@@ -25,6 +27,7 @@
 <script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
 <script src="/static/assets/plugins/easy-loading/js/easy-loading.min.js"></script>
+<script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
 <script src="{% static 'assets/ERP/js/produto.js' %}"></script>
 {% endblock %}
 
@@ -45,10 +48,6 @@
     .capitalize {
       text-transform: capitalize;
     }
-
-
-
-
 
 
 
@@ -93,57 +92,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="id_form_criar_ou_editar_produto" method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="comando" id="comando_novo_editar" hidden>
-                        <input type="text" id="id_criar_editar" name="id" hidden>
-                        <div class="row">
-                            <input type="number" name="id" id="id" hidden>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Descrição do Serviço:</label>
-                                    <div class="input-group">
-                                        <input name="nome_produto" id="nome_produto"
-                                               class="form-control uppercase" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Quantidade:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control"
-                                               data-mask name="quantidade_produto" id="quantidade_produto">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Tipo:</label>
-                                    <select class="form-control select2" style="width: 100%;" name="tipo_produto"
-                                            id="tipo_produto">
-                                        {% for tipo in tipo_produto %}
-                                        <option value="{{ tipo }}">{{tipo}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Valor:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control"
-                                               data-mask name="valor_produto" id="valor_produto">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" id="button_salvar_produto" class="btn btn-primary">Salvar
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    {% include 'produto/elementos/formulario.html' %}
                 </div>
             </div>
         </div>
@@ -169,20 +118,7 @@
                         </spam>
                         <spam style="color:red; word-wrap: break-word;" id="nome_excluir_produto"></spam>
                     </spam>
-                    <form id="id_form_excluir_produto" method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="comando" id="comando_excluir" value="#excluir#" hidden>
-                        <input type="text" id="id_produto_selecionado" name="id" hidden>
-                        <div class="form-group p-2">
-                            <label for="id_excluir">Cód. do Produto</label>
-                            <input type="number" class="form-control" name="id_excluir" id="id_excluir" required>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" id="button_excluir_produto" class="btn btn-danger">Excluir Produto
-                            </button>
-                        </div>
-                    </form>
+                    {% include 'produto/elementos/formularioExcluir.html' %}
                 </div>
             </div>
         </div>
