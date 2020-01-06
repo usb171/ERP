@@ -1,3 +1,4 @@
+from django.db.models import Q
 from ..models import Servico as ServicoModel
 from produto.models import Produto
 import functools
@@ -96,7 +97,6 @@ def getServicosString():
     Métodos AJAX 
 '''
 
-
 def getDados(request):
     """Retorna um serviço buscando pelo ID"""
     try:
@@ -117,4 +117,17 @@ def getDados(request):
     except Exception as e:
         logging.getLogger("error_logger").error(repr(e))
         return {'servico': {}, 'status': False, 'msg': ['Erro ao carregar serviço']}
+
+def getServicos(request):
+    """Retorna uma lista de serviço """
+    q = request.GET.get('q', None)
+    try:
+        if q:
+            return {'servicos': list(ServicoModel.objects.filter((Q(nome__contains=q.upper()) | Q(valor_total__contains=q)) & Q(ativo=True))
+                                     .values('id', 'nome', 'valor_total'))
+                    }
+        else:
+            return {'servicos': list(ServicoModel.objects.filter(ativo=True).values('id', 'nome', 'valor_total'))}
+    except:
+        return {'servicos':[]}
 

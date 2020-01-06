@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 import json
 
@@ -47,3 +47,8 @@ class CoreView():
         if request.method == 'POST':
             return HttpResponse(json.dumps(criarEditarExcluirAlterarDadosAlterarSenha(request)),
                                 content_type="application/json")
+
+    @login_required(login_url='login')
+    def getUsuarios(request):
+        return JsonResponse(getUsuarios(request))
+
