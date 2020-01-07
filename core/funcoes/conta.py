@@ -1,3 +1,6 @@
+from django.contrib.auth.models import User, AbstractUser
+from django.db.models import Q
+
 from ..models import Conta
 from .sessao import *
 
@@ -33,3 +36,21 @@ def criarEditarExcluirAlterarDadosAlterarSenha(request):
         return Sessao.alterar_senha(request)
     else:
         return {'status': False, 'msg': ['Não foi possível executar o comando: ' + str(comando)]}
+
+
+def getUsuarios(request):
+    users = request.GET.get('users', None)
+    try:
+        if users:
+            return {
+                'usuarios': list(
+                    User.objects.filter((Q(username__contains=users.upper())) & Q(is_active=True)).values('id', 'username'))
+            }
+        else:
+            return {
+                'usuarios': list(
+                    User.objects.filter(is_active=True).values('id', 'username'))
+            }
+    except:
+        return {'usuarios': []}
+

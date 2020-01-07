@@ -1,9 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
-
 from servico.form import ServicoForm
-from servico.funcoes.servico import getServicosString, getDados as getDadosF
+from servico.funcoes.servico import getServicosString, getDados as getDadosF, getServicos as getServicosF
 
 
 class ServicoAjax():
@@ -13,6 +12,10 @@ class ServicoAjax():
             return JsonResponse(getDadosF(request))
         except:
             return JsonResponse({'servico': 'Não foi possivel encontrar dados do serviço de id: ' + id})
+
+    @login_required(login_url='login')
+    def getServicos(request):
+        return JsonResponse(getServicosF(request))
 
 
 class ServicoView():

@@ -1,0 +1,1 @@
+2019-12-30 13:42:44,240  ERROR  8083  /Users/daniel/Nextcloud/Desenvolvimento/ERP/produto/funcoes/produto.py  getProduto  91  DoesNotExist('Produto matching query does not exist.')  

@@ -114,7 +114,107 @@ function formatPaciente (paciente) {
 function formatPacienteSelection (paciente) { return paciente.nomeCompleto || paciente.text; }
 
 
-$('#servicos').select2({theme: 'bootstrap4',})
+$("#servicos").select2({
+    theme: 'bootstrap4',
+    ajax: {
+        url: "/servico/getServicos",
+        dataType: 'json',
+        delay: 100,
+        data: function (params) {
+                return {
+                    q: params.term,
+                };
+        },
+        processResults:function(data){
+            return {
+                results: $.map(data.servicos, function (servico) {
+                            return {
+                                id: servico.id,
+                                text: servico.nome,
+                                valor_total: servico.valor_total
+                            }
+                         })
+            };
+        },
+        cache: true
+    },
+    templateResult: formatServico,
+    templateSelection: formatServicoSelection
+});
+
+function formatServico (servico) {
+  if (servico.loading) {
+    return servico.text;
+  }
+
+  var $container = $(
+    "<div class='select2-result-repository clearfix'>" +
+      "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'></div>" +
+        "<div class='select2-result-repository__statistics'>" +
+          "<div class='select2-result-repository__valor_total'>R$ </div>" +
+        "</div>" +
+      "</div>" +
+    "</div>"
+  );
+
+  $container.find(".select2-result-repository__title").text(servico.text);
+  $container.find(".select2-result-repository__valor_total").append("     " +  servico.valor_total);
+
+
+  return $container;
+}
+
+function formatServicoSelection (servico) { return servico.nome || servico.text; }
+
+$("#profissional").select2({
+    theme: 'bootstrap4',
+    ajax: {
+        url: "/getUsuarios/",
+        dataType: 'json',
+        delay: 100,
+        data: function (params) {
+                return {
+                    q: params.term,
+                };
+        },
+        processResults:function(data){
+            return {
+                results: $.map(data.usuarios, function (usuario) {
+                            return {
+                                id: usuario.id,
+                                text: usuario.username
+                            }
+                         })
+            };
+        },
+        cache: true
+    },
+    templateResult: formatUsuario,
+    templateSelection: formatUsuarioSelection
+});
+
+function formatUsuario (usuario) {
+  if (usuario.loading) {
+    return usuario.text;
+  }
+
+  var $container = $(
+    "<div class='select2-result-repository clearfix'>" +
+      "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'></div>" +
+      "</div>" +
+    "</div>"
+  );
+
+  $container.find(".select2-result-repository__title").text(usuario.text);
+
+
+  return $container;
+}
+
+function formatUsuarioSelection (usuario) { return usuario.username || usuario.text; }
+
 
 
 // Timepicker **********************************************************************************************************
