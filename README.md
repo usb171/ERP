@@ -53,7 +53,7 @@ ALTER USER nome_maquina WITH SUPERUSER;
 **Dependências do Projeto**
 ```
 (env) pip install --upgrade pip
-(env) pip install django
+(env) pip install django==2.0
 (env) pip install psycopg2
 (env) pip install python-decouple
 (env) pip install https://github.com/darklow/django-suit/tarball/v2
