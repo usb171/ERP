@@ -17,7 +17,7 @@ class Conta(models.Model):
     *   Atributos:
     *               ativo: Campo utilizado para ativar ou desativar uma conta
     """
-    ativo = models.BooleanField(verbose_name='Ativar essa Conta ?', default=False, null=True)
+    ativo = models.BooleanField(verbose_name='Ativar essa Conta ?', default=False)
     user = models.OneToOneField(User, verbose_name='Usuário de acesso', on_delete=models.SET_NULL, null=True)
     nomeCompleto = models.CharField(verbose_name='Nome Completo', max_length=120, null=True, blank=True)
     cargo = models.CharField(verbose_name='Cargo', choices=CARGO, max_length=2, default='4', null=True)

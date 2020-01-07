@@ -12,7 +12,7 @@ class Produto(models.Model):
     *   Classe Produto
     *   Base de uma produto
     """
-    ativo = models.BooleanField(verbose_name='Ativar Produto ?', default=True, null=True)
+    ativo = models.BooleanField(verbose_name='Ativar Produto ?', default=True)
     nome = models.CharField(verbose_name='Nome do produto', max_length=120, null=True)
     tipo = models.CharField(verbose_name='Unidade da Medida', choices=TIPO, max_length=3, default='UN', null=True)
     valor = models.CharField(verbose_name='Valor do produto', max_length=8, default='0', null=True)

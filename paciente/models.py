@@ -5,7 +5,7 @@ class Paciente(models.Model):
     """
     *   Classe Paciente
     """
-    ativo = models.BooleanField(verbose_name='Ativar Paciente ?', default=True, null=True)
+    ativo = models.BooleanField(verbose_name='Ativar Paciente ?', default=True)
     nomeCompleto = models.CharField(verbose_name='Nome Completo', max_length=120, null=True, blank=False)
     whatsapp = models.CharField(verbose_name='Whatsapp', max_length=120, null=True, blank=True)
     telefone = models.CharField(verbose_name='Telefone', max_length=120, null=True, blank=True)

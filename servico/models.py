@@ -8,7 +8,7 @@ class Servico(models.Model):
     *   Um serviço é composto de vários produtos de consumo
     *   O valor do serviço é composto do valor de quem realiza mais o valor do custo de todos os produtos
     """
-    ativo = models.BooleanField(verbose_name='Ativar Servico ?', default=True, null=True)
+    ativo = models.BooleanField(verbose_name='Ativar Servico ?', default=True)
     nome = models.CharField(verbose_name='Nome do serviço', max_length=120, default=True, null=True)
     tempo = models.CharField(verbose_name='Tempo de Serviço',
                              help_text='Tempo estimado em minutos para realizar o serviço', default='0', max_length=4,
