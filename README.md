@@ -6,7 +6,7 @@ O ERP é um website desenvolvido em aplicações, sua base é pensada em futuras
 **Back-End**
 
 * Python 3.6.7
-* Django Framework
+* Django Framework 2.0
 * Gunicorn
 * PostGres
 
@@ -26,7 +26,7 @@ O ERP é um website desenvolvido em aplicações, sua base é pensada em futuras
 
 **Dependências do Sistema**
 
-``sudo apt python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+``sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
 `` 
 
 **Banco**
@@ -53,10 +53,11 @@ ALTER USER nome_maquina WITH SUPERUSER;
 **Dependências do Projeto**
 ```
 (env) pip install --upgrade pip
-(env) pip install django
+(env) pip install django==2.0
 (env) pip install psycopg2
 (env) pip install python-decouple
 (env) pip install https://github.com/darklow/django-suit/tarball/v2
+(env) pip install gunicorn
 ```
 
 **Criar Arquivo de Ambiente do Projeto**
