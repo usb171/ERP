@@ -6,7 +6,7 @@ O ERP é um website desenvolvido em aplicações, sua base é pensada em futuras
 **Back-End**
 
 * Python 3.6.7
-* Django Framework
+* Django Framework 2.0
 * Gunicorn
 * PostGres
 
