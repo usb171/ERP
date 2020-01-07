@@ -57,6 +57,7 @@ ALTER USER nome_maquina WITH SUPERUSER;
 (env) pip install psycopg2
 (env) pip install python-decouple
 (env) pip install https://github.com/darklow/django-suit/tarball/v2
+(env) pip install gunicorn
 ```
 
 **Criar Arquivo de Ambiente do Projeto**
