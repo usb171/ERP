@@ -26,7 +26,7 @@ O ERP é um website desenvolvido em aplicações, sua base é pensada em futuras
 
 **Dependências do Sistema**
 
-``sudo apt python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+``sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
 `` 
 
 **Banco**
