@@ -41,3 +41,25 @@ TIPO_MOVIMENTO = (
     ('0', 'Saída'),
     ('1', 'Entrada'),
 )
+
+PERIODO_AGENDA = [
+    ('1', 'MANHÃ'),
+    ('2', 'TARDE'),
+    ('3', 'NOITE')
+]
+
+STATUS_AGENDA = [
+    ('1', 'AGENDADO'),
+    ('2', 'FINALIZADO'),
+    ('3', 'EM ESPERA'),
+    ('4', 'CANCELADO'),
+    ('5', 'EM ATENDIMENTO'),
+]
+
+CORES_AGENDA = [
+    ('1', ''), # Verde
+    ('2', ''), # Azul
+    ('3', ''), # Amarelo
+    ('4', ''), # Vermelho
+    ('5', ''), # Violeta
+]

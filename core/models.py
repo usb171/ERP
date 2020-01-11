@@ -10,6 +10,7 @@ CARGO = [
     ('6', 'MANUTENÇÃO DO SISTEMA'),
 ]
 
+
 class Conta(models.Model):
     """
     *   Classe Conta
@@ -23,3 +24,6 @@ class Conta(models.Model):
     cargo = models.CharField(verbose_name='Cargo', choices=CARGO, max_length=2, default='4', null=True)
     email = models.CharField(verbose_name='Email de acesso', help_text='E-mail tutilizado para acessar o sistema',
                              max_length=120, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return self.nomeCompleto

@@ -54,7 +54,6 @@ calendar.render();
 
 $('[data-mask]').inputmask()
 
-
 // Select2 *************************************************************************************************************
 
 $("#paciente").select2({
@@ -86,6 +85,10 @@ $("#paciente").select2({
     templateSelection: formatPacienteSelection
 });
 
+$('#paciente').on("change", function(e) {
+    buscarDisponibilidade();
+});
+
 function formatPaciente (paciente) {
   if (paciente.loading) {
     return paciente.text;
@@ -114,7 +117,7 @@ function formatPaciente (paciente) {
 function formatPacienteSelection (paciente) { return paciente.nomeCompleto || paciente.text; }
 
 
-$("#servicos").select2({
+$("#procedimentos").select2({
     theme: 'bootstrap4',
     ajax: {
         url: "/servico/getServicos",
@@ -140,6 +143,10 @@ $("#servicos").select2({
     },
     templateResult: formatServico,
     templateSelection: formatServicoSelection
+});
+
+$('#procedimentos').on("change", function(e) {
+    buscarDisponibilidade();
 });
 
 function formatServico (servico) {
@@ -194,6 +201,10 @@ $("#profissional").select2({
     templateSelection: formatUsuarioSelection
 });
 
+$('#profissional').on("change", function(e) {
+    buscarDisponibilidade();
+});
+
 function formatUsuario (usuario) {
   if (usuario.loading) {
     return usuario.text;
@@ -219,15 +230,58 @@ function formatUsuarioSelection (usuario) { return usuario.username || usuario.t
 
 // Timepicker **********************************************************************************************************
 
-$('#timepicker').datetimepicker({
+$('#timepickerData').datetimepicker({
     format: 'DD/MM/YYYY',
     daysOfWeekDisabled: [0]
 })
 
-
-$("#timepicker").on("change.datetimepicker", function (e) {
-    console.log("Oi");
+$('#timepickerHorario').datetimepicker({
+    format: 'LT',
+    stepping: 5,
+    enabledHours: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
 });
 
 
+$("#periodo").on("change.periodo", function (e) {
+    buscarDisponibilidade();
+});
+
+$("#timepickerData").on("change.datetimepicker", function (e) {
+    buscarDisponibilidade();
+});
+
+$("#timepickerHorario").on("change.datetimepicker", function (e) {
+    buscarDisponibilidade();
+});
+
+
+let buscarDisponibilidade = () =>{
+
+    $periodo = $("#periodo");
+    $paciente = $("#paciente");
+    $data = $("#timepickerData");
+    $profissional = $("#profissional");
+    $horario = $("#timepickerHorario");
+    $procedimentos = $("#procedimentos");
+
+    let formulario = {
+        'periodo': $periodo.val(),
+        'paciente': $paciente.val(),
+        'data': $data.data('date'),
+        'profissional': $profissional.val(),
+        'horario': $horario.data('date'),
+        'procedimentos': $procedimentos.val(),
+    }
+
+    console.log(formulario)
+
+    $.ajax({
+        url: "/agenda/buscarDisponibilidade",
+        data: formulario,
+        dataType: 'json',
+        success: function (data) {
+           console.log(data)
+        }
+    });
+}
 

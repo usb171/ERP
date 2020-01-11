@@ -16,7 +16,6 @@ class PacienteAjax():
 
 
 class PacienteView():
-
     @login_required(login_url='login')
     def paciente(request):
         template_name = "paciente/paginas/paciente.html"

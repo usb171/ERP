@@ -15,7 +15,7 @@
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Período</label>
-                                    <select class="form-control" style="width: 100%;">
+                                    <select class="form-control" style="width: 100%;" id="periodo">
                                         <option selected="selected">Manhã</option>
                                         <option>Tarde</option>
                                         <option>Noite</option>
@@ -23,27 +23,36 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Data</label>
-                                    <div class="input-group date" id="timepicker" data-target-input="nearest">
+                                    <div class="input-group date" id="timepickerData" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input"
-                                               data-target="#timepicker"/>
-                                        <div class="input-group-append" data-target="#timepicker"
+                                               data-target="#timepickerData"/>
+                                        <div class="input-group-append" data-target="#timepickerData"
                                              data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-calendar"></i></div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label>Horário</label>
+                                    <div class="input-group date" id="timepickerHorario" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                               data-target="#timepickerHorario"/>
+                                        <div class="input-group-append" data-target="#timepickerHorario"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label>Paciente</label>
                                     <select class="form-control select2bs4" id="paciente" style="width: 100%;">
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label>Serviços</label>
-                                    <select class="form-control select2bs4 " id="servicos" multiple="multiple"
+                                <div class="form-group col-md-6">
+                                    <label>Procedimentos</label>
+                                    <select class="form-control select2bs4" id="procedimentos" name="procedimentos" multiple="multiple"
                                             style="width: 100%;">
                                     </select>
                                 </div>
