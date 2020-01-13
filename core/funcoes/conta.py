@@ -44,12 +44,12 @@ def getUsuarios(request):
         if users:
             return {
                 'usuarios': list(
-                    User.objects.filter((Q(username__contains=users.upper())) & Q(is_active=True)).values('id', 'username'))
+                    User.objects.filter(username__contains=users.upper(), is_active=True, is_superuser=False).values('id', 'username'))
             }
         else:
             return {
                 'usuarios': list(
-                    User.objects.filter(is_active=True).values('id', 'username'))
+                    User.objects.filter(is_active=True, is_superuser=False).values('id', 'username'))
             }
     except:
         return {'usuarios': []}

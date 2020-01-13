@@ -3,7 +3,8 @@ from paciente.models import Paciente
 from core.models import Conta
 from servico.models import Servico
 from core.funcoes.enumerate import STATUS_AGENDA, PERIODO_AGENDA
-
+from django.core.exceptions import ValidationError
+from django.conf import settings
 
 class Agenda(models.Model):
     """
@@ -21,5 +22,20 @@ class Agenda(models.Model):
         verbose_name = 'Agenda'
         verbose_name_plural = 'Agendas'
 
+    def clean(self, *args, **kwargs):
+        interrvalo = getattr(settings, 'AGENDA', '')['INTERVALO']
+        agendas = Agenda.objects.filter(status='1', data=self.data, hora=self.hora).exclude(id=self.id)
+
+        if len(self.hora) != 5 or int(self.hora[3:]) % int(interrvalo):
+            raise ValidationError('Hora inválida')
+        elif len(self.data) != 10:
+            raise ValidationError('Data inválida')
+        elif len(agendas) > 0:
+            raise ValidationError('Já existe um agendamento para {data} às {hora}'.format(data=self.data, hora=self.hora))
+        return super(Agenda, self).clean(*args, **kwargs)
+
     def __str__(self):
         return self.paciente.nomeCompleto
+
+    def dataHora(self):
+        return [self.data, self.hora]

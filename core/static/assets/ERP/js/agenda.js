@@ -1,4 +1,3 @@
-
 $("#id_nav_link_agenda").addClass("active");
 
 // Calendar ************************************************************************************************************
@@ -235,27 +234,67 @@ $('#timepickerData').datetimepicker({
     daysOfWeekDisabled: [0]
 })
 
-$('#timepickerHorario').datetimepicker({
-    format: 'LT',
-    stepping: 5,
-    enabledHours: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-});
+
+let initTimepickerHorario = (val) =>{
+    $('#timepickerHorario').datetimepicker({
+        format: 'LT',
+        stepping: val.stepping,
+        enabledHours: val.enabledHours,
+    });
+
+    $("#timepickerHorario").on("change.datetimepicker", function (e) {
+        let horario = $(this).data('date');
+        buscarDisponibilidade();
+        atualizarPeriodoPeloHorario(horario);
+        posicionaRowScrollTabelaHorarios(horario);
+    });
+
+    $("#timepickerHorario").on("click", function (e) {
+        let horario = $(this).data('date');
+        buscarDisponibilidade();
+        atualizarPeriodoPeloHorario(horario);
+        posicionaRowScrollTabelaHorarios(horario);
+    });
+};
 
 
 $("#periodo").on("change.periodo", function (e) {
+    cod_periodo = $(this).val();
     buscarDisponibilidade();
+    atualizarHorarioPeloPeriodo(cod_periodo)
+
 });
 
 $("#timepickerData").on("change.datetimepicker", function (e) {
     buscarDisponibilidade();
 });
 
-$("#timepickerHorario").on("change.datetimepicker", function (e) {
-    buscarDisponibilidade();
-});
+let atualizarPeriodoPeloHorario = (horario) => {
+    if (horario > '00:00' && horario < '12:00') $("#periodo").val('1');
+    else if (horario >= '12:00' && horario < '19:00') $("#periodo").val('2');
+    else if (horario >= '19:00') $("#periodo").val('3');
+}
+
+let atualizarHorarioPeloPeriodo = (cod_periodo) => {
+    if (cod_periodo == 1) $('#timepickerHorario').datetimepicker("date", "07:00");
+    else if (cod_periodo == 2) $('#timepickerHorario').datetimepicker("date", "12:00");
+    else $('#timepickerHorario').datetimepicker("date", "19:00");
+}
+
+let posicionaRowScrollTabelaHorarios = (horario) => {
+    $tableContainer = $('#tableContainer');
+    $tableContainer.scrollTop(0)
+    $tableContainer.scrollTop($(`td:contains('${horario}')`)[0].offsetTop - 50)
+}
 
 
 let buscarDisponibilidade = () =>{
+
+//    EasyLoading.show({
+//        type: EasyLoading.TYPE["BALL_PULSE"],
+//        text: 'Buscando Horários...',
+//        timeout: null,
+//    });
 
     $periodo = $("#periodo");
     $paciente = $("#paciente");
@@ -273,15 +312,17 @@ let buscarDisponibilidade = () =>{
         'procedimentos': $procedimentos.val(),
     }
 
-    console.log(formulario)
-
     $.ajax({
         url: "/agenda/buscarDisponibilidade",
         data: formulario,
         dataType: 'json',
         success: function (data) {
-           console.log(data)
+           $("#tabela_horarios tbody").html(data.disponibilidade.linhas_horarios);
+//           EasyLoading.hide();
         }
     });
+
+
+
 }
 

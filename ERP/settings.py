@@ -16,9 +16,9 @@ from decouple import config
 _DADOS_PROJETO_ = {
     'VERSAO': '1.0.0',
     'ANO': '2020',
-    'EMPRESA': 'OneSoftwares',
-    'SITE': 'onesoftwares.com',
-    'LINK': 'http://onesoftwares.com'
+    'EMPRESA': 'OneSoftwaresBrasil',
+    'SITE': 'onesoftwaresbrasil.com',
+    'LINK': 'http://onesoftwaresbrasil.com'
 }
 
 
@@ -141,6 +141,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 URL_LOGO_LOGIN = config('URL_LOGO_LOGIN')
 
 
+try:
+    import json
+    AGENDA = json.loads(config('AGENDA'))
+except Exception as e:
+    pass
 
 try:
     from .logger_settings import *
