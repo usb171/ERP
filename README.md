@@ -77,7 +77,16 @@ USER='nome_maquina'
 PASSWORD='senha'
 HOST='localhost'
 PORT=''
+
+#   => URL_LOGO_LOGIN: URL do logo
 URL_LOGO_LOGIN='media/logoClinica.png'
+
+#   => AGENDA: Dicionário de configuração da Agenda no Padrão JSON
+#   => INICIAL: Primeira hora de atendimento, Ex: 7
+#   => FINAL: Última hora de atendimento, Ex: 19
+#   => INTERVALO: Intervalo de minutos do relógio da agenda, Ex: 15
+#   => PERIODOS: lista de períodos, Ex: [1, 2, 3] sendo 1 = MANHÃ, 2 = TARDE e 3 NOITE
+AGENDA='{ "INICIAL": 7, "FINAL": 19, "INTERVALO": 15, "PERIODOS": [1, 2, 3] }'
 ```
 
 ##Ambiente de Produção
