@@ -63,3 +63,11 @@ CORES_AGENDA = [
     ('4', ''), # Vermelho
     ('5', ''), # Violeta
 ]
+
+FORMAS_PAGAMENTO = [
+    ('1', 'DINHEIRO'),
+    ('2', 'DEBITO'),
+    ('3', 'CREDITO'),
+    ('4', 'BOLETO'),
+    ('5', 'CHEQUE'),
+]

@@ -7,7 +7,7 @@ import functools
 import json
 
 
-# AGENDA='{ "INICIAL": 7, "FINAL": 19, "INTERVALO": 15, "PERIODOS": [1, 2] }'
+#AGENDA='{ "INICIAL": 7, "FINAL": 19, "INTERVALO": 15, "PERIODOS": [1, 2] }'
 
 def get_options_periodos():
     """Retorna os options conforme a configuração do arquivo de ambiente .env"""
