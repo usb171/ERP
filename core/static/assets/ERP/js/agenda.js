@@ -363,6 +363,7 @@ let agendar = (horario) => {
                     $procedimentos.addClass("is-invalid")
                     toastr.error(data.erros.procedimentos)
                 }
+                EasyLoading.hide();
            }
         }
     });
