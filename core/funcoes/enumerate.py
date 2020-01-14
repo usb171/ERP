@@ -68,6 +68,4 @@ FORMAS_PAGAMENTO = [
     ('1', 'DINHEIRO'),
     ('2', 'DEBITO'),
     ('3', 'CREDITO'),
-    ('4', 'BOLETO'),
-    ('5', 'CHEQUE'),
 ]

@@ -38,19 +38,18 @@ def criarEditarExcluirAlterarDadosAlterarSenha(request):
         return {'status': False, 'msg': ['Não foi possível executar o comando: ' + str(comando)]}
 
 
-def getUsuarios(request):
-    users = request.GET.get('users', None)
+def getContas(request):
+    conta = request.GET.get('q', None)
     try:
-        if users:
+        if conta:
             return {
-                'usuarios': list(
-                    User.objects.filter(username__contains=users.upper(), is_active=True, is_superuser=False).values('id', 'username'))
+                'contas': list(Conta.objects.filter(ativo=True, cargo='4', nomeCompleto=conta).values('id', 'nomeCompleto'))
             }
         else:
             return {
-                'usuarios': list(
-                    User.objects.filter(is_active=True, is_superuser=False).values('id', 'username'))
+                'contas': list(Conta.objects.filter(ativo=True, cargo='4').values('id', 'nomeCompleto'))
             }
-    except:
-        return {'usuarios': []}
+    except Exception as e:
+        print(e)
+        return {'contas': []}
 

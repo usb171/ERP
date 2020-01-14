@@ -1,10 +1,12 @@
 from django.db import models
 from core.funcoes.enumerate import FORMAS_PAGAMENTO
+from paciente.models import Paciente
+from servico.models import Servico
 
 
 class Categoria(models.Model):
     """
-    *   Classe Despesa
+    *   Classe Categoria de Despesas
     """
     descricao = models.CharField(verbose_name='Descrição da categoria', max_length=120, default=True, null=True)
     observacao = models.CharField(verbose_name='Obsercao da categoria', max_length=120, default=True, null=True)
@@ -33,3 +35,11 @@ class Despesa(models.Model):
     def __str__(self):
         return self.descricao
 
+class Receita(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+    procedimentos = models.ManyToManyField(Servico, verbose_name='procedimentos')
+    valor_apagar = models.CharField(verbose_name='Valor a pagar', max_length=8, default=0, null=True)
+    forma_pagamento = models.CharField(verbose_name='Forma de Pagamento', choices=FORMAS_PAGAMENTO, max_length=2, default=1)
+
+    def __str__(self):
+        return self.paciente

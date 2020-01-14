@@ -6,5 +6,5 @@ urlpatterns = [
     path('conta', CoreView.conta, name='conta'),
     path('login', CoreView.login, name='login'),
     path('logout/', CoreView.logout, name='logout'),
-    path('getUsuarios/', CoreView.getUsuarios, name='getUsuarios'),
+    path('getContas/', CoreView.getContas, name='getContas'),
 ]

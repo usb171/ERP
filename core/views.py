@@ -49,6 +49,6 @@ class CoreView():
                                 content_type="application/json")
 
     @login_required(login_url='login')
-    def getUsuarios(request):
-        return JsonResponse(getUsuarios(request))
+    def getContas(request):
+        return JsonResponse(getContas(request))
 
