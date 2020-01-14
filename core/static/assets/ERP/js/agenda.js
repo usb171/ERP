@@ -176,7 +176,7 @@ function formatServicoSelection (servico) { return servico.nome || servico.text;
 $("#profissional").select2({
     theme: 'bootstrap4',
     ajax: {
-        url: "/getUsuarios/",
+        url: "/getContas/",
         dataType: 'json',
         delay: 100,
         data: function (params) {
@@ -186,27 +186,23 @@ $("#profissional").select2({
         },
         processResults:function(data){
             return {
-                results: $.map(data.usuarios, function (usuario) {
+                results: $.map(data.contas, function (conta) {
                             return {
-                                id: usuario.id,
-                                text: usuario.username
+                                id: conta.id,
+                                text: conta.nomeCompleto
                             }
                          })
             };
         },
         cache: true
     },
-    templateResult: formatUsuario,
-    templateSelection: formatUsuarioSelection
+    templateResult: formatConta,
+    templateSelection: formatContaSelection
 });
 
-$('#profissional').on("change", function(e) {
-    buscarDisponibilidade();
-});
-
-function formatUsuario (usuario) {
-  if (usuario.loading) {
-    return usuario.text;
+function formatConta (conta) {
+  if (conta.loading) {
+    return conta.text;
   }
 
   var $container = $(
@@ -217,15 +213,17 @@ function formatUsuario (usuario) {
     "</div>"
   );
 
-  $container.find(".select2-result-repository__title").text(usuario.text);
+  $container.find(".select2-result-repository__title").text(conta.text);
 
 
   return $container;
 }
 
-function formatUsuarioSelection (usuario) { return usuario.username || usuario.text; }
+function formatContaSelection (conta) { return conta.username || conta.text; }
 
-
+$('#profissional').on("change", function(e) {
+    buscarDisponibilidade();
+});
 
 // Timepicker **********************************************************************************************************
 
@@ -288,14 +286,7 @@ let posicionaRowScrollTabelaHorarios = (horario) => {
 }
 
 
-let buscarDisponibilidade = () =>{
-
-//    EasyLoading.show({
-//        type: EasyLoading.TYPE["BALL_PULSE"],
-//        text: 'Buscando Horários...',
-//        timeout: null,
-//    });
-
+let buscarDisponibilidade = (carregando=false) =>{
     $periodo = $("#periodo");
     $paciente = $("#paciente");
     $data = $("#timepickerData");
@@ -318,11 +309,62 @@ let buscarDisponibilidade = () =>{
         dataType: 'json',
         success: function (data) {
            $("#tabela_horarios tbody").html(data.disponibilidade.linhas_horarios);
-//           EasyLoading.hide();
+           if(carregando) EasyLoading.hide();
+        }
+    });
+}
+
+
+let agendar = (horario) => {
+
+    EasyLoading.show({
+        type: EasyLoading.TYPE["BALL_PULSE"],
+        text: 'Agendando Paciente...',
+        timeout: null,
+    });
+
+    $periodo = $("#periodo");
+    $paciente = $("#paciente");
+    $data = $("#timepickerData");
+    $profissional = $("#profissional");
+    $procedimentos = $("#procedimentos");
+
+    let formulario = {
+        'periodo': $periodo.val(),
+        'paciente': $paciente.val(),
+        'data': $data.data('date'),
+        'profissional': $profissional.val(),
+        'horario': horario,
+        'procedimentos': $procedimentos.val(),
+    }
+
+    $.ajax({
+        url: "/agenda/agendar",
+        data: formulario,
+        dataType: 'json',
+        success: function (data) {
+           $data.removeClass("is-invalid");
+           $paciente.removeClass("is-invalid");
+           $profissional.removeClass("is-invalid");
+           $procedimentos.removeClass("is-invalid");
+           if(data.flag){
+                buscarDisponibilidade(carregando=true);
+           }else{
+                if(data.erros.data){
+                    $data.addClass("is-invalid")
+                    toastr.error(data.erros.data)
+                }else if(data.erros.paciente){
+                    $paciente.addClass("is-invalid")
+                    toastr.error(data.erros.paciente)
+                }else if(data.erros.profissional){
+                    $profissional.addClass("is-invalid")
+                    toastr.error(data.erros.profissional)
+                }else if(data.erros.procedimentos){
+                    $procedimentos.addClass("is-invalid")
+                    toastr.error(data.erros.procedimentos)
+                }
+           }
         }
     });
 
-
-
-}
-
+};

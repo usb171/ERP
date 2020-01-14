@@ -1,4 +1,7 @@
 from ..models import Agenda as AgendaModel
+from paciente.models import Paciente
+from core.models import Conta
+from servico.models import Servico
 from django.db.models import Q
 from datetime import datetime
 from django.conf import settings
@@ -6,8 +9,6 @@ from core.funcoes.enumerate import PERIODO_AGENDA
 import functools
 import json
 
-
-# AGENDA='{ "INICIAL": 7, "FINAL": 19, "INTERVALO": 15, "PERIODOS": [1, 2] }'
 
 def get_options_periodos():
     """Retorna os options conforme a configuração do arquivo de ambiente .env"""
@@ -67,7 +68,8 @@ def get_linhas_tabela_horarios_html(agendas):
     for horario in get_lista_horarios():
         profissional = ''
         paciente = ''
-        acao = '<a href="#"> Agendar </a>'
+        acao = '<a href="#" id="agendar" onclick="{funcao}"> Agendar </a>'.format(
+            funcao="agendar('{horario}');".format(horario=horario))
         classe = ''
         """Para cada agendamento encontrado para aquele dia verifique qual horário se encontra na lista de horários"""
         for agenda in agendas:
@@ -88,6 +90,50 @@ def get_linhas_tabela_horarios_html(agendas):
 '''
 
 
+def agendar(request):
+    try:
+        lancar_erros = False
+        erros = {'data': '', 'paciente': '', 'profissional': '', 'procedimentos': ''}
+        data = request.GET.get("data")
+        hora = request.GET.get("horario")
+        periodo = request.GET.get("periodo")
+        paciente = request.GET.get("paciente")
+        profissional = request.GET.get("profissional")
+        procedimentos = request.GET.get("procedimentos[]")
+
+        if not data:
+            erros['data'] = 'Data Inválida'
+            lancar_erros = True
+        elif not paciente:
+            erros['paciente'] = 'Selecione o paciente'
+            lancar_erros = True
+        elif not profissional:
+            erros['profissional'] = 'Selecione o profissional'
+            lancar_erros = True
+        elif not procedimentos:
+            erros['procedimentos'] = 'Selecione pelo menos 1 procedimento'
+            lancar_erros = True
+
+        if lancar_erros: return {'flag': False, 'msg': 'Erro ao agendar paciente', 'erros': erros}
+
+        formulario = {
+            'status': '1',
+            'hora': hora,
+            'data': data,
+            'periodo': periodo,
+            'paciente': paciente,
+            'profissional': profissional
+        }
+
+        formulario['paciente'] = Paciente.objects.get(id=formulario['paciente'])
+        formulario['profissional'] = Conta.objects.get(id=formulario['profissional'])
+        agendamento = AgendaModel.objects.create(**formulario)
+        agendamento.procedimentos.set(Servico.objects.filter(id__in=dict(request.GET)['procedimentos[]']))
+        return {'flag': True, 'msg': 'Paciente agendado com sucesso'}
+    except Exception as e:
+        return {'flag': False, 'msg': 'Erro ao agendar paciente {e}'.format(e=e)}
+
+
 def buscarDisponibilidade(request):
     """Retorna um paciente buscando pelo ID"""
     try:
@@ -96,19 +142,8 @@ def buscarDisponibilidade(request):
         data_form = request.GET.get("data")
         profissional = request.GET.get("profissional")
         hora_form = request.GET.get("horario")
-        procedimentos = request.GET.get("procedimentos")
-
-        # agora = datetime.now().strftime("%d/%m/%Y %H:%M:%S").split(' ')
-        # data_agora = agora[0]
-        # hora_agora = agora[1]
-
-        # print(data_agora, hora_agora)
-        # print(periodo, data_form, hora_form, paciente, profissional, procedimentos)
-
-        agendas = AgendaModel.objects.filter(status='1', data=data_form)
-
-        # print(list(map(lambda a: a.paciente, agendas)))
-
+        procedimentos = request.GET.get("procedimentos[]")
+        agendas = AgendaModel.objects.filter(status='1', data=data_form, profissional=profissional)
         return {'disponibilidade': dict(linhas_horarios=get_linhas_tabela_horarios_html(agendas))}
     except Exception as e:
         print(e)

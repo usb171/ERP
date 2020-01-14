@@ -24,7 +24,7 @@ class Agenda(models.Model):
 
     def clean(self, *args, **kwargs):
         interrvalo = getattr(settings, 'AGENDA', '')['INTERVALO']
-        agendas = Agenda.objects.filter(status='1', data=self.data, hora=self.hora).exclude(id=self.id)
+        agendas = Agenda.objects.filter(status='1', data=self.data, hora=self.hora, profissional=self.profissional).exclude(id=self.id)
 
         if len(self.hora) != 5 or int(self.hora[3:]) % int(interrvalo):
             raise ValidationError('Hora inválida')
