@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<link rel="stylesheet" href="{% static 'assets/plugins/timepicker/timepicker.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
 
@@ -34,7 +34,7 @@
 <script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
 <script src="{% static 'assets/plugins/moment/locale/pt-br.js' %}"></script>
 <script src="{% static 'assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js' %}"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<script src="{% static 'assets/plugins/timepicker/timepicker.js' %}"></script>
 <script src="{% static 'assets/plugins/easy-loading/js/easy-loading.min.js' %}"></script>
 <script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
 <script src="{% static 'assets/ERP/js/agenda.js' %}"></script>
@@ -76,5 +76,5 @@
 
 {% block script %}
     initTimepickerHorario({{timepickerHorario | safe}});
-    buscarDisponibilidade();
+    buscarAgendamentos();
 {% endblock %}
