@@ -1,54 +1,5 @@
 $("#id_nav_link_agenda").addClass("active");
 
-// Calendar ************************************************************************************************************
-
-let calendarEl = document.getElementById('calendar');
-calendar = new FullCalendar.Calendar(calendarEl, {
-    plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-    themeSystem: 'bootstrap',
-    header: {
-        left: 'prev,next,today agendar',
-        center: 'title',
-        right: 'listDay,dayGridMonth'
-        //right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
-    },
-    defaultDate: new Date(),
-    locale: 'pt',
-    buttonIcons: false, // show the prev/next text
-    weekNumbers: false,
-    navLinks: true, // can click day/week names to navigate views
-    businessHours: true, // display business hours
-    editable: false,
-    selectable: true,
-    slotDuration: '00:05:00',
-    minTime: '08:00:00',
-    maxTime: '18:00:00',
-    defaultView: 'list',
-
-    select: function(date, jsEvent, view) {
-        console.log('Clicou');
-    },
-    click: function(info) {
-        console.log('Clicou2');
-    },
-    events: [],
-    customButtons: {
-        agendar: {
-            text: 'Agendar',
-            click: function() {
-            $('#id_modal_agendar h4').text('Agendamento');
-                $("#id_modal_agendar").modal('show');
-            }
-        }
-    },
-
-    eventPositioned: function(event){
-
-    },
-});
-calendar.render();
-
-
 // Mask ****************************************************************************************************************
 
 $('[data-mask]').inputmask()
@@ -232,10 +183,26 @@ $('#timepickerData').datetimepicker({
     daysOfWeekDisabled: [0]
 })
 
+$("#timepickerData").on("change.datetimepicker", function (e) {
+    buscarDisponibilidade();
+});
+
+$('#timepickerData_filtro').datetimepicker({
+    format: 'DD/MM/YYYY',
+    daysOfWeekDisabled: [0]
+})
+
+$("#timepickerData_filtro").on("change.datetimepicker", function (e) {
+    carregarAgenda();
+});
+
+$("#agendamento_filtro").on("change.periodo", function (e) {
+    carregarAgenda();
+});
 
 let initTimepickerHorario = (val) =>{
     $('#timepickerHorario').datetimepicker({
-        format: 'LT',
+        format: 'HH:mm',
         stepping: val.stepping,
         enabledHours: val.enabledHours,
     });
@@ -260,12 +227,8 @@ $("#periodo").on("change.periodo", function (e) {
     cod_periodo = $(this).val();
     buscarDisponibilidade();
     atualizarHorarioPeloPeriodo(cod_periodo)
-
 });
 
-$("#timepickerData").on("change.datetimepicker", function (e) {
-    buscarDisponibilidade();
-});
 
 let atualizarPeriodoPeloHorario = (horario) => {
     if (horario > '00:00' && horario < '12:00') $("#periodo").val('1');
@@ -285,6 +248,28 @@ let posicionaRowScrollTabelaHorarios = (horario) => {
     $tableContainer.scrollTop($(`td:contains('${horario}')`)[0].offsetTop - 50)
 }
 
+let carregarAgenda = (carregando=false) => {
+
+    $data = $("#timepickerData_filtro");
+    $agendamento = $("#agendamento_filtro");
+    $financeiro = $("#financeiro_filtro");
+
+    let formulario = {
+        'data': $data.data('date'),
+        'agendamento': $agendamento.val(),
+        'financeiro': $data.data('$financeiro')
+    }
+
+    $.ajax({
+        url: "/agenda/carregarAgenda",
+        data: formulario,
+        dataType: 'json',
+        success: function (data) {
+           $("#tabela_agendas tbody").html(data.agendas.linhas);
+           if(carregando) EasyLoading.hide();
+        }
+    });
+}
 
 let buscarDisponibilidade = (carregando=false) =>{
     $periodo = $("#periodo");
@@ -313,7 +298,6 @@ let buscarDisponibilidade = (carregando=false) =>{
         }
     });
 }
-
 
 let agendar = (horario) => {
 
@@ -349,6 +333,7 @@ let agendar = (horario) => {
            $procedimentos.removeClass("is-invalid");
            if(data.flag){
                 buscarDisponibilidade(carregando=true);
+                carregarAgenda();
            }else{
                 if(data.erros.data){
                     $data.addClass("is-invalid")
@@ -367,5 +352,6 @@ let agendar = (horario) => {
            }
         }
     });
+
 
 };

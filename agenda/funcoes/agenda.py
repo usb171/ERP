@@ -85,6 +85,37 @@ def get_linhas_tabela_horarios_html(agendas):
     return linhas
 
 
+def get_linhas_tabela_agenda_html(agendas):
+
+    acao = '<div class="btn-group">\
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
+            Status \
+        </button> \
+        <div class="dropdown-menu"> \
+            <a class="dropdown-item" href="#">AGENDADO</a>\
+            <div class="dropdown-divider"></div>\
+            <a class="dropdown-item" href="#">FINALIZADO</a>\
+            <div class="dropdown-divider"></div>\
+            <a class="dropdown-item" href="#">EM ESPERA</a>\
+            <div class="dropdown-divider"></div>\
+            <a class="dropdown-item" href="#">CANCELADO</a>\
+            <div class="dropdown-divider"></div>\
+            <a class="dropdown-item" href="#">EM ATENDIMENTO</a>\
+        </div>\
+    </div>'
+
+    try:
+        agendas = agendas.values('hora', 'paciente__nomeCompleto', 'profissional__nomeCompleto', 'status')
+        html = '<tr><td>{hora}</td><td>{paciente}</td><td>{profissional}</td><td>{acao}</td></tr>'
+        return "".join(list(map(lambda a: html.format(hora=a['hora'],
+                                                      paciente=a['paciente__nomeCompleto'],
+                                                      profissional=a['profissional__nomeCompleto'],
+                                                      acao=acao), agendas)))
+    except Exception as e:
+        print("Erro ao montar lista de linhas", e)
+        return ""
+
+
 '''
     Métodos AJAX 
 '''
@@ -134,17 +165,27 @@ def agendar(request):
         return {'flag': False, 'msg': 'Erro ao agendar paciente {e}'.format(e=e)}
 
 
+def carregarAgenda(request):
+    """Carrega todos os agendamentos segundo os filtros"""
+    try:
+        data = request.GET.get("data")
+        agendamento = request.GET.get("agendamento")
+        financeiro = request.GET.get("financeiro")
+        if agendamento == '0':
+            agendas = AgendaModel.objects.order_by("hora").filter(data=data)
+        else:
+            agendas = AgendaModel.objects.order_by("hora").filter(status__contains=agendamento, data=data)
+        return {'agendas': dict(linhas=get_linhas_tabela_agenda_html(agendas))}
+    except Exception as e:
+        return {'agendas': dict()}
+
+
 def buscarDisponibilidade(request):
     """Retorna um paciente buscando pelo ID"""
     try:
-        periodo = request.GET.get("periodo")
-        paciente = request.GET.get("paciente")
         data_form = request.GET.get("data")
         profissional = request.GET.get("profissional")
-        hora_form = request.GET.get("horario")
-        procedimentos = request.GET.get("procedimentos[]")
         agendas = AgendaModel.objects.filter(status='1', data=data_form, profissional=profissional)
         return {'disponibilidade': dict(linhas_horarios=get_linhas_tabela_horarios_html(agendas))}
     except Exception as e:
-        print(e)
         return {'disponibilidade': dict()}

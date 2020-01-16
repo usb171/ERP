@@ -1,0 +1,88 @@
+{% extends 'core/estrutura.html' %}
+{% load static %}
+
+{% block title %}Agenda{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<link rel="stylesheet"
+      href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+<!--<link rel="stylesheet" href="{% static 'assets/plugins/timepicker/timepicker.css' %}">-->
+
+<link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
+{% endblock %}
+
+{% block extrabottomjs %}
+<script src="{% static 'assets/plugins/moment/moment.min.js'  %}"></script>
+<script src="{% static 'assets/plugins/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables-select/js/dataTables.select.min.js' %}"></script>
+<!--<script src="{% static 'assets/plugins/timepicker/timepicker.js' %}"></script>-->
+<script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
+<script src="{% static 'assets/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'assets/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'assets/plugins/buttons-html5/buttons.html5.min.js' %}"></script>
+<script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'assets/plugins/easy-loading/js/easy-loading.min.js' %}"></script>
+
+<script src="{% static 'assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js' %}"></script>
+
+<script src="{% static 'assets/ERP/js/agenda.js' %}"></script>
+{% endblock %}
+
+{% block classbody %}hold-transition sidebar-mini{% endblock %}
+
+{% block content %}
+
+
+<style>
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .lowercase {
+      text-transform: lowercase;
+    }
+
+    .capitalize {
+      text-transform: capitalize;
+    }
+
+
+</style>
+
+<div class="content-wrapper">
+    {% include 'agenda/elementos/filtros.html' %}
+    <section class="content">
+
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#id_modal_agendar">Novo Agendamento</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {% include 'agenda/elementos/tabela.html' %}
+            </div>
+        </div>
+    </section>
+</div>
+
+{% include 'agenda/elementos/formulario.html' %}
+
+{% endblock %}
+
+{% block script %}
+initTimepickerHorario({{timepickerHorario | safe}});
+carregarAgenda();
+{% endblock %}

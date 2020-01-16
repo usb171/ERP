@@ -1,0 +1,43 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="card mb-2">
+            <div class="card-header">
+                Filtros
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label>Agendamento</label>
+                        <select class="form-control" style="width: 100%;" id="agendamento_filtro">
+                            <option value="0">TODOS</option>
+                            <option value="1">AGENDADO</option>
+                            <option value="2">FINALIZADO</option>
+                            <option value="3">EM ESPERA</option>
+                            <option value="4">CANCELADO</option>
+                            <option value="5">EM ATENDIMENTO</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Financeiro</label>
+                        <select class="form-control" style="width: 100%;" id="financeiro_filtro">
+                            <option>TODOS</option>
+                            <option>EM ABERTO</option>
+                            <option>PAGO</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>Data</label>
+                        <div class="input-group date" id="timepickerData_filtro" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input"
+                                   data-target="#timepickerData_filtro"/>
+                            <div class="input-group-append" data-target="#timepickerData_filtro"
+                                 data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="far fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

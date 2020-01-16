@@ -43,7 +43,7 @@ def getContas(request):
     try:
         if conta:
             return {
-                'contas': list(Conta.objects.filter(ativo=True, cargo='4', nomeCompleto=conta).values('id', 'nomeCompleto'))
+                'contas': list(Conta.objects.filter(ativo=True, cargo='4', nomeCompleto__contains=conta.upper()).values('id', 'nomeCompleto'))
             }
         else:
             return {
