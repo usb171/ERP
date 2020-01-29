@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
 from servico.form import ServicoForm
-from servico.funcoes.servico import getServicosString, getDados as getDadosF, getServicos as getServicosF
+from servico.funcoes.servico import getServicosString, getDados as getDadosF, getServicos as getServicosF, getValorTotal
 
 
 class ServicoAjax():
@@ -16,6 +16,10 @@ class ServicoAjax():
     @login_required(login_url='login')
     def getServicos(request):
         return JsonResponse(getServicosF(request))
+
+    @login_required(login_url='login')
+    def getValorTotal(request):
+        return JsonResponse(getValorTotal(request))
 
 
 class ServicoView():

@@ -10,6 +10,7 @@ def criar(formulario):
         formulario['valor_total'] = float(formulario['valor_total'])
         formulario['valor_clinica'] = float(formulario['valor_clinica'])
         formulario['valor_produtos'] = float(formulario['valor_produtos'])
+        print(formulario)
         del formulario['id']
         del formulario['produtos']
         ServicoModel.objects.create(**formulario)
@@ -130,4 +131,20 @@ def getServicos(request):
             return {'servicos': list(ServicoModel.objects.filter(ativo=True).values('id', 'nome', 'valor_total'))}
     except:
         return {'servicos':[]}
+
+def getValorTotal(request):
+    """Retorna a soma total dos valores dos servicos selecionados pelo ID"""
+    try:
+        ids = request.GET.get("ids")
+        soma = '0.00'
+        if ids:
+            servicos = ServicoModel.objects.filter(id__in=ids.split(','))
+            soma = sum(list(map(lambda p: float(p['valor_total']), servicos.values('valor_total'))))
+        return {
+                'valor_servicos': soma,
+                'status': True
+                }
+    except Exception as e:
+        logging.getLogger("error_logger").error(repr(e))
+        return {'servicos': {}, 'status': False, 'msg': ['Erro ao carregar servicos']}
 

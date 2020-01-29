@@ -1,0 +1,2 @@
+2020-01-28 18:11:45,608  ERROR  15932  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  getDados  115  DoesNotExist('Receita matching query does not exist.')  
+2020-01-28 18:11:45,716  ERROR  15932  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  getDados  115  DoesNotExist('Receita matching query does not exist.')  

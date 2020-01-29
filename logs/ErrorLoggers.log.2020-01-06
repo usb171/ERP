@@ -1,0 +1,2 @@
+2020-01-06 11:56:12,654  ERROR  10325  /Users/daniel/Nextcloud/Desenvolvimento/ERP/servico/funcoes/servico.py  getDados  118  DoesNotExist('Servico matching query does not exist.')  
+2020-01-06 11:56:18,614  ERROR  10325  /Users/daniel/Nextcloud/Desenvolvimento/ERP/servico/funcoes/servico.py  getDados  118  DoesNotExist('Servico matching query does not exist.')  

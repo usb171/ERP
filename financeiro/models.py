@@ -42,4 +42,5 @@ class Receita(models.Model):
     forma_pagamento = models.CharField(verbose_name='Forma de Pagamento', choices=FORMAS_PAGAMENTO, max_length=2, default=1)
 
     def __str__(self):
-        return self.paciente
+        return self.paciente.nomeCompleto
+
