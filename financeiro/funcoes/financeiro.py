@@ -6,42 +6,43 @@ import functools
 import logging
 
 def criar(formulario):
-# try:
-    formulario['paciente'] = Paciente.objects.get(id=formulario['paciente'])
-    formulario['procedimentos'] = formulario['procedimentos']
-    formulario['valor_apagar'] = float(formulario['valor_apagar'])
-    formulario['forma_pagamento'] = formulario['forma_pagamento'].upper()
-    del formulario['id']
+    try:
+        formulario['paciente'] = Paciente.objects.get(id=formulario['paciente'])
+        formulario['valor_apagar'] = float(formulario['valor_apagar'])
+        formulario['forma_pagamento'] = formulario['forma_pagamento'].upper()
+        procedimentos = Servico.objects.filter(id__in=formulario['procedimentos'].split(','))
+        del formulario['id']
+        del formulario['procedimentos']
+        receita = ReceitaModel.objects.create(**formulario)
+        receita.procedimentos.add(*procedimentos)
+        receita.save()
 
-    print(formulario)
-    ReceitaModel.objects.create(**formulario)
-    return {'status': True, 'msg': 'Feito lançamanto com sucesso'}
-# except ValueError as e:
-    logging.getLogger("error_logger").error(repr(e))
-    return {'status': False, 'msg': ['Valor inválido']}
-# except Exception as e:
-    logging.getLogger("error_logger").error(repr(e))
-    return {'status': False, 'msg': ['Erro ao tentar lançar o pagamento']}
+        return {'status': True, 'msg': 'Feito lançamanto com sucesso'}
+    except ValueError as e:
+        logging.getLogger("error_logger").error(repr(e))
+        return {'status': False, 'msg': ['Valor inválido']}
+    except Exception as e:
+        logging.getLogger("error_logger").error(repr(e))
+        return {'status': False, 'msg': ['Erro ao tentar lançar o pagamento']}
 
 
 def editar(formulario):
 
     try:
         receita = ReceitaModel.objects.filter(id=formulario['id'])
-        formulario['paciente'] = formulario['paciente'].upper()
-        formulario['procedimentos'] = formulario['procedimentos'].upper()
+        formulario['paciente'] = Paciente.objects.get(id=formulario['paciente'])
         formulario['valor_apagar'] = float(formulario['valor_apagar'])
         formulario['forma_pagamento'] = formulario['forma_pagamento'].upper()
 
-        if formulario['servicos']:
-            servicos = Servico.objects.filter(id__in=formulario['servicos'].split(','))
-            receita[0].servicos.clear()
-            receita[0].servicos.add(*servicos)
+        if formulario['procedimentos']:
+            procedimentos = Servico.objects.filter(id__in=formulario['procedimentos'].split(','))
+            receita[0].procedimentos.clear()
+            receita[0].procedimentos.add(*procedimentos)
         else:
-            receita[0].servicos.clear()
+            receita[0].procedimentos.clear()
 
         del formulario['id']
-        del formulario['servicos']
+        del formulario['procedimentos']
 
         receita.update(**formulario)
         return {'status': True, 'msg': 'Receita editado com sucesso'}
@@ -59,7 +60,7 @@ def excluir(formulario):
             ReceitaModel.objects.filter(pk=formulario['id']).delete()
             return {'status': True, 'msg': ['Receita excluido com sucesso']}
         else:
-            return {'status': False, 'msg': ['ID digitado não confere com o lançamento selecionado']}
+            return {'status': False, 'msg': ['ID digitado nao confere com o lancamento selecionado']}
     except:
         return {'status': False, 'msg': ['Erro ao tentar excluir o lançamento']}
 
@@ -71,7 +72,6 @@ def criarEditarExcluir(request):
     del formulario['csrfmiddlewaretoken']
 
     formulario = {k: v[0] for k, v in dict(formulario).items() if isinstance(v, (list,))}
-    print(formulario)
 
     if comando == '#criar#':
         return criar(formulario)
@@ -86,9 +86,9 @@ def criarEditarExcluir(request):
 def getReceitasString():
     """Monta as linhas da tabela em html e retorna em uma única string"""
     try:
-        receitas = ReceitaModel.objects.all().values('id', 'paciente', 'procedimentos', 'valor_apagar', 'forma_pagamento')
-        html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>R$ {3}</td><td>{4}</td>'
-        linhas = map(lambda p: html.format(p['id'], p['paciente'], p['procedimentos'], p['valor_apagar'], p['forma_pagamento']),
+        receitas = ReceitaModel.objects.all().values('id', 'paciente', 'valor_apagar', 'forma_pagamento')
+        html = '<tr><td>{0}</td><td>{1}</td><td>R$ {2}</td><td>{3}</td>'
+        linhas = map(lambda p: html.format(p['id'], Paciente.objects.get(id=p['paciente']).nomeCompleto, p['valor_apagar'], p['forma_pagamento']),
                      receitas)
         return "".join(list(linhas))
     except:
@@ -102,22 +102,22 @@ def getReceitasString():
 
 def getDados(request):
     """Retorna uma receita buscando pelo ID"""
-# try:
-    id = request.GET.get("id")
-    receita = ReceitaModel.objects.get(id=id)
-    print(receita)
-    return {
-        'status': True,
-        'receita': {
-            'paciente': receita.paciente,
-            'procedimento': receita.procedimentos,
-            'valor_apagar': receita.valor_apagar,
-            'forma_pagamento': receita.forma_pagamento,
+    try:
+        id = request.GET.get("id")
+        receita = ReceitaModel.objects.get(id=id)
+        return {
+            'status': True,
+            'receita': {
+                'id_paciente': receita.paciente.id,
+                'paciente': receita.paciente.nomeCompleto,
+                'procedimentos': list(receita.procedimentos.all().values('id', 'nome', 'valor_total')),
+                'valor_apagar': receita.valor_apagar,
+                'forma_pagamento': receita.forma_pagamento,
+            }
         }
-    }
-# except Exception as e:
-    logging.getLogger("error_logger").error(repr(e))
-    return {'receita': {}, 'status': False, 'msg': ['Erro ao carregar a receita']}
+    except Exception as e:
+        logging.getLogger("error_logger").error(repr(e))
+        return {'receita': {}, 'status': False, 'msg': ['Erro ao carregar a receita']}
 
 def getReceitas(request):
     """Retorna uma lista de receita """
@@ -129,4 +129,3 @@ def getReceitas(request):
                     }
     except:
         return {'receitas':[]}
-

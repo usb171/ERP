@@ -65,7 +65,7 @@ CORES_AGENDA = [
 ]
 
 FORMAS_PAGAMENTO = [
-    ('1', 'DINHEIRO'),
-    ('2', 'DEBITO'),
-    ('3', 'CREDITO'),
+    ('DINHEIRO', 'DINHEIRO'),
+    ('DEBITO', 'DEBITO'),
+    ('CREDITO', 'CREDITO'),
 ]

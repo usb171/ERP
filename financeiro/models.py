@@ -39,7 +39,7 @@ class Receita(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT)
     procedimentos = models.ManyToManyField(Servico, verbose_name='procedimentos')
     valor_apagar = models.CharField(verbose_name='Valor a pagar', max_length=8, default=0, null=True)
-    forma_pagamento = models.CharField(verbose_name='Forma de Pagamento', choices=FORMAS_PAGAMENTO, max_length=2, default=1)
+    forma_pagamento = models.CharField(verbose_name='Forma de Pagamento', choices=FORMAS_PAGAMENTO, max_length=8, default=1)
 
     def __str__(self):
         return self.paciente.nomeCompleto

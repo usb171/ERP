@@ -8,7 +8,7 @@
             <div class="form-group">
                 <label>Paciente</label>
                 <div class="input-group">
-                    <select class="form-control select2bs4" id="paciente" name="paciente" style="width: 100%;">
+                    <select class="form-control select2bs4" name="paciente" id="paciente" style="width: 100%;">
                     </select>
                 </div>
             </div>
@@ -16,12 +16,12 @@
         <div class="form-group col-md-6">
             <label>Procedimentos</label>
             <select class="form-control select2bs4" id="procedimentos" style="width: 100%;" multiple="multiple"
-            onchange="$('.procedimentos').val($(this).val())"></select>
+                    onchange="$('.procedimentos').val($(this).val())"></select>
             <input type="text" class="form-control procedimentos" name="procedimentos" hidden>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-4">
             <div class="form-group">
                 <label>Valor Apagar R$</label>
                 <div class="input-group">
@@ -29,13 +29,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Forma de Pagamento</label>
+        <div class="form-group col-md-4">
+                <label>Forma de PG</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="forma_pagamento" id="forma_pagamento">
+                    <select class="form-control" type="text" name="forma_pagamento" id="forma_pagamento" style="width: 100%;">
+                        {{ options_forma_pagamento | safe }}
+                    </select>
                 </div>
-            </div>
         </div>
     </div>
     <div class="row">

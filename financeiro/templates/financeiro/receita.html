@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static  'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
 {% endblock %}
 
 {% block extrabottomjs %}
@@ -88,7 +89,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="id_modal_servico_excluir">
+    <div class="modal fade" id="id_modal_financeiro_excluir">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -99,14 +100,14 @@
                 </div>
                 <div class="modal-body">
                     <spam>Digite o Código
-                        <spam style="color:red" id="codigo_excluir_produto"></spam>
+                        <spam style="color:red" id="codigo_excluir_financeiro"></spam>
                         e clique no botão
                         <spam style="color:red">Excluir Serviço</spam>
                         .
                         <spam style="font-weight: bold;">Atenção, após a exclusão não será mais possível
                             resgatar o serviço
                         </spam>
-                        <spam style="color:red; word-wrap: break-word;" id="nome_excluir_servico"></spam>
+                        <spam style="color:red; word-wrap: break-word;" id="nome_excluir_receita"></spam>
                     </spam>
                     {% include 'financeiro/elementos/formularioExcluir.html' %}
                 </div>

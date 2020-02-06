@@ -21,8 +21,8 @@ $('#valor_total').inputmask('decimal', {
 });
 
 
-$("#id_nav_treeview_configuracoes").addClass("menu-open");
-$("#id_nav_link_financeiro").addClass("active");
+$("#id_nav_treeview_configuracoes_receita").addClass("menu-open");
+$("#id_nav_link_receita").addClass("active");
 
 /****************************************************** Tabela ********************************************************/
 let table = $("#id_table_financeiro").DataTable({
@@ -37,8 +37,6 @@ let table = $("#id_table_financeiro").DataTable({
             action: function ( e, dt, node, config ) {
                 limparform();
                 let comando = '#criar#'
-//                $('#id_modal_servico_novo_editar h4').text('Novo Serviço');
-//                atualizarValorTotal();
                 $('#id_modal_financeiro_novo_editar').modal('show');
                 $("#comando_novo_editar").val(comando);
             },
@@ -52,8 +50,6 @@ let table = $("#id_table_financeiro").DataTable({
                 carregarDadosLinhaSelecionada(id);
                 limparform();
                 let comando = '#editar#'
-//                $('#id_modal_servico_novo_editar h4').text('Editar Serviço');
-//                atualizarValorTotal();
                 $('#id_modal_financeiro_novo_editar').modal('show');
                 $("#comando_novo_editar").val(comando);
                 EasyLoading.hide();
@@ -71,7 +67,7 @@ let table = $("#id_table_financeiro").DataTable({
                 $("#id_excluir").val('');
                 $("#codigo_excluir_financeiro").text(id);
                 $("#id_financeiro_selecionado").val(id);
-                $("#nome_excluir_servico").text(nome);
+                $("#nome_excluir_receita").text(nome);
             },
             className: 'btn btn-danger',
             enabled: false
@@ -140,15 +136,16 @@ let carregarDadosLinhaSelecionada = (id) => {
             status = data.status;
             if(data.status){
                 $('#id').val(id);
-                $('#paciente').val(receita.paciente);
-                $('#valor_apagar').val(receita.valor_apagar);
+                var newOption = new Option(receita.paciente, receita.id_paciente, false, false);
+                $('#paciente').append(newOption).trigger('change');
+                $('#paciente').val(receita.id_paciente).trigger('change');
+                $('#valor_servicos').val(receita.valor_apagar);
                 $('#forma_pagamento').val(receita.forma_pagamento);
                 $("#id_criar_editar").val(id);
                 $procedimentos = $('#procedimentos');
                 $.each(receita.procedimentos, (index, servico) => {
-                    $servicos.append(new Option(servico.nome, servico.id, true, true)).trigger('change');
+                    $procedimentos.append(new Option(servico.nome, servico.id, true, true)).trigger('change');
                 })
-
             }else{
                 $.each(data.msg, (index, erro) => {
                     toastr.error(erro)
@@ -157,13 +154,11 @@ let carregarDadosLinhaSelecionada = (id) => {
         }
     });
 }
-
 let limparform = () => {
-    $('#paciente').val('');
-    $('#procedimentos').val('');
+    $('#paciente').val(null).trigger('change');
+    $('#procedimentos').empty();
     $('#valor_apagar').val('');
     $('#forma_pagamento').val('');
-
 }
 
 $('#id_form_criar_ou_editar_financeiro').submit(function(e){

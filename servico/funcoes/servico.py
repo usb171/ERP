@@ -10,7 +10,6 @@ def criar(formulario):
         formulario['valor_total'] = float(formulario['valor_total'])
         formulario['valor_clinica'] = float(formulario['valor_clinica'])
         formulario['valor_produtos'] = float(formulario['valor_produtos'])
-        print(formulario)
         del formulario['id']
         del formulario['produtos']
         ServicoModel.objects.create(**formulario)

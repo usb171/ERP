@@ -68,6 +68,33 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item has-treeview" id="id_nav_treeview_configuracoes_receita">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-clinic-medical"></i>
+                        <p>
+                            Financeiro
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'receita' %}" class="nav-link" id="id_nav_link_receita">
+                                <i class="nav-icon fas fa fa-expand"></i>
+                                <p>
+                                    Receita
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link" id="id_nav_link_despesa">
+                                <i class="nav-icon fas fa-tooth"></i>
+                                <p>
+                                    Despesa
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" class="nav-link">
                         <i class="nav-icon fas fa-door-open"></i>

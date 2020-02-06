@@ -22,7 +22,7 @@ class ReceitaView():
     @login_required(login_url='login')
     def receita(request):
         template_name = "financeiro/receita.html"
-        context = {'receitas': getReceitasString()}
+        context = {'receitas': getReceitasString(), 'options_forma_pagamento': '<option>DINHEIRO</option>,<option>DEBITO</option>,<option>CREDITO</option> '}
         if request.method == 'GET':
             return render(request=request, template_name=template_name, context=context)
         if request.method == 'POST':
