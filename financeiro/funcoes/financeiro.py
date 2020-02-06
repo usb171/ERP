@@ -127,5 +127,9 @@ def getReceitas(request):
             return {'receitas': list(ReceitaModel.objects.filter((Q(paciente__contains=q.upper()) | Q(procedimentos__contains=q.upper()) | Q(valor_apagar__contains=q)) & Q(forma_pagamento__contains=q))
                                      .values('id', 'paciente', 'procedimentos', 'valor_apagar', 'forma_pagamento'))
                     }
+        else:
+            return {
+                'receitas': list(ReceitaModel.objects.filter(ativo=True).values('id', 'paciente', 'procedimentos', 'valor_apagar', 'forma_pagamento'))
+            }
     except:
         return {'receitas':[]}

@@ -1,0 +1,6 @@
+2020-02-05 14:38:04,363  ERROR  4500  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  getDados  119  DoesNotExist('Receita matching query does not exist.')  
+2020-02-05 14:38:04,684  ERROR  4500  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  getDados  119  DoesNotExist('Receita matching query does not exist.')  
+2020-02-05 16:29:15,939  ERROR  9919  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  editar  53  KeyError('paciente')  
+2020-02-05 16:40:09,362  ERROR  9919  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  criar  22  ValueError("invalid literal for int() with base 10: ''")  
+2020-02-05 16:41:33,428  ERROR  9919  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  criar  22  ValueError("invalid literal for int() with base 10: ''")  
+2020-02-05 17:44:23,910  ERROR  10895  /Users/daniel/Nextcloud/Desenvolvimento/ERP/financeiro/funcoes/financeiro.py  editar  50  ValueError("invalid literal for int() with base 10: 'false'")  
