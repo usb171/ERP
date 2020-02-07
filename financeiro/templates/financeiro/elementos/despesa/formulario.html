@@ -8,7 +8,7 @@
             <div class="form-group">
                 <label>Descrição</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="descricao" id="descricao">
+                    <input type="text" class="form-control uppercase" name="descricao" id="descricao" maxlength="120" required>
                 </div>
             </div>
         </div>
@@ -33,7 +33,8 @@
             <div class="form-group">
                 <label>Vencimento</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="data_vencimento" id="data_vencimento">
+                    <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask maxlength="10"
+                           name="data_vencimento" id="data_vencimento" onkeypress='return SomenteNumero(event)'>
                 </div>
             </div>
         </div>
@@ -43,7 +44,8 @@
             <div class="form-group">
                 <label>Data do PG</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="data_pagamento" id="data_pagamento">
+                    <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask maxlength="10"
+                           name="data_pagamento" id="data_pagamento" onkeypress='return SomenteNumero(event)'>
                 </div>
             </div>
         </div>

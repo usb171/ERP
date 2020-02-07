@@ -1,16 +1,19 @@
 $('[data-mask]').inputmask();
 
-$('#valor_servicos').inputmask('decimal', {
-                'integerDigits': 5,
-                'alias': 'numeric',
-                'autoGroup': true,
-                'digits': 2,
-                'digitsOptional': false,
-                'allowMinus': false,
-                'placeholder': ''
-});
+// Somente numeros e , e -
+function SomenteNumero(e) {
+var tecla = (window.event) ? event.keyCode : e.which;
+if ((tecla > 47 && tecla < 58 || tecla === 44 || tecla === 45 || tecla === 13))
+    return true;
+else {
+    if (tecla === 8 || tecla === 0)
+        return true;
+    else
+        return false;
+}
+}
 
-$('#valor_total').inputmask('decimal', {
+$('#valor').inputmask('decimal', {
                 'integerDigits': 5,
                 'alias': 'numeric',
                 'autoGroup': true,
@@ -135,14 +138,16 @@ let carregarDadosLinhaSelecionada = (id) => {
             despesa = data.despesa;
             status = data.status;
             if(data.status){
-//                $('#id').val(id);
-//                $('#valor_servicos').val(receita.valor_apagar);
-//                $('#forma_pagamento').val(receita.forma_pagamento);
-//                $("#id_criar_editar").val(id);
-//                $procedimentos = $('#procedimentos');
-//                $.each(receita.procedimentos, (index, servico) => {
-//                    $procedimentos.append(new Option(servico.nome, servico.id, true, true)).trigger('change');
-//                })
+                $('#id').val(id);
+                $('#descricao').val(despesa.descricao);
+                var newOption = new Option(despesa.categoria, despesa.id_categoria, false, false);
+                $('#categoria').append(newOption).trigger('change');
+                $('#categoria').val(despesa.id_categoria).trigger('change');
+                $('#data_vencimento').val(despesa.data_vencimento);
+                $('#valor').val(despesa.valor);
+                $('#data_pagamento').val(despesa.data_pagamento);
+                $('#forma_pagamento').val(despesa.forma_pagamento);
+                $("#id_criar_editar").val(id);
             }else{
                 $.each(data.msg, (index, erro) => {
                     toastr.error(erro)
@@ -152,9 +157,12 @@ let carregarDadosLinhaSelecionada = (id) => {
     });
 }
 let limparform = () => {
-    $('#paciente').val(null).trigger('change');
-    $('#procedimentos').empty();
-    $('#valor_apagar').val('');
+//    $('#procedimentos').empty();
+    $('#descricao').val('');
+    $('#categoria').val(null).trigger('change');
+    $('#data_vencimento').val('');
+    $('#valor').val('');
+    $('#data_pagamento').val('');
     $('#forma_pagamento').val('');
 }
 
@@ -259,94 +267,8 @@ function formatCategoria (categoria) {
 }
 
 function formatCategoriaSelection (categoria) { return categoria.descricao || categoria.text; }
-//
-//$("#procedimentos").on("select2:select", function (e) {
-//  let ids = $(e.currentTarget).val();
-//  $.ajax({
-//        url: "/servico/getValorTotal",
-//        data: {'ids': ids.toString()},
-//        dataType: 'json',
-//        success: function (data) {
-//            if(data.status){
-//                $('#valor_servicos').val(data.valor_servicos);
-//            }else{
-//                $.each(data.msg, (index, erro) => {
-//                    toastr.error(erro)
-//                })
-//            }
-//        }
-//  });
-//});
-//
-//$("#procedimentos").on("select2:unselect", function (e) {
-//  let ids = $(e.currentTarget).val();
-//  $.ajax({
-//        url: "/servico/getValorTotal",
-//        data: {'ids': ids.toString()},
-//        dataType: 'json',
-//        success: function (data) {
-//            if(data.status){
-//                $('#valor_servicos').val(data.valor_servicos);
-//            }else{
-//                alert('Erro ao consultar valores dos servicos');
-//            }
-//        }
-//  });
-//});
-//
-//$("#procedimentos").select2({
-//    theme: 'bootstrap4',
-//    allowClear: true,
-//    placeholder: "Selecione os servicos",
-//    ajax: {
-//        url: "/servico/getServicos",
-//        dataType: 'json',
-//        delay: 100,
-//        data: function (params) {
-//                return {
-//                    q: params.term,
-//                };
-//        },
-//        processResults:function(data){
-//            return {
-//                results: $.map(data.servicos, function (servico) {
-//                            return {
-//                                id: servico.id,
-//                                text: servico.nome,
-//                                valor_total: servico.valor_total,
-//                            }
-//                         })
-//            };
-//        },
-//
-//        cache: true
-//    },
-//    function (markup) { return markup; },
-//    templateResult: formatServico,
-//    templateSelection: formatServicoSelection
-//});
-//
-//function formatServico (servico) {
-//  if (servico.loading) {
-//    return servico.text;
-//  }
-//
-//  var $container = $(
-//    "<div class='select2-result-repository clearfix'>" +
-//      "<div class='select2-result-repository__meta'>" +
-//        "<div class='select2-result-repository__title'></div>" +
-//        "<div class='select2-result-repository__statistics'>" +
-//          "<div class='select2-result-repository__valor_total'>R$ </div>" +
-//        "</div>" +
-//      "</div>" +
-//    "</div>"
-//  );
-//
-//  $container.find(".select2-result-repository__title").text(servico.text);
-//  $container.find(".select2-result-repository__valor_total").append("     " +  servico.valor_total);
-//
-//
-//  return $container;
-//}
-//
-//function formatServicoSelection (servico) { return servico.nome || servico.text; }
+
+$(function () {
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+  })

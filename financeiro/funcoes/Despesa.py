@@ -102,6 +102,7 @@ def getDados(request):
         return {
             'status': True,
             'despesa': {
+                'id_categoria': despesa.categoria.id,
                 'descricao': despesa.descricao,
                 'categoria': despesa.categoria.descricao,
                 'data_vencimento': despesa.data_vencimento,
