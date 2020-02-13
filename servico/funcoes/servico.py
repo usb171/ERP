@@ -10,9 +10,12 @@ def criar(formulario):
         formulario['valor_total'] = float(formulario['valor_total'])
         formulario['valor_clinica'] = float(formulario['valor_clinica'])
         formulario['valor_produtos'] = float(formulario['valor_produtos'])
+        produtos = Produto.objects.filter(id__in=formulario['produtos'].split(','))
         del formulario['id']
         del formulario['produtos']
-        ServicoModel.objects.create(**formulario)
+        servico = ServicoModel.objects.create(**formulario)
+        servico.produtos.add(*produtos)
+        servico.save()
         return {'status': True, 'msg': 'Servico cadastrado com sucesso'}
     except ValueError as e:
         logging.getLogger("error_logger").error(repr(e))

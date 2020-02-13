@@ -9,9 +9,7 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/datatables-select/css/select.dataTables.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
-<link rel="stylesheet"
-      href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
-<!--<link rel="stylesheet" href="{% static 'assets/plugins/timepicker/timepicker.css' %}">-->
+<link rel="stylesheet" href="{% static 'assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
 
 <link rel="stylesheet" href="{% static 'assets/plugins/toastr/toastr.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/easy-loading/css/easy-loading.min.css' %}">
@@ -23,7 +21,6 @@
 <script src="{% static 'assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
 <script src="{% static 'assets/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
 <script src="{% static 'assets/plugins/datatables-select/js/dataTables.select.min.js' %}"></script>
-<!--<script src="{% static 'assets/plugins/timepicker/timepicker.js' %}"></script>-->
 <script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
 <script src="{% static 'assets/plugins/pdfmake/pdfmake.min.js' %}"></script>
@@ -32,9 +29,7 @@
 <script src="{% static 'assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script src="{% static 'assets/plugins/toastr/toastr.min.js' %}"></script>
 <script src="{% static 'assets/plugins/easy-loading/js/easy-loading.min.js' %}"></script>
-
 <script src="{% static 'assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js' %}"></script>
-
 <script src="{% static 'assets/ERP/js/agenda.js' %}"></script>
 {% endblock %}
 
@@ -55,6 +50,17 @@
     .capitalize {
       text-transform: capitalize;
     }
+
+    .bloquearCampo {
+        pointer-events: none;
+        opacity: 0.7 !important;
+    }
+
+    .desbloquearCampo {
+        pointer-events: visible;
+        opacity: 1 !important;
+    }
+
 
 
 </style>
@@ -79,10 +85,167 @@
 </div>
 
 {% include 'agenda/elementos/formulario.html' %}
+{% include 'agenda/elementos/formularioEditarAgendamento.html' %}
 
 {% endblock %}
 
 {% block script %}
-initTimepickerHorario({{timepickerHorario | safe}});
-carregarAgenda();
+    initTimepickerHorario({{timepickerHorario | safe}});
+    carregarAgenda();
+
+    let verificarStatus = (status) => {
+
+        let $data = $("#data_editar");
+        let $dataDiv = $("#timepickerData_editar");
+        let $hora = $("#hora_editar");
+        let $horaDiv = $("#timepickerHorario_editar");
+        let $procedimentos = $("#procedimentos_editar");
+        let $div_procedimentos = $("#div_procedimentos");
+
+        let $data_buffer = $("#data_buffer_editar");
+        let $hora_buffer = $("#hora_buffer_editar");
+
+
+        $data.prop( "disabled", false );
+        $hora.prop( "disabled", false );
+        $data.val($data_buffer.val());
+        $hora.val($hora_buffer.val());
+
+
+        if( status != '6' ){
+            $dataDiv.removeClass("desbloquearCampo").addClass("bloquearCampo");
+            $horaDiv.removeClass("desbloquearCampo").addClass("bloquearCampo");
+            $div_procedimentos.removeClass("desbloquearCampo").addClass("bloquearCampo");
+        }else{
+            $dataDiv.removeClass("bloquearCampo").addClass("desbloquearCampo");
+            $horaDiv.removeClass("bloquearCampo").addClass("desbloquearCampo");
+            $div_procedimentos.removeClass("bloquearCampo").addClass("desbloquearCampo");
+        }
+
+    }
+
+
+
+     $("#procedimentos_editar").select2({
+        theme: 'bootstrap4',
+        ajax: {
+            url: "/servico/getServicos",
+            dataType: 'json',
+            delay: 100,
+            data: function (params) {
+                    return {
+                        q: params.term,
+                    };
+            },
+            processResults:function(data){
+                return {
+                    results: $.map(data.servicos, function (servico) {
+                                return {
+                                    id: servico.id,
+                                    text: servico.nome,
+                                    valor_total: servico.valor_total
+                                }
+                             })
+                };
+            },
+            cache: true
+        },
+        templateResult: formatServico,
+        templateSelection: formatServicoSelection
+    });
+
+    let carregarAgendamento = (id) => {
+        limparform();
+        $.ajax({
+            url: "/agenda/getDados/",
+            data: {'id': id},
+            dataType: 'json',
+            success: function (data) {
+                agendamento = data.agendamento;
+                status = data.status;
+                if(data.status){
+                    //console.log(agendamento);
+                    $('#id_editar_agendamento').val(id);
+                    $('#status_editar').val(agendamento.status);
+
+                    $("#data_buffer_editar").val(agendamento.data);
+                    $("#hora_buffer_editar").val(agendamento.hora);
+
+                    $("#timepickerData_editar").val(agendamento.data);
+                    $("#timepickerHorario_editar").val(agendamento.hora);
+
+                    $("#observacoes_editar").val(agendamento.observacoes);
+
+                    $('#paciente_modal_descricao').val(agendamento.paciente);
+                    $('#id_profissional_agendamento').val(agendamento.profissional.id);
+                    $('#profissional_modal_descricao').val(agendamento.profissional.nomeCompleto);
+                    $('#status_editar').click(); // Dispara a função verificarStatus
+
+                    $procedimentos = $('#procedimentos_editar');
+                    $.each(agendamento.procedimentos, (index, procedimento) => {
+                        $procedimentos.append(new Option(procedimento.nome, procedimento.id, true, true)).trigger('change');
+                    })
+                }else{
+                    $.each(data.msg, (index, erro) => {
+                        toastr.error(erro)
+                    })
+                }
+            }
+        });
+        $("#id_modal_descricao_agendamento").modal("show");
+    }
+
+    let limparform = () => {
+        $('#id_editar_agendamento').val('');
+        $('#data_buffer_editar').val('');
+        $('#hora_buffer_editar').val('');
+        $('#timepickerData_editar').val('');
+        $('#timepickerHorario_editar').val('');
+        $('#paciente_modal_descricao').val('');
+        $('#id_profissional_agendamento').val('');
+        $('#profissional_modal_descricao').val('');
+        $('#observacoes_editar').val('');
+        $("#procedimentos_editar").empty();
+    }
+
+    $('#id_form_editar').submit(function(e){
+        //console.log( $(this).serialize())
+        EasyLoading.show({
+            type: EasyLoading.TYPE["BALL_PULSE"],
+            text: 'Alterando Agendamento...',
+            timeout: null,
+        });
+        $("#button_editar_agendamento").prop("disabled",true);
+        e.preventDefault();
+        $.post("/agenda/", $(this).serialize(), function(data){
+            //console.log(data);
+            if (data.status){
+                carregarAgenda();
+                buscarDisponibilidade();
+                $("#id_modal_descricao_agendamento").modal("hide");
+            }else{
+                $("#button_editar_agendamento").prop("disabled",false);
+                $.each(data.msg, (index, erro) => {
+                    toastr.error(erro)
+                })
+            }
+            EasyLoading.hide();
+            $("#button_editar_agendamento").prop("disabled",false);
+
+        }, 'json');
+    });
+
+
+    $("#id_modal_agendar").on('shown.bs.modal', function (e) {
+        buscarDisponibilidade();
+        carregarAgenda();
+    });
+
+
+
+   setInterval(function(){
+        buscarDisponibilidade();
+        carregarAgenda();
+   }, 1500);
+
 {% endblock %}

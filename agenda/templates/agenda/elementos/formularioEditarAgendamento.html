@@ -1,0 +1,101 @@
+<div class="modal fade" id="id_modal_descricao_agendamento">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="id_title_agendamento">Ficha de Agendamento</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="id_form_editar" method="POST">
+                    {% csrf_token %}
+
+                    <input type="text" id="id_editar_agendamento" name="id_editar_agendamento" hidden>
+                    <input type="text" id="id_paciente_agendamento" name="id_paciente_agendamento" hidden>
+                    <input type="text" id="id_profissional_agendamento" name="id_profissional_agendamento" hidden>
+
+                    <input type="text" id="hora_buffer_editar" name="hora_buffer_editar" hidden>
+                    <input type="text" id="data_buffer_editar" name="data_buffer_editar" hidden>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>Status do Agendamento</label>
+                            <select class="form-control" style="width: 100%;" id="status_editar" name="status_editar" onclick="verificarStatus($(this).val());">
+                                {{ options_status | safe }}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Data</label>
+                            <div class="input-group date" id="timepickerData_editar" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input"
+                                       data-target="#timepickerData_editar" id="data_editar" name="data_editar"/>
+                                <div class="input-group-append" data-target="#timepickerData_editar"
+                                     data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="far fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Horário</label>
+                            <div class="input-group date" id="timepickerHorario_editar" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input"
+                                       data-target="#timepickerHorario_editar" id="hora_editar" name="hora_editar"/>
+                                <div class="input-group-append" data-target="#timepickerHorario_editar"
+                                     data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Paciente:</label>
+                                <div class="input-group">
+                                    <input type="text" id="paciente_modal_descricao" class="form-control uppercase bloquearCampo"
+                                           >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Profissional:</label>
+                                <div class="input-group">
+                                    <input type="text" id="profissional_modal_descricao" class="form-control uppercase bloquearCampo"
+                                           name="profissional_editar">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12" id="div_procedimentos">
+                            <label>Procedimentos</label>
+                            <select class="form-control select2bs4" id="procedimentos_editar"
+                                    multiple="multiple"
+                                    style="width: 100%;" name="procedimentos_editar" required>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Observações</label>
+                                <textarea class="form-control" rows="3" name="observacoes_editar" id="observacoes_editar"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer justify-content-between row">
+                        <button type="submit" id="button_editar_agendamento" class="btn btn-primary col-md-12">Salvar
+                            Alteração
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

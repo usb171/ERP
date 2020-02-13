@@ -183,6 +183,11 @@ $('#timepickerData').datetimepicker({
     daysOfWeekDisabled: [0]
 })
 
+$('#timepickerData_editar').datetimepicker({
+    format: 'DD/MM/YYYY',
+    daysOfWeekDisabled: [0]
+})
+
 $("#timepickerData").on("change.datetimepicker", function (e) {
     buscarDisponibilidade();
 });
@@ -202,6 +207,12 @@ $("#agendamento_filtro").on("change.periodo", function (e) {
 
 let initTimepickerHorario = (val) =>{
     $('#timepickerHorario').datetimepicker({
+        format: 'HH:mm',
+        stepping: val.stepping,
+        enabledHours: val.enabledHours,
+    });
+
+    $('#timepickerHorario_editar').datetimepicker({
         format: 'HH:mm',
         stepping: val.stepping,
         enabledHours: val.enabledHours,
@@ -312,6 +323,7 @@ let agendar = (horario) => {
     $data = $("#timepickerData");
     $profissional = $("#profissional");
     $procedimentos = $("#procedimentos");
+    $observacoes = $("#observacoes");
 
     let formulario = {
         'periodo': $periodo.val(),
@@ -320,6 +332,7 @@ let agendar = (horario) => {
         'profissional': $profissional.val(),
         'horario': horario,
         'procedimentos': $procedimentos.val(),
+        'observacoes': $observacoes.val()
     }
 
     $.ajax({

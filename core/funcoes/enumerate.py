@@ -54,12 +54,13 @@ STATUS_AGENDA = [
     ('3', 'EM ESPERA'),
     ('4', 'CANCELADO'),
     ('5', 'EM ATENDIMENTO'),
+    ('6', 'REAGENDADO'),
 ]
 
 CORES_AGENDA = [
-    ('1', ''), # Verde
-    ('2', ''), # Azul
-    ('3', ''), # Amarelo
-    ('4', ''), # Vermelho
-    ('5', ''), # Violeta
+    ('1', '#6db59f4f'), # Verde
+    ('2', '#5c69b140'), # Azul
+    ('3', '#9bb15c26'), # Amarelo
+    ('4', '#da6f5b70'), # Vermelho
+    ('5', '#721dbb47'), # Violeta
 ]

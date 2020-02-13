@@ -78,3 +78,7 @@
     initTimepickerHorario({{timepickerHorario | safe}});
     buscarAgendamentos();
 {% endblock %}
+
+
+
+<h1>{% if get_status_inscricao_curso_cod inscricao.conta curso == 'Em Aberta' %}</h1>

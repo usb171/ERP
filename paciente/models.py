@@ -9,7 +9,7 @@ class Paciente(models.Model):
     nomeCompleto = models.CharField(verbose_name='Nome Completo', max_length=120, null=True, blank=False)
     whatsapp = models.CharField(verbose_name='Whatsapp', max_length=120, null=True, blank=True)
     telefone = models.CharField(verbose_name='Telefone', max_length=120, null=True, blank=True)
-    email = models.CharField(verbose_name='Email', max_length=120, null=True, blank=True, unique=True)
+    email = models.CharField(verbose_name='Email', max_length=120, null=True, blank=True, unique=False)
     endereco = models.CharField(verbose_name='CEP', max_length=120, null=True, blank=True)
     cidade = models.CharField(verbose_name='Cidade', max_length=120, null=True, blank=True)
     estado = models.CharField(verbose_name='Estado', max_length=2, choices=ESTADOS, null=True, blank=True)

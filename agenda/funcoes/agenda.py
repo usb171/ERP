@@ -5,9 +5,10 @@ from servico.models import Servico
 from django.db.models import Q
 from datetime import datetime
 from django.conf import settings
-from core.funcoes.enumerate import PERIODO_AGENDA
+from core.funcoes.enumerate import PERIODO_AGENDA, STATUS_AGENDA, CORES_AGENDA
 import functools
 import json
+import logging
 
 
 def get_options_periodos():
@@ -17,6 +18,21 @@ def get_options_periodos():
     options = ''
     for p in periodos: options = options + '<option value="{value}">{text}</option>'.format(value=p[0], text=p[1])
     return options
+
+
+def get_options_status():
+    """Retorna os status em options possíveis para um agendamento"""
+    options = ''
+    for p in STATUS_AGENDA:
+        options = options + '<option value="{value}">{text}</option>'.format(value=p[0], text=p[1])
+    return options
+
+
+def get_status(id):
+    return list(filter(lambda s: s[0] == str(id), STATUS_AGENDA))[0][1]
+
+def get_cor(id):
+    return list(filter(lambda s: s[0] == str(id), CORES_AGENDA))[0][1]
 
 
 def initTimepickerHorario():
@@ -87,38 +103,93 @@ def get_linhas_tabela_horarios_html(agendas):
 
 def get_linhas_tabela_agenda_html(agendas):
 
-    acao = '<div class="btn-group">\
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
-            Status \
-        </button> \
-        <div class="dropdown-menu"> \
-            <a class="dropdown-item" href="#">AGENDADO</a>\
-            <div class="dropdown-divider"></div>\
-            <a class="dropdown-item" href="#">FINALIZADO</a>\
-            <div class="dropdown-divider"></div>\
-            <a class="dropdown-item" href="#">EM ESPERA</a>\
-            <div class="dropdown-divider"></div>\
-            <a class="dropdown-item" href="#">CANCELADO</a>\
-            <div class="dropdown-divider"></div>\
-            <a class="dropdown-item" href="#">EM ATENDIMENTO</a>\
-        </div>\
-    </div>'
-
     try:
-        agendas = agendas.values('hora', 'paciente__nomeCompleto', 'profissional__nomeCompleto', 'status')
-        html = '<tr><td>{hora}</td><td>{paciente}</td><td>{profissional}</td><td>{acao}</td></tr>'
-        return "".join(list(map(lambda a: html.format(hora=a['hora'],
+        agendas = agendas.values('id', 'hora', 'paciente__nomeCompleto', 'profissional__nomeCompleto', 'status')
+        html = '<tr onclick="carregarAgendamento({id})" style="cursor:pointer; background-color:{cor};" ><td>{hora}</td><td>{paciente}</td><td>{profissional}</td><td>{status}</td></tr>'
+
+        return "".join(list(map(lambda a: html.format(id=a['id'],
+                                                      hora=a['hora'],
                                                       paciente=a['paciente__nomeCompleto'],
                                                       profissional=a['profissional__nomeCompleto'],
-                                                      acao=acao), agendas)))
+                                                      status=get_status(a['status']),
+                                                      cor=get_cor(a['status'])), agendas)))
     except Exception as e:
+        logging.getLogger("error_logger").error(repr(e))
         print("Erro ao montar lista de linhas", e)
         return ""
 
 
+def editarAgendamento(request):
+    """ Edita um agendamento pelo ID
+        Status: AGENDADO = 1, FINALIZADO = 2, EM ESPERA = 3, CANCELADO = 4, EM ATENDIMENTO = 5, REAGENDADADO = 6
+    """
+    try:
+        post_dict = dict(request.POST)
+        id = request.POST.get('id_editar_agendamento')
+        status = request.POST.get("status_editar")
+        hora = request.POST.get("hora_editar")
+        data = request.POST.get("data_editar")
+        profissional = request.POST.get("profissional_editar")
+        id_profissional = request.POST.get("id_profissional_agendamento")
+        procedimentos = post_dict.get("procedimentos_editar")
+        observacoes = request.POST.get("observacoes_editar")
+
+        formulario = {'status': status, 'hora': hora, 'data': data, 'observacoes': observacoes}
+        agendamento = AgendaModel.objects.filter(id=id)
+
+        """ Se o agendamento não for finalizado ou cancelado """
+        if status not in ['2', '4']:
+            if procedimentos:
+                procedimentos = Servico.objects.filter(id__in=procedimentos)
+                agendamento[0].procedimentos.clear()
+                agendamento[0].procedimentos.add(*procedimentos)
+            else:
+                agendamento[0].procedimentos.clear()
+        if status == '6':
+           formulario['status'] = '1'
+
+
+        """ Se o agendamento for finalizado ou cancelado
+            Teste se é possível mudar o status do agendamento
+        """
+        if status not in ['2', '4']:
+            """ Existe algum agendamento na mesma hora, data, profissional e status diferente de finalizado ou cancelado ? """
+            agendamento_marcado = AgendaModel.objects.filter(Q(hora=hora, data=data, profissional=id_profissional)).exclude(id=id).exclude(status__in=['2', '4'])
+
+            # print(id, hora, data, status, agendamento, agendamento_marcado)
+            if agendamento_marcado:
+                return {'status': False, 'msg': ["Encontramos um agendamento em {data} às {hora}".format(data=data, hora=hora)]}
+
+        agendamento.update(**formulario)
+
+        return {'status': True, 'msg': ['Agendamento alterado com sucesso']}
+    except Exception as e:
+        return {'status': False, 'msg': [str(e)]}
+
 '''
     Métodos AJAX 
 '''
+
+def getDados(request):
+    """Retorna um agendamento buscando pelo ID"""
+    try:
+        id = request.GET.get("id")
+        agenda = AgendaModel.objects.get(id=id)
+        return {
+            'status': True,
+            'agendamento': {
+                'status': agenda.status,
+                'data': agenda.data,
+                'hora': agenda.hora,
+                'paciente': agenda.paciente.nomeCompleto,
+                'profissional': {'id': agenda.profissional.id, 'nomeCompleto': agenda.profissional.nomeCompleto},
+                'procedimentos': list(agenda.procedimentos.all().values('id', 'nome')),
+                'observacoes': agenda.observacoes
+            }
+        }
+    except Exception as e:
+        logging.getLogger("error_logger").error(repr(e))
+        return {'servico': {}, 'status': False, 'msg': ['Erro ao carregar serviço']}
 
 
 def agendar(request):
@@ -131,6 +202,7 @@ def agendar(request):
         paciente = request.GET.get("paciente")
         profissional = request.GET.get("profissional")
         procedimentos = request.GET.get("procedimentos[]")
+        observacoes = request.GET.get("observacoes")
 
         if not data:
             erros['data'] = 'Data Inválida'
@@ -153,7 +225,8 @@ def agendar(request):
             'data': data,
             'periodo': periodo,
             'paciente': paciente,
-            'profissional': profissional
+            'profissional': profissional,
+            'observacoes': observacoes
         }
 
         formulario['paciente'] = Paciente.objects.get(id=formulario['paciente'])
@@ -171,6 +244,7 @@ def carregarAgenda(request):
         data = request.GET.get("data")
         agendamento = request.GET.get("agendamento")
         financeiro = request.GET.get("financeiro")
+
         if agendamento == '0':
             agendas = AgendaModel.objects.order_by("hora").filter(data=data)
         else:
@@ -181,11 +255,11 @@ def carregarAgenda(request):
 
 
 def buscarDisponibilidade(request):
-    """Retorna um paciente buscando pelo ID"""
+    """Retorna as linhas em html da tabela de disponibilidade daquele profissional"""
     try:
         data_form = request.GET.get("data")
         profissional = request.GET.get("profissional")
-        agendas = AgendaModel.objects.filter(status='1', data=data_form, profissional=profissional)
+        agendas = AgendaModel.objects.filter(status__in=['1', '3', '5'], data=data_form, profissional=profissional)
         return {'disponibilidade': dict(linhas_horarios=get_linhas_tabela_horarios_html(agendas))}
     except Exception as e:
         return {'disponibilidade': dict()}

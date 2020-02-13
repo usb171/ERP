@@ -17,25 +17,43 @@ class Agenda(models.Model):
     paciente = models.ForeignKey(Paciente, verbose_name='Paciente', on_delete=models.CASCADE)
     procedimentos = models.ManyToManyField(Servico, verbose_name='procedimentos')
     profissional = models.ForeignKey(Conta, verbose_name='Profissional', on_delete=models.SET_NULL, null=True)
+    observacoes = models.TextField(verbose_name='Observações', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Agenda'
         verbose_name_plural = 'Agendas'
 
     def clean(self, *args, **kwargs):
+        self.consultarDisponibilidade()
+        return super(Agenda, self).clean(*args, **kwargs)
+
+    def consultarDisponibilidade(self):
+        """
+            ('1', 'AGENDADO'),
+            ('2', 'FINALIZADO'),
+            ('3', 'EM ESPERA'),
+            ('4', 'CANCELADO'),
+            ('5', 'EM ATENDIMENTO'),
+            ('6', 'REAGENDADO'),
+        """
+
         interrvalo = getattr(settings, 'AGENDA', '')['INTERVALO']
         agendas = Agenda.objects.filter(status='1', data=self.data, hora=self.hora, profissional=self.profissional).exclude(id=self.id)
-
+        print(self.status)
         if len(self.hora) != 5 or int(self.hora[3:]) % int(interrvalo):
             raise ValidationError('Hora inválida')
         elif len(self.data) != 10:
             raise ValidationError('Data inválida')
         elif len(agendas) > 0:
-            raise ValidationError('Já existe um agendamento para {data} às {hora}'.format(data=self.data, hora=self.hora))
-        return super(Agenda, self).clean(*args, **kwargs)
+            raise ValidationError(
+                'Já existe um agendamento para {data} às {hora}'.format(data=self.data, hora=self.hora))
+        return True
 
     def __str__(self):
         return self.paciente.nomeCompleto
 
     def dataHora(self):
         return [self.data, self.hora]
+
+    def getStatus(self):
+        return self.STATUS_AGENDA[0]
