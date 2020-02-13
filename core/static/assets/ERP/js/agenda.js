@@ -347,6 +347,8 @@ let agendar = (horario) => {
            if(data.flag){
                 buscarDisponibilidade(carregando=true);
                 carregarAgenda();
+                $("#procedimentos").val(null).trigger("change");
+
            }else{
                 if(data.erros.data){
                     $data.addClass("is-invalid")

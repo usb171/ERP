@@ -239,6 +239,8 @@
     $("#id_modal_agendar").on('shown.bs.modal', function (e) {
         buscarDisponibilidade();
         carregarAgenda();
+        $("#paciente").val(null).trigger("change");
+        $("#procedimentos").val(null).trigger("change");
     });
 
 
